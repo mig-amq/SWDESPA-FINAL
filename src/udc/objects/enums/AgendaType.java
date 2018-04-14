@@ -1,5 +1,5 @@
 package udc.objects.enums;
 
-public enum AppointmentType {
+public enum AgendaType {
     RECURRING, SINGLE
 }

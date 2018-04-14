@@ -1,5 +1,6 @@
 package udc.customfx.paneledview;
 
+import udc.Model;
 import udc.objects.enums.PanelType;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
@@ -19,6 +20,7 @@ public abstract class PaneledView extends AnchorPane{
     private Locale locale;
     private double x, y;
     private boolean drawerOpen;
+    private Model model;
 
     @FXML
     private JFXDrawer drawer;
@@ -84,10 +86,6 @@ public abstract class PaneledView extends AnchorPane{
         this.init();
     }
 
-//    public void initView(){
-//        this.init();
-//    }
-
     public PaneledView(double width, double height) throws IOException {
         this(width, height, Locale.ENGLISH);
     }
@@ -120,6 +118,10 @@ public abstract class PaneledView extends AnchorPane{
         this.title = title;
     }
 
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
     public Locale getLocale() {
         return locale;
     }
@@ -132,4 +134,7 @@ public abstract class PaneledView extends AnchorPane{
         return title;
     }
 
+    public Model getModel() {
+        return model;
+    }
 }

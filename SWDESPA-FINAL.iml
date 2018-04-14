@@ -11,5 +11,6 @@
     <orderEntry type="library" exported="" name="de.jensd:fontawesomefx:8.9" level="project" />
     <orderEntry type="library" exported="" name="com.ibm.icu:icu4j:61.1" level="project" />
     <orderEntry type="library" exported="" name="mysql:mysql-connector-java:6.0.6" level="project" />
+    <orderEntry type="library" name="TrayNotification" level="project" />
   </component>
 </module>
