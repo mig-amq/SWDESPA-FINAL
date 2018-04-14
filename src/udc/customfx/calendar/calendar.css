@@ -1,0 +1,76 @@
+#header {
+    -fx-background-color: #8a1d1d;
+}
+
+#body {
+    -fx-background-color: #ffffff;
+}
+
+#header Label, #header FontAwesomeIconView {
+    -fx-text-fill: #ffffff;
+    -fx-fill: #ffffff;
+}
+
+#header FontAwesomeIconView:hover {
+    -fx-cursor: hand;
+}
+
+#header #year > .list-cell {
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+    -fx-padding: 0 0 0 25px;
+}
+
+#header #year .list-view {
+    -fx-background-color: transparent;
+}
+
+#header #year .list-view .list-cell{
+    -fx-background-color: #8a1d1d;
+    -fx-text-fill: #ffffff;
+}
+
+#header #year .list-view .list-cell:hover {
+    -fx-cursor: hand;
+    -fx-background-color: #a12222;
+}
+
+#header #year .arrow-button .arrow{
+    -fx-background-color: #ffffff;
+}
+
+#header #year .list-view .scroll-bar:vertical .track{
+    -fx-background-color: #5e1517;
+    -fx-border-color: transparent;
+}
+
+#header #year .list-view .scroll-bar:vertical .increment-button ,
+#header #year .list-view .scroll-bar:vertical .decrement-button {
+
+    -fx-background-color: #5e1517;
+    -fx-background-radius: 0em;
+    -fx-padding: 1px 10px 0 0;
+
+}
+
+#header #year .list-view .scroll-bar .increment-arrow,
+#header #year .list-view .scroll-bar .decrement-arrow
+{
+    -fx-shape: " ";
+    -fx-padding:0;
+}
+
+#header #year .list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #ffffff;
+}
+
+.row1:hover .label,
+.row2:hover .label,
+.row3:hover .label,
+.row4:hover .label,
+.row5:hover .label,
+.selected{
+    -fx-cursor: hand;
+    -fx-background-color: #ddd;
+}

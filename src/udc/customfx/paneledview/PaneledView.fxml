@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root fx:id="mainPanel" prefHeight="650.0" prefWidth="850.0" stylesheets="@../res/styles/doctor.css" type="AnchorPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" layoutY="30.0" prefHeight="620.0" prefWidth="799.0" resizeContent="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
+         <children>
+            <AnchorPane fx:id="contentPane" prefHeight="620.0" prefWidth="799.0" />
+         </children></JFXDrawer>
+      <JFXHamburger fx:id="burger" layoutX="810.0" layoutY="43.0" AnchorPane.rightAnchor="10.0" />
+      <AnchorPane fx:id="pnlTool" prefHeight="30.0" prefWidth="850.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="minimize" layoutX="766.0" layoutY="1.0" prefHeight="30.0" prefWidth="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <FontAwesomeIconView fill="WHITE" glyphName="WINDOW_MINIMIZE" layoutX="9.0" layoutY="20.0" size="12" text="" wrappingWidth="15.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="close" layoutX="370.0" prefHeight="30.0" prefWidth="30.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" layoutX="7.0" layoutY="21.0" size="16" />
+               </children>
+            </AnchorPane>
+            <Label fx:id="title" layoutX="14.0" layoutY="8.0" text="Paneled View" />
+         </children>
+      </AnchorPane>
+   </children>
+</fx:root>
