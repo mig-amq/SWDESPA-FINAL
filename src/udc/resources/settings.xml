@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<settings>
+    <server address="127.0.0.1" port="50000"/>
+    <db address="127.0.0.1" port="3306">
+        <username>root</username>
+        <password/>
+    </db>
+</settings>
