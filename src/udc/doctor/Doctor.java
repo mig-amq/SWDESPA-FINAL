@@ -30,7 +30,6 @@ public class Doctor extends PaneledView {
     protected Label username;
     protected ImageView img;
 
-    protected Account account;
     private Calendar calendar;
     private AnchorPane userPane;
     private AnchorPane calPane;
@@ -123,10 +122,6 @@ public class Doctor extends PaneledView {
         return calendar;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
     public void setCalendar(Calendar calendar) {
         this.calendar = calendar;
     }
@@ -135,9 +130,9 @@ public class Doctor extends PaneledView {
     public void setModel(Model model) {
         super.setModel(model);
 
-        this.username.setText("Dr. " + account.getFirstName() + " " + account.getLastName());
-        this.img.setImage(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(account.getImageURI()))));
-        this.notifier = new AppointmentNotifier(this.getAccount());
+        this.username.setText("Dr. " + model.getAccount().getFirstName() + " " + model.getAccount().getLastName());
+        this.img.setImage(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(model.getAccount().getImageURI()))));
+        this.notifier = new AppointmentNotifier(this.getModel().getAccount());
         this.notifier.start();
 
     }

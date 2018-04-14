@@ -1,0 +1,31 @@
+#start {
+    -fx-cursor: hand;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-text-fill: #ffffff;
+}
+
+#close {
+    -fx-cursor: hand;
+}
+
+#close:hover {
+    -fx-background-color: #8a1d1d;
+}
+
+
+#start.stop {
+    -fx-background-color: #d13a3a;
+}
+
+#start.stop:hover {
+    -fx-background-color: #8a1d1d;
+}
+
+#start.start {
+    -fx-background-color: #34966a;
+}
+
+#start.start:hover {
+    -fx-background-color: #205b40;
+}

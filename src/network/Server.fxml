@@ -5,7 +5,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #ffffff;" stylesheets="@../res/styles/server.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UDC.network.Server">
+<AnchorPane prefHeight="150.0" prefWidth="400.0" style="-fx-background-color: #ffffff;" stylesheets="@../udc/res/styles/server.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="network.Server">
    <children>
       <JFXTextField fx:id="port" labelFloat="true" layoutX="20.0" layoutY="56.0" prefHeight="25.0" prefWidth="360.0" promptText="Server Port" text="50000" />
       <JFXButton fx:id="start" layoutX="146.0" layoutY="101.0" prefHeight="35.0" prefWidth="109.0" styleClass="start" text="Start Server" />

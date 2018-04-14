@@ -1,6 +1,6 @@
-package UDC.network;
+package network;
 
-import UDC.network.threads.ServerThread;
+import network.threads.ServerThread;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;

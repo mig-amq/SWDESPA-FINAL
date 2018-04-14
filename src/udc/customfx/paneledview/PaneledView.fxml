@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root fx:id="mainPanel" prefHeight="650.0" prefWidth="850.0" stylesheets="@../res/styles/doctor.css" type="AnchorPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="mainPanel" prefHeight="650.0" prefWidth="850.0" stylesheets="@../../res/styles/doctor.css" type="AnchorPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" layoutY="30.0" prefHeight="620.0" prefWidth="799.0" resizeContent="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
          <children>

@@ -1,0 +1,51 @@
+Button, JFXButton {
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+#btnLogin:hover {
+    -fx-background-color:  #d13a3a !important;
+}
+
+#settings:hover {
+    -fx-cursor: hand;
+    -fx-fill: #d13a3a;
+}
+
+#minimize, #close {
+    -fx-cursor: hand;
+}
+
+#minimize:hover, #close:hover {
+    -fx-background-color: #8a1d1d;
+}
+
+#client:hover {
+    -fx-background-color: #ebebeb;
+}
+
+#drawer DrawerPanel{
+    -fx-background-color: #8a1d1d;
+}
+
+#drawer DrawerPanel JFXTextField,
+#drawer DrawerPanel JFXPasswordField,
+#drawer DrawerPanel JFXComboBox,
+#drawer DrawerPanel Label{
+    -fx-text-fill: #ffffff;
+    -fx-fill: #ffffff;
+    -jfx-focus-color: #ffffff;
+    -jfx-unfocus-color: #ffffff;
+    -fx-prompt-text-fill: #ffffff;
+}
+
+#drawer DrawerPanel JFXButton {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #8a1d1d;
+    -fx-cursor: hand;
+    -fx-padding: 8px 15px;
+}
+
+#drawer DrawerPanel JFXButton:hover {
+    -fx-background-color: #cbcbcb;
+}

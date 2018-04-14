@@ -1,0 +1,23 @@
+#pnlTool {
+    -fx-background-color: #d13a3a;
+}
+
+#minimize, #close {
+    -fx-cursor: hand;
+}
+
+#minimize:hover, #close:hover {
+    -fx-background-color: #8a1d1d;
+}
+
+#title {
+    -fx-text-fill: #ffffff;
+}
+
+#burger {
+    -fx-cursor: hand;
+}
+
+#burger > StackPane, #drawer DrawerPanel{
+    -fx-background-color: #d13a3a;
+}

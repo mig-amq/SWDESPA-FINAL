@@ -1,4 +1,4 @@
-package UDC.network.threads;
+package network.threads;
 
 import java.io.IOException;
 import java.net.ServerSocket;

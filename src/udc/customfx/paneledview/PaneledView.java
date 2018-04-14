@@ -77,7 +77,7 @@ public abstract class PaneledView extends AnchorPane{
     }
 
     public PaneledView(double width, double height, Locale lang) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../customfxml/PaneledView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../customfx/paneledview/PaneledView.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         loader.load();

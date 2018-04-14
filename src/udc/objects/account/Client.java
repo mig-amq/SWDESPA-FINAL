@@ -6,7 +6,7 @@ import udc.objects.enums.ClientType;
 public class Client  extends Account {
     private ClientType clientType;
 
-    public Client(int id, String firstName, String lastName) {
+    public Client(String firstName, String lastName, int id) {
         super(id, firstName, lastName);
         this.setType(AccountType.CLIENT);
         this.setClientType(ClientType.REGULAR);

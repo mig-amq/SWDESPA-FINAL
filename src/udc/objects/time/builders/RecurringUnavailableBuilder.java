@@ -1,18 +1,24 @@
 package udc.objects.time.builders;
 
 import udc.objects.enums.AgendaType;
+import udc.objects.time.concrete.Unavailable;
+
 import java.time.LocalDateTime;
 
 public class RecurringUnavailableBuilder extends UnavailableBuilder {
-    public void build (LocalDateTime start, LocalDateTime end, String doctor, String client) {
+    public Unavailable build (LocalDateTime start, LocalDateTime end, String doctor, String client) {
         this.build(start, end);
 
         this.getUnavailable().setType(AgendaType.RECURRING);
+
+        return this.getUnavailable();
     }
 
-    public void build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
+    public Unavailable build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
         this.build(id, start, end);
 
         this.getUnavailable().setType(AgendaType.RECURRING);
+
+        return this.getUnavailable();
     }
 }

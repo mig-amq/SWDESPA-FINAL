@@ -1,6 +1,6 @@
-package UDC.network.threads;
+package network.threads;
 
-import UDC.Model;
+import udc.Model;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,8 +16,7 @@ public class ClientThread extends Thread {
 
     public ClientThread (Model model) throws IOException {
         this.messages = new LinkedList<>();
-        this.setSocket(new Socket(model.getServer_socket().split(":")[0],
-                Integer.parseInt(model.getServer_socket().split(":")[1].replaceAll("[^0-9]", ""))));
+        this.setSocket(new Socket(model.getServerAddress(), model.getServerPort()));
         this.setHasMessage(false);
         this.setStarted(true);
 

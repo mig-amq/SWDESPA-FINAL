@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="524.0" type="AnchorPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="Welcomelbl" layoutX="50.0" layoutY="63.0" text="Welcome Guest!">
+         <font>
+            <Font name="Malgun Gothic Bold" size="48.0" />
+         </font>
+      </Label>
+      <Label fx:id="datelbl" layoutX="50.0" layoutY="232.0" prefHeight="27.0" prefWidth="59.0" text="Date">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="nameLbl" layoutX="46.0" layoutY="172.0" prefHeight="35.0" prefWidth="68.0" text="Name">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <JFXTextField fx:id="nameField" layoutX="166.0" layoutY="159.0" prefHeight="38.0" prefWidth="268.0" />
+      <JFXDatePicker fx:id="datePicker" defaultColor="RED" layoutX="168.0" layoutY="206.0" prefHeight="51.0" prefWidth="305.0" />
+      <Label fx:id="timeLbl" layoutX="54.0" layoutY="283.0" prefHeight="35.0" prefWidth="59.0" text="Time">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="starthourCmb" layoutX="172.0" layoutY="274.0" prefHeight="39.0" prefWidth="106.0" />
+      <JFXToolbar layoutX="-4.0" layoutY="-5.0" prefHeight="39.0" prefWidth="530.0" style="-fx-background-color: red;">
+         <right>
+            <AnchorPane prefHeight="39.0" prefWidth="259.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXButton fx:id="closeBtn" layoutX="234.0" layoutY="-1.0" prefHeight="20.0" prefWidth="22.0" text="x" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </AnchorPane>
+         </right>
+      </JFXToolbar>
+      <JFXButton fx:id="bookBtn" layoutX="143.0" layoutY="496.0" style="-fx-background-color: red;" text="BOOK NOW!" textFill="WHITE">
+         <font>
+            <Font name="Malgun Gothic Bold" size="36.0" />
+         </font>
+      </JFXButton>
+      <Separator layoutX="131.0" layoutY="165.0" orientation="VERTICAL" prefHeight="299.0" prefWidth="46.0" />
+      <Label fx:id="doctorLbl1" layoutX="50.0" layoutY="407.0" prefHeight="35.0" prefWidth="89.0" text="Doctor">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="doctorCmb" layoutX="165.0" layoutY="401.0" prefHeight="39.0" prefWidth="268.0" />
+      <JFXComboBox fx:id="startminCmb" layoutX="326.0" layoutY="274.0" prefHeight="39.0" prefWidth="106.0" />
+      <Label fx:id="colonLbl" layoutX="294.0" layoutY="267.0" prefHeight="53.0" prefWidth="31.0" text=":">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="toLbl" layoutX="290.0" layoutY="313.0" prefHeight="53.0" prefWidth="31.0" text="to">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="endhourCmb" layoutX="166.0" layoutY="351.0" prefHeight="39.0" prefWidth="106.0" />
+      <JFXComboBox fx:id="endminCmb" layoutX="320.0" layoutY="351.0" prefHeight="39.0" prefWidth="114.0" />
+      <Label fx:id="colonLbl2" layoutX="291.0" layoutY="354.0" prefHeight="53.0" prefWidth="31.0" text=":">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+   </children>
+</fx:root>
