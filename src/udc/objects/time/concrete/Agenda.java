@@ -14,15 +14,15 @@ public class Agenda {
 
     /**
      * Checks if the {@link Agenda} instance clashes with an already existing Agenda in the parameter.
-     * @param agendas
-     * @return
+     * @param agendas the list of agendas to check
+     * @return true if the range clashes with an {@link Agenda} in the agendas list; else false
      */
-    public boolean clashes (ArrayList<Agenda> agendas) {
+    public static boolean clashes (ArrayList<Agenda> agendas, LocalDateTime start, LocalDateTime end) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
         for (Agenda a : agendas)
-            if (a.getStartTime().format(dtf).equals(this.getStartTime().format(dtf)))
-                if ((this.startTime.isAfter(a.getStartTime()) || this.startTime.isEqual(a.getStartTime())) && this.getStartTime().isBefore(a.getEndTime()))
+            if (a.getStartTime().format(dtf).equals(start.format(dtf)))
+                if ((start.isAfter(a.getStartTime()) || start.isEqual(a.getStartTime())) && start.isBefore(a.getEndTime()))
                     return true;
 
         return false;
