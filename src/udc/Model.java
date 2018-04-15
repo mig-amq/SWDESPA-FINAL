@@ -37,13 +37,13 @@ public class Model {
             try {
                 switch (this.account.getType()) {
                     case DOCTOR:
-                        this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId()));
+                        this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "DOCTOR"));
                         break;
                     case SECRETARY:
-                        this.getAccount().setAppointments(this.getDbController().getAppointments(-1));
+                        this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "SECRETARY"));
                         break;
                     case CLIENT:
-                        // add client set appointments here
+                        this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "CLIENT"));
                         break;
                 }
             } catch (Exception e) {

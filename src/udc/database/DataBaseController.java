@@ -6,6 +6,7 @@ import udc.objects.account.Client;
 import udc.objects.account.Doctor;
 import udc.objects.account.Secretary;
 import udc.objects.time.builders.RecurringAppointmentBuilder;
+import udc.objects.time.builders.RecurringUnavailableBuilder;
 import udc.objects.time.builders.SingleAppointmentBuilder;
 import udc.objects.time.builders.SingleUnavailableBuilder;
 import udc.objects.time.concrete.Appointment;
@@ -25,30 +26,106 @@ public class DataBaseController {
     private ResultSet rSet = null;
     private ResultSet rSet1 = null;
     private ResultSet rSet2 = null;
-    private Model model = null;
+    private Model model;
 
     public DataBaseController(Model model) {
         this.model = model;
     }
 
-    /*
-        Adds an account to the database
+    /**
+     * Returns a temporary ArrayList of all the doctors from the database.
+     * <p>
+     * This function fetches all doctors from the database
+     * and stores it into a temporary ArrayList.
+     *
+     * @return the temporary ArrayList
      */
-    public void addAccount(String userName, String pass, String type) {
+    public ArrayList<String> loadDoctors() {
+        ArrayList<String> doctorList = new ArrayList<>();
         try {
-            String stmt = "INSERT INTO clinic_db.account (username, password, type) VALUES (?, ?, ?)";
             connection = ConnectionConfiguration.getConnection(model);
-            pStmt = connection.prepareStatement(stmt);
-            pStmt.setString(1, userName);
-            pStmt.setString(1, pass);
-            pStmt.setString(1, type);
-            pStmt.executeUpdate();
+            pStmt = connection.prepareStatement("SELECT * FROM clinic_db.doctor");
+            rSet = pStmt.executeQuery();
 
-            System.out.println(type + " account successfully created.");
+            while (rSet.next())
+                doctorList.add(rSet.getString("first_name"));
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(connection != null) {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        for (int i = 0; i < doctorList.size(); i++) {
+            System.out.println(doctorList.get(i));
+        }
+        return doctorList;
+    }
+
+    /**
+     * Returns a temporary ArrayList of all the clients from the database.
+     * <p>
+     * This function fetches all clients from the database
+     * and stores it into a temporary ArrayList.
+     * This function must be called before calling addClient()
+     *
+     * @return the temporary ArrayList
+     */
+    public ArrayList<String> loadClients() {
+        ArrayList<String> clientList = new ArrayList<>();
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement("SELECT * FROM clinic_db.client");
+            rSet = pStmt.executeQuery();
+
+            while (rSet.next())
+                clientList.add(rSet.getString("first_name"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        for (int i = 0; i < clientList.size(); i++) {
+            System.out.println(clientList.get(i));
+        }
+        return clientList;
+    }
+
+    /**
+     * This function will insert a new row to the account table.
+     *
+     * @param userName username of the new account
+     * @param pass     password of the new account
+     * @param type     type of the new account
+     * @param img_url the url of the account image, this can be null
+     */
+    public void addAccount(String userName, String pass, String type, String img_url) {
+        try {
+            String stmt = "INSERT INTO clinic_db.account (username, password, type) VALUES (?, ?, ?, ?)";
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement(stmt);
+            pStmt.setString(1, userName);
+            pStmt.setString(2, pass);
+            pStmt.setString(3, type);
+            pStmt.setString(4, img_url);
+
+            if (pStmt.executeUpdate() == 1)
+                System.out.println(type + " account successfully created.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
@@ -58,10 +135,13 @@ public class DataBaseController {
         }
     }
 
-    /*
-        Adds a normal client  to the database
-        Pre-requisite: Must call addAccount first before this, because it refers to the latest account entry.
-                       If client is walk in, call addWalkIn() instead.
+    /**
+     * This function inserts a regular client to the database.
+     * However, addAccount() must be called first before calling this function,
+     * because it refers to the latest account entry.
+     *
+     * @param firstName the first name of the client
+     * @param lastName  the last name of the client
      */
     public void addClient(String firstName, String lastName) {
         try {
@@ -69,19 +149,23 @@ public class DataBaseController {
             pStmt = connection.prepareStatement("SELECT * FROM clinic_db.account ORDER BY account_id DESC LIMIT 1");
             rSet = pStmt.executeQuery();
 
+            if(rSet.next())
+                System.out.println("Fetched latest account entry");
+
             String stmt = "INSERT INTO clinic_db.client (first_name, last_name, account_id, type) VALUES (?, ?, ?, ?)";
 
             pStmt = connection.prepareStatement(stmt);
             pStmt.setString(1, firstName);
             pStmt.setString(2, lastName);
             pStmt.setInt(3, rSet.getInt("account_id"));
-            pStmt.setString(4, rSet.getString("type"));
-            pStmt.executeUpdate();
-            System.out.println(firstName + " " + lastName + " Successfully added to client table.");
+            pStmt.setString(4, "REGULAR");
+
+            if (pStmt.executeUpdate() == 1)
+                System.out.println(firstName + " " + lastName + " successfully added to client table.");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(connection != null) {
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
@@ -91,8 +175,11 @@ public class DataBaseController {
         }
     }
 
-    /*
-        Adds a walk in client to the client table.
+    /**
+     * This function inserts a walk-in client to the database.
+     *
+     * @param firstName the first name of the client
+     * @param lastName  the last name of the client
      */
     public void addWalkIn(String firstName, String lastName) {
         try {
@@ -103,14 +190,14 @@ public class DataBaseController {
             pStmt = connection.prepareStatement(stmt);
             pStmt.setString(1, firstName);
             pStmt.setString(2, lastName);
-            pStmt.setString(3, "walk-in");
-            pStmt.executeUpdate();
+            pStmt.setString(3, "WALKIN");
 
-            System.out.println(firstName + " " + lastName + " Successfully added to client table.");
+            if(pStmt.executeUpdate() == 1)
+                System.out.println(firstName + " " + lastName + " successfully inserted a new to client table as a walk-in.");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(connection != null) {
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
@@ -120,165 +207,182 @@ public class DataBaseController {
         }
     }
 
-    // Add appointment to the database
-    public void addAppointment(String date, int time_start, int doctorID, int clientID) {
-        String stmt = "INSERT INTO clinic_db.appointment (date, time_start, time_end, doctor_doctor_id, client_client_id) VALUES (?, ?, ?, ?, ?)";
-        try {
-            connection = ConnectionConfiguration.getConnection(model);
-            pStmt = connection.prepareStatement(stmt);
-            pStmt.setString(1, date);
-            pStmt.setInt(2, time_start);
-            pStmt.setInt(3, time_start + 30); // + 30 cuz end time is fixed to 30 minutes from start
-            pStmt.setInt(4, doctorID);
-            pStmt.setInt(5, clientID);
-            pStmt.executeUpdate();
-
-            System.out.println("New appoitnment Successfully added to database.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    // Add doctor availability to the database
-    public void addAvailability (int doctorID, String date, int time_start, int time_end) {
-        String stmt = "INSERT INTO clinic_db.availability (doctor_id, date, time_start, time_end) VALUES (?, ?, ?, ?)";
-        try {
-            connection = ConnectionConfiguration.getConnection(model);
-            pStmt = connection.prepareStatement(stmt);
-            pStmt.setInt(1, doctorID);
-            pStmt.setString(2, date);
-            pStmt.setInt(3, time_start);
-            pStmt.setInt(4, time_end);
-            pStmt.executeUpdate();
-
-            System.out.println("New Doctor Availability Successfully added to database.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void loadDoctors() {
-        try {
-            connection = ConnectionConfiguration.getConnection(model);
-            pStmt = connection.prepareStatement("SELECT * FROM clinic_db.doctor");
-            rSet = pStmt.executeQuery();
-
-            // edit beyond this to manipulate result set...
-            while(rSet.next()){
-                System.out.println(rSet.getString("first_name"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void loadClients() {
-        try {
-            connection = ConnectionConfiguration.getConnection(model);
-            pStmt = connection.prepareStatement("SELECT * FROM clinic_db.client");
-            rSet = pStmt.executeQuery();
-
-            // edit beyond this to manipulate result set...
-            if(rSet.next()){
-                System.out.println(rSet.getString("first_name"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /*
-       Retrieves data from appointment table then stores it in an ArrayList
-
-        set doctor_id param to the desired doctor
-        set to -1 if intent to get all.
-        Returns appointments under a specific doctor
-
-       Returns the array list.
+    /**
+     * Inserts a new appointment to the appointment table.
+     *
+     * @param time_start Starting date and time of the unavailability,
+     *                   must have a format "yyyy/MM/dd hh:mm a"
+     *                   and a type of LocalDateTime.
+     * @param time_end   Ending date and time of the unavailability,
+     *                   must have a format "yyyy/MM/dd hh:mm a"
+     *                   and a type of LocalDateTime.
+     * @param doctorID   — ID of the specific doctor assigned to the appointment
+     * @param clientID   — ID of the client
      */
-    public ArrayList<Appointment> getAppointments(int doctor_id) throws Exception {
+    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, int doctorID, int clientID) {
+        String stmt = "INSERT INTO clinic_db.appointment (time_start, time_end, doctor_id, client_id) VALUES (?, ?, ?, ?)";
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement(stmt);
+            pStmt.setString(1, timeToStr(time_start));
+            pStmt.setString(2, timeToStr(time_end));
+            pStmt.setInt(3, doctorID);
+            pStmt.setInt(4, clientID);
+
+            if (pStmt.executeUpdate() == 1)
+                System.out.println("New appointment successfully added to database.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Inserts a new doctor unavailability date and time to the unavailability table.
+     *
+     * @param doctor_id  ID of the specific doctor.
+     * @param time_start Starting date and time of the unavailability,
+     *                   must have a format "yyyy/MM/dd hh:mm a"
+     *                   and a type of LocalDateTime.
+     * @param time_end   Ending date and time of the unavailability,
+     *                   must have a format "yyyy/MM/dd hh:mm a"
+     *                   and a type of LocalDateTime.
+     * @param recurring  True or false, if the unavailability is recurring or not.
+     */
+    public void addUnavailability(int doctor_id, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring) {
+        String stmt = "INSERT INTO clinic_db.unavailability (doctor_id, time_start, time_end, recurring) VALUES (?, ?, ?, ?)";
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement(stmt);
+            pStmt.setInt(1, doctor_id);
+            pStmt.setString(2, timeToStr(time_start));
+            pStmt.setString(3, timeToStr(time_end));
+            pStmt.setBoolean(4, recurring);
+
+            if (pStmt.executeUpdate() == 1)
+                System.out.println("New doctor unavailability successfully added to database.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Updates a specific unavailability of a specific doctor.
+     *
+     * @param doctor_id  ID of the specific doctor.
+     * @param time_start Starting date and time of the unavailability,
+     *                   must have a format "yyyy/MM/dd hh:mm a"
+     *                   and a type of LocalDateTime.
+     * @param time_end   Ending date and time of the unavailability,
+     *                   must have a format "yyyy/MM/dd hh:mm a"
+     *                   and a type of LocalDateTime.
+     * @param recurring  True or false, if the unavailability is recurring or not.
+     */
+    public void updateUnavailability(int doctor_id, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring) {
+        String stmt = "UPDATE clinic_db.unavailability " +
+                "SET time_start = ? time_end = ?, recurring = ? " +
+                "WHERE doctor_id = '" + doctor_id + "'";
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement(stmt);
+            pStmt.setString(1, timeToStr(time_start));
+            pStmt.setString(2, timeToStr(time_end));
+            pStmt.setBoolean(3, recurring);
+
+            if (pStmt.executeUpdate() == 1)
+                System.out.println("New doctor unavailability successfully added to database.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns an ArrayList of Appointment based on the parameters.
+     * <p>
+     * This function retrieves the data from appointment table.
+     * Then it stores it in a temporary ArrayList.
+     *
+     * @param id   — ID of the specific client or doctor.
+     * @param type — the type of the account.
+     * @return the temporary ArrayList, where data was instantiated.
+     * @throws Exception table is empty.
+     */
+    public ArrayList<Appointment> getAppointments(int id, String type) throws Exception {
         SingleAppointmentBuilder builder = new SingleAppointmentBuilder();
         RecurringAppointmentBuilder rbuilder = new RecurringAppointmentBuilder();
 
         try {
             ArrayList<Appointment> tempList = new ArrayList<>();
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
             connection = ConnectionConfiguration.getConnection(model);
 
             pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment");
 
-            if(doctor_id < 0) {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment");
+            if (type.equalsIgnoreCase("DOCTOR")) {
+                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment " +
+                        "WHERE doctor_id = '" + id + "'");
+            } else if (type.equalsIgnoreCase("CLIENT")) {
+                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment " +
+                        "WHERE client_id = '" + id + "'");
             } else {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment WHERE doctor_id = '" + doctor_id + "'");
+                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment");
             }
 
             rSet = pStmt.executeQuery();
 
-            pStmt = connection.prepareStatement("SELECT first_name, last_name FROM clinic_db.doctor  INNER JOIN clinic_db.appointment ON clinic_db.appointment.doctor_id = clinic_db.doctor.doctor_id");
+            pStmt = connection.prepareStatement("SELECT first_name, last_name FROM clinic_db.doctor" +
+                    " INNER JOIN clinic_db.appointment" +
+                    " ON clinic_db.appointment.doctor_id = clinic_db.doctor.doctor_id");
             rSet1 = pStmt.executeQuery();
 
-            pStmt = connection.prepareStatement("SELECT first_name, last_name FROM clinic_db.client\n" +
-                    "INNER JOIN clinic_db.appointment \n" +
-                    "ON clinic_db.appointment.doctor_id = clinic_db.client.client_id");
+            pStmt = connection.prepareStatement("SELECT first_name, last_name FROM clinic_db.client" +
+                    " INNER JOIN clinic_db.appointment" +
+                    " ON clinic_db.appointment.doctor_id = clinic_db.client.client_id");
             rSet2 = pStmt.executeQuery();
 
-            // Need to do this, to position cursor/pointer to the first row.
-            if(rSet1.next() && rSet2.next()) {
-                // traversing result set and instantiating appointments to list
-                while (rSet.next()) {
-                    if (rSet.getBoolean("recurring")) {
-                        tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
-                                strToTime(rSet.getString("time_end")),
-                                rSet1.getString("first_name")  + " " + rSet1.getString("last_name"),
-                                rSet2.getString("first_name")  + " " + rSet2.getString("last_name")));
-
-                    } else {
-                        tempList.add(builder.build(strToTime(rSet.getString("time_start")),
-                                strToTime(rSet.getString("time_end")),
-                                rSet1.getString("first_name")  + " " + rSet1.getString("last_name"),
-                                rSet2.getString("first_name")  + " " + rSet2.getString("last_name")));
-                    }
+            // Traversing result set and instantiating appointments to list
+            while (rSet.next() && rSet1.next() && rSet2.next()) {
+                if (rSet.getBoolean("recurring")) {
+                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
+                            strToTime(rSet.getString("time_end")),
+                            rSet1.getString("first_name") + " " + rSet1.getString("last_name"),
+                            rSet2.getString("first_name") + " " + rSet2.getString("last_name")));
+                } else {
+                    tempList.add(builder.build(strToTime(rSet.getString("time_start")),
+                            strToTime(rSet.getString("time_end")),
+                            rSet1.getString("first_name") + " " + rSet1.getString("last_name"),
+                            rSet2.getString("first_name") + " " + rSet2.getString("last_name")));
                 }
             }
+
             return tempList;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(connection != null) {
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
@@ -286,40 +390,52 @@ public class DataBaseController {
                 }
             }
         }
-        throw new Exception ("Error: There are no appointments ( method @ getAppointments() dbcontrolller)");
+        throw new Exception("Error: There are no appointments ( method @ getAppointments() dbcontrolller)");
     }
 
-    /*
-        set doctor_id param to the desired doctor or -1 to get all.
-        Returns Availability of a doctor. or both.
+    /**
+     * Returns an ArrayList of Appointment based on the parameters.
+     * <p>
+     * This function retrieves data from unavailability table.
+     * Then it stores it in a temporary ArrayList.
+     *
+     * @param doctor_id — ID of the doctor. Set to -1 to fetch all.
+     * @return an ArrayList of unavailable times of a specific Doctor
+     * @throws Exception table is empty.
      */
-    public ArrayList<Unavailable> getAvailability(int doctor_id) throws Exception {
+    public ArrayList<Unavailable> getUnvailability(int doctor_id) throws Exception {
         SingleUnavailableBuilder builder = new SingleUnavailableBuilder();
+        RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder();
+
         try {
             ArrayList<Unavailable> tempList = new ArrayList<>();
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
             connection = ConnectionConfiguration.getConnection(model);
 
-            if(doctor_id < 0) {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.availability");
+            if (doctor_id < 0) {
+                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.unavailability");
             } else {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.availability WHERE doctor_id = '" + doctor_id + "'");
+                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.unavailability " +
+                        "WHERE doctor_id = '" + doctor_id + "'");
             }
             rSet = pStmt.executeQuery();
 
-                // traversing result set and instantiating Availability to temp list
-
-                while (rSet.next()) {
+            // Traversing result set and instantiating unavailability to temp list
+            while (rSet.next()) {
+                if (rSet.getBoolean("recurring")) {
                     tempList.add(builder.build(strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
+                } else {
+                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
+                            strToTime(rSet.getString("time_end"))));
                 }
+            }
 
             return tempList;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(connection != null) {
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
@@ -327,10 +443,21 @@ public class DataBaseController {
                 }
             }
         }
-        throw new Exception ("Error: There are no availability ( method @ getAvailability() dbcontrolller)");
+        throw new Exception("Error: There are no availability ( method @ getUnvailability() dbcontrolller)");
     }
 
-    public Account login(String username, String password) throws Exception{
+    /**
+     * Returns an account from the account table based on the parameters.
+     * <p>
+     * This function retrieves the credentials of a specific account based on the parameters.
+     * Then it instantiates an account referring to the credentials found.
+     *
+     * @param username username of the account.
+     * @param password password of the account.
+     * @return the newly instantiated account.
+     * @throws Exception account does not exist
+     */
+    public Account login(String username, String password) throws Exception {
         try {
             connection = ConnectionConfiguration.getConnection(model);
             pStmt = connection.prepareStatement("SELECT * FROM clinic_db.account WHERE `username` = '" + username +
@@ -373,7 +500,7 @@ public class DataBaseController {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(connection != null) {
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
@@ -382,7 +509,7 @@ public class DataBaseController {
             }
         }
 
-        throw new Exception ("Error: That account does not exist.");
+        throw new Exception("Error: That account does not exist.");
     }
 
     public Model getModel() {
@@ -393,11 +520,11 @@ public class DataBaseController {
         this.model = model;
     }
 
-    private LocalDateTime strToTime (String time) {
+    private LocalDateTime strToTime(String time) {
         return LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"));
     }
 
-    private String timeToStr (LocalDateTime time) {
+    private String timeToStr(LocalDateTime time) {
         return time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"));
     }
 }
