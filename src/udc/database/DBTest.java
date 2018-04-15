@@ -21,27 +21,33 @@ public class DBTest {
         try {
 
             connection = getConnection();
-            pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment");
+            int id = 0;
+            String type = "";
 
-            if (-1 < 0) {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment");
-            } else {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment WHERE doctor_id = '" + 4 + "'");
-            }
+            String stmt = "SELECT \n" +
+                    "    time_start,\n" +
+                    "    time_end,\n" +
+                    "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
+                    "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
+                    "FROM\n" +
+                    "    clinic_db.appointment\n" +
+                    "        INNER JOIN\n" +
+                    "    clinic_db.doctor AS D ON D.doctor_id = clinic_db.appointment.doctor_id\n" +
+                    "        INNER JOIN\n" +
+                    "    clinic_db.client AS C ON C.client_id = clinic_db.appointment.client_id\n";
+
+            if (type.equalsIgnoreCase("DOCTOR")) {
+                stmt += "WHERE doctor_id = '" + id + "'";
+            } else if (type.equalsIgnoreCase("CLIENT"))
+                stmt += "WHERE client_id = '" + id + "'";
+
+            pStmt = connection.prepareStatement(stmt);
 
             rSet = pStmt.executeQuery();
 
-            pStmt = connection.prepareStatement("SELECT first_name, last_name FROM clinic_db.doctor  INNER JOIN clinic_db.appointment ON clinic_db.appointment.doctor_id = clinic_db.doctor.doctor_id");
-            rSet1 = pStmt.executeQuery();
-
-            pStmt = connection.prepareStatement("SELECT first_name, last_name FROM clinic_db.client\n" +
-                    "INNER JOIN clinic_db.appointment \n" +
-                    "ON clinic_db.appointment.doctor_id = clinic_db.client.client_id");
-            rSet2 = pStmt.executeQuery();
-
-            // traversing result set and instantiating appointments to list
-            while (rSet.next() && rSet1.next() && rSet2.next()) {
-                System.out.println(rSet.getString("time_start"));
+            // Traversing result set and instantiating appointments to list
+            while (rSet.next()) {
+                System.out.println(rSet.getString("time_start") + " " + rSet.getString("doctor") + " " + rSet.getString("client"));
             }
 
         } catch (SQLException e1) {
