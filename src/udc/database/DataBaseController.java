@@ -521,7 +521,7 @@ public class DataBaseController {
     }
 
     private LocalDateTime strToTime(String time) {
-        return LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"));
+        return LocalDateTime.parse(time.toUpperCase(), DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"));
     }
 
     private String timeToStr(LocalDateTime time) {

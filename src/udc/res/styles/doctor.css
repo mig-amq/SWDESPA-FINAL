@@ -21,3 +21,18 @@
 #burger > StackPane, #drawer DrawerPanel{
     -fx-background-color: #d13a3a;
 }
+
+DrawerPanel JFXButton {
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+    -fx-background-color: transparent !important;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 10px;
+    -fx-min-width: 150px;
+}
+
+DrawerPanel JFXButton:hover {
+    -fx-text-fill: #7f2d34;
+    -fx-background-color: #ffffff !important;
+}

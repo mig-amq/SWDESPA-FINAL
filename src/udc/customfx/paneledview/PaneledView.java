@@ -21,6 +21,7 @@ public abstract class PaneledView extends AnchorPane{
     private double x, y;
     private boolean drawerOpen;
     private Model model;
+    private Stage parentStage, stage;
 
     @FXML
     private JFXDrawer drawer;
@@ -81,6 +82,7 @@ public abstract class PaneledView extends AnchorPane{
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
         this.setPrefSize(width, height);
         this.setLocale(lang);
         this.init();
@@ -122,6 +124,14 @@ public abstract class PaneledView extends AnchorPane{
         this.model = model;
     }
 
+    public void setParentStage(Stage parentStage) {
+        this.parentStage = parentStage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     public Locale getLocale() {
         return locale;
     }
@@ -136,5 +146,13 @@ public abstract class PaneledView extends AnchorPane{
 
     public Model getModel() {
         return model;
+    }
+
+    public Stage getParentStage() {
+        return parentStage;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

@@ -18,7 +18,6 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 
         Parent root = loader.load();
-        primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();

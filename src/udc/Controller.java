@@ -197,7 +197,9 @@ public class Controller implements Initializable{
                         Stage child = new Stage(StageStyle.UNDECORATED);
                         child.setScene(new Scene(doctor));
                         child.show();
-                        System.out.println(1);
+
+                        doctor.setStage(child);
+                        doctor.setParentStage(this.getStage());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -207,6 +209,9 @@ public class Controller implements Initializable{
                         Stage child = new Stage(StageStyle.UNDECORATED);
                         child.setScene(new Scene(secretary));
                         child.show();
+
+                        secretary.setStage(child);
+                        secretary.setParentStage(this.getStage());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

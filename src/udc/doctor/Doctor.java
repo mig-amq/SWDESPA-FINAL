@@ -1,5 +1,6 @@
 package udc.doctor;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -86,15 +87,38 @@ public class Doctor extends PaneledView {
         calPane.setPrefHeight(255);
 
         try {
+            AnchorPane buttonPanel = new AnchorPane();
+
+            JFXButton btnLogout = new JFXButton("Log Out");
+            btnLogout.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
+            btnLogout.setOnAction(event -> {
+                if (this.getModel().getAccount() != null && this.notifier != null && this.notifier.isStarted()) {
+                    if (this.getModel().getThread() != null) {
+                        this.getModel().getThread().off();
+                    }
+
+                    this.notifier.off();
+
+                    if (this.getParentStage() != null) {
+                        this.getParentStage().show();
+                        this.getParentStage().toFront();
+                        this.getStage().close();
+                    }
+                }
+            });
+
+            buttonPanel.getChildren().add(btnLogout);
+
             this.calendar = new Calendar(250, 250, this.getLocale());
             this.calendar.setLayoutX(5);
             this.calendar.setLayoutY(12.5);
             this.calPane.getChildren().add(this.calendar);
 
             this.drawerPane.add(userPane);
+            this.drawerPane.add(buttonPanel);
+
             this.drawerPane.add(drawerPane.SPACER(180));
             this.drawerPane.add(calPane);
-
             this.getTitle().setText("Doctor - " +
                     this.calendar.selectedProperty().getValue()
                             .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));

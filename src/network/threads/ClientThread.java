@@ -68,6 +68,10 @@ public class ClientThread extends Thread {
         }
     }
 
+    public void off () {
+        this.setStarted(false);
+    }
+
     public LinkedList<String> getMessages() {
         return messages;
     }
