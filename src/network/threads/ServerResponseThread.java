@@ -25,7 +25,6 @@ public class ServerResponseThread extends Thread {
 
                 if (in.hasNextLine()) {
                     message = in.nextLine();
-
                     switch (message) {
                         case "UPDATE":
                             for (ServerResponseThread sthread : this.serverThread.getServerResponseThreads()) {
