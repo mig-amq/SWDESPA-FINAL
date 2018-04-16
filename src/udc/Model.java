@@ -7,6 +7,7 @@ import org.xml.sax.SAXException;
 import udc.customfx.paneledview.PaneledView;
 import udc.database.DataBaseController;
 import udc.objects.account.Account;
+import udc.objects.account.Doctor;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -38,6 +39,7 @@ public class Model {
                 switch (this.account.getType()) {
                     case DOCTOR:
                         this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "DOCTOR"));
+                        ((Doctor) this.getAccount()).setExceptions(this.getDbController().getExceptions(this.account.getId()));
                         break;
                     case SECRETARY:
                         this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "SECRETARY"));

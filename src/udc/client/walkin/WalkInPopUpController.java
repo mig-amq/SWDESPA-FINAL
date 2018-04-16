@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -43,9 +44,21 @@ public class WalkInPopUpController extends AnchorPane {
     @FXML
     private JFXButton mainCloseBtn;
 
-    public int code;
+    @FXML
+    private Label nameLbl;
 
-    public WalkInPopUpController()
+    @FXML
+    private Label timelbl;
+
+    @FXML
+    private Label doctorLbl;
+
+    String name;
+    String start;
+    String end;
+    String doctor;
+
+    public WalkInPopUpController(String name, String start, String end, String doctor)
     {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("WalkInPopUp.fxml"));
@@ -55,37 +68,38 @@ public class WalkInPopUpController extends AnchorPane {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        this.name = name;
+        this.start = start;
+        this.end = end;
+        this.doctor = doctor;
+
+        settingText();
     }
 
     @FXML
     void initialize() {
-        assert popUpCloseBtn != null : "fx:id=\"popUpCloseBtn\" was not injected: check your FXML file 'WalkInPopUp.fxml'.";
-        assert minPopUpClloseBtn != null : "fx:id=\"minPopUpClloseBtn\" was not injected: check your FXML file 'WalkInPopUp.fxml'.";
-        assert hereLbl != null : "fx:id=\"hereLbl\" was not injected: check your FXML file 'WalkInPopUp.fxml'.";
-        assert presentLbl != null : "fx:id=\"presentLbl\" was not injected: check your FXML file 'WalkInPopUp.fxml'.";
-        assert secLbl != null : "fx:id=\"secLbl\" was not injected: check your FXML file 'WalkInPopUp.fxml'.";
-        assert codeLbl != null : "fx:id=\"codeLbl\" was not injected: check your FXML file 'WalkInPopUp.fxml'.";
-        assert mainCloseBtn != null : "fx:id=\"mainCloseBtn\" was not injected: check your FXML file 'WalkInPopUp.fxml'.";
-        assert mainCloseBtn != null : "fx:id=\"mainCloseBtn\" was not injected: check your FXML file 'WalkInPopUp.fxml'.";
-
         closepopUp();
-///////////////////////////////*get the ID NUMBER FROM THE DB*//////////////////////////////////////////////////////
-        assign(code);
         closeMainBtn();
     }
-
-    public  void assign (int code){
-            Random rand = new Random();
-            code = rand.nextInt(9999) + 1;
-            codeLbl.setText(String.valueOf(code));
-        }
 
     public void closepopUp() {
         popUpCloseBtn.setOnAction(event -> {
                 Stage stage = (Stage) popUpCloseBtn.getScene().getWindow();
-                stage.close()
-;
+                stage.close();
         });
+    }
+
+    public void settingText()
+    {
+        System.out.println(name);
+        System.out.println(start);
+        System.out.println(end);
+        System.out.println(doctor);
+        nameLbl.setText(name);
+        timelbl.setText(start + " - " + end);
+        doctorLbl.setText(doctor);
+
     }
 
     public void closeMainBtn() {

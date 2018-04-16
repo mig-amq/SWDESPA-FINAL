@@ -16,14 +16,9 @@
    <children>
       <AnchorPane fx:id="pnlTool" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #d13a3a;">
          <children>
-            <AnchorPane fx:id="minimize" layoutX="340.0" prefHeight="30.0" prefWidth="30.0">
-               <children>
-                  <FontAwesomeIconView fill="WHITE" glyphName="WINDOW_MINIMIZE" layoutX="7.0" layoutY="21.0" size="16" />
-               </children>
-            </AnchorPane>
             <AnchorPane fx:id="close" layoutX="370.0" prefHeight="30.0" prefWidth="30.0">
                <children>
-                  <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" layoutX="7.0" layoutY="21.0" size="16" />
+                  <FontAwesomeIconView fx:id="closeBtn" fill="WHITE" glyphName="TIMES_CIRCLE" layoutX="7.0" layoutY="21.0" size="16" />
                </children>
             </AnchorPane>
          </children>
@@ -33,7 +28,7 @@
             <AnchorPane fx:id="mainPanel" prefHeight="473.0" prefWidth="400.0">
                <children>
                   <JFXTextField fx:id="nameField" focusColor="#ab2626" labelFloat="true" layoutX="123.0" layoutY="65.0" prefHeight="25.0" prefWidth="225.0" />
-                  <JFXButton fx:id="bookBtn" defaultButton="true" layoutX="129.0" layoutY="383.0" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #8a1d1d; -fx-cursor: hand;" text="Reserve" textFill="WHITE">
+                  <JFXButton fx:id="bookBtn" defaultButton="true" layoutX="130.0" layoutY="394.0" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #8a1d1d; -fx-cursor: hand;" text="Reserve" textFill="WHITE">
                      <ripplerFill>
                         <LinearGradient endX="1.0" endY="1.0">
                            <stops>
@@ -90,7 +85,7 @@
                      </font>
                   </Label>
                   <JFXComboBox fx:id="doctorCmb" focusColor="#ab2626" layoutX="117.0" layoutY="328.0" prefHeight="28.0" prefWidth="235.0" />
-                  <Label layoutX="66.0" layoutY="14.0" text="WELCOME GUEST!">
+                  <Label layoutX="82.0" layoutY="14.0" text="Welcome Guest!">
                      <font>
                         <Font name="Malgun Gothic Bold" size="32.0" />
                      </font>

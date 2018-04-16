@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import udc.objects.time.builders.Scheduler;
 import udc.objects.time.builders.SingleAppointmentBuilder;
 
@@ -24,6 +25,9 @@ public class AvailabilityViewController extends SuperController implements Initi
     @FXML
     private JFXButton btnSetAvailable, btnSetUnavailable;
 
+    @FXML
+    private JFXComboBox timeType;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setData();
@@ -31,11 +35,12 @@ public class AvailabilityViewController extends SuperController implements Initi
     }
 
     public void setData(){
-        for(int i = 0; i < 16; i++){
-            String hour = Integer.toString(i+7);
+        for(int i = 0; i < 10; i++){
+            String hour = Integer.toString(i+1);
             cmbSHour.getItems().add(hour);
             cmbEHour.getItems().add(hour);
         }
+        timeType.getItems().addAll("AM", "PM");
         cmbType.getItems().addAll("Single", "Recurring");
         cmbSMin.getItems().addAll("00", "30");
         cmbEMin.getItems().addAll("00", "30");
@@ -61,6 +66,7 @@ public class AvailabilityViewController extends SuperController implements Initi
                 if(startTime < endTime){
                     LocalDateTime date =
                             LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
+
 
                     // ADJUST THESE
                     /*if((date.getHour() < startTime/100) ||
@@ -102,6 +108,8 @@ public class AvailabilityViewController extends SuperController implements Initi
                     }*/
                 }else {
                     //shows dialogue box for invalid input time
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("There is already an appointment shceduled there");
                 }
              }
         });

@@ -1,9 +1,8 @@
-package udc.doctor;
+package udc.client;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,12 +12,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import udc.Model;
+//import udc.client.regular.FXMLControllers.ClientController;
+import udc.client.regular.FXMLControllers.ClientController;
 import udc.customfx.calendar.Calendar;
 import udc.customfx.drawerpanel.DrawerPanel;
 import udc.customfx.paneledview.PaneledView;
 import udc.doctor.controllers.DoctorController;
-import udc.notifier.AppointmentNotifier;
-import udc.objects.account.Account;
 import udc.objects.enums.PanelType;
 
 import java.io.ByteArrayInputStream;
@@ -27,35 +26,47 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Locale;
 
-public class Doctor extends PaneledView {
-
+public class Client extends PaneledView {
     protected Label username;
     protected ImageView img;
 
     private Calendar calendar;
     private AnchorPane userPane;
     private AnchorPane calPane;
-    private DoctorController dc;
 
     private DrawerPanel drawerPane;
-    protected AppointmentNotifier notifier;
 
-    public Doctor(double width, double height, Locale lang) throws IOException {
+    private ClientController clientController;
+
+    public Client(double width, double height, Locale lang) throws IOException {
         super(width, height, lang);
+
     }
 
-    public Doctor(double width, double height) throws IOException {
+    public Client(double width, double height) throws IOException {
         super(width, height);
     }
 
-    public Doctor(Model model) throws IOException {
+    public Client () throws Exception {
+        super(800, 650);
+    }
+
+    public Client(Model model) throws IOException {
         super(800, 650);
         this.setModel(model);
+
+        try {
+            contentPane.getChildren().clear();
+            clientController = new ClientController(this, model);
+            contentPane.getChildren().add(clientController);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void init() {
-        this.initPanel(PanelType.DOCTOR);
+        this.initPanel(PanelType.CLIENT);
 
         this.drawerPane = new DrawerPanel(265, 650, false);
         userPane = new AnchorPane();
@@ -88,25 +99,15 @@ public class Doctor extends PaneledView {
         calPane = new AnchorPane();
         calPane.setPrefHeight(255);
 
-        dc = new DoctorController();
-
         try {
             AnchorPane buttonPanel = new AnchorPane();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Doctor.fxml"));
-            this.contentPane.getChildren().add(loader.load());
-
-            dc = loader.<DoctorController>getController();
-            dc.setModel(this.getModel());
-            dc.setCalendar(this.calendar);
             JFXButton btnLogout = new JFXButton("Log Out");
             btnLogout.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
             btnLogout.setOnAction(event -> {
-                if (this.getModel().getAccount() != null && this.notifier != null && this.notifier.isStarted()) {
+                if (this.getModel().getAccount() != null) {
                     if (this.getModel().getThread() != null) {
                         this.getModel().getThread().off();
                     }
-
-                    this.notifier.off();
 
                     if (this.getParentStage() != null) {
                         this.getParentStage().show();
@@ -128,13 +129,13 @@ public class Doctor extends PaneledView {
 
             this.drawerPane.add(drawerPane.SPACER(180));
             this.drawerPane.add(calPane);
-            this.getTitle().setText("Doctor - " +
+            this.getTitle().setText("Client - " +
                     this.calendar.selectedProperty().getValue()
                             .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));
 
             this.calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
-                this.getTitle().setText("Doctor - " + date);
+                this.getTitle().setText("Client - " + date);
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -144,11 +145,30 @@ public class Doctor extends PaneledView {
         this.getDrawer().setDefaultDrawerSize(this.drawerPane.getDrawerWidth() - 25);
         this.getDrawer().setSidePane(this.drawerPane);
         this.getDrawer().setContent(contentPane);
+
+        try {
+            this.getTitle().setText("Client - " +
+                    this.getCalendar().selectedProperty().getValue()
+                            .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));
+
+            this.getCalendar().selectedProperty().addListener((observable, oldValue, newValue) -> {
+                String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
+                this.getTitle().setText("Client - " + date);
+            });
+        } catch (Exception e) {}
     }
 
     @Override
     public void update() {
 
+    }
+
+    @Override
+    public void setModel(Model model) {
+        super.setModel(model);
+
+        this.username.setText(model.getAccount().getFirstName() + " " + model.getAccount().getLastName());
+        this.img.setImage(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(model.getAccount().getImageURI()))));
     }
 
     public Calendar getCalendar() {
@@ -157,16 +177,5 @@ public class Doctor extends PaneledView {
 
     public void setCalendar(Calendar calendar) {
         this.calendar = calendar;
-    }
-
-    @Override
-    public void setModel(Model model) {
-        super.setModel(model);
-
-        this.username.setText("Dr. " + model.getAccount().getFirstName() + " " + model.getAccount().getLastName());
-        this.img.setImage(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(model.getAccount().getImageURI()))));
-        this.notifier = new AppointmentNotifier(this.getModel().getAccount());
-        this.notifier.start();
-
     }
 }
