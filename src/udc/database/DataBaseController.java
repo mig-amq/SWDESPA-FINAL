@@ -528,8 +528,8 @@ public class DataBaseController {
 
         try {
             connection = ConnectionConfiguration.getConnection(model);
-            pStmt = connection.prepareStatement("SELECT U.except_dates AS ed FROM doctor D WHERE doctor_id = " + doctor_id + "\n" +
-                    " INNER JOIN unavailability U ON U.doctor_id = D.doctor_id");
+            pStmt = connection.prepareStatement("SELECT U.except_dates AS ed FROM doctor D INNER JOIN unavailability U ON U.doctor_id = D.doctor_id WHERE U.doctor_id = " + doctor_id);
+
             rSet = pStmt.executeQuery();
 
             while (rSet.next()) {
