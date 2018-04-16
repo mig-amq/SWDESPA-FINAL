@@ -69,6 +69,7 @@ public class WalkInPopUpController extends AnchorPane {
         assert mainCloseBtn != null : "fx:id=\"mainCloseBtn\" was not injected: check your FXML file 'WalkInPopUp.fxml'.";
 
         closepopUp();
+///////////////////////////////*get the ID NUMBER FROM THE DB*//////////////////////////////////////////////////////
         assign(code);
         closeMainBtn();
     }
