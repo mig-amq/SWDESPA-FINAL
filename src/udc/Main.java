@@ -15,17 +15,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-//        Model model = new Model();
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+        Model model = new Model();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 //
-//        Parent root = loader.load();
-        Doctor root = new Doctor(600, 600);
+       Parent root = loader.load();
+ //       Doctor root = new Doctor(600, 600);
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
 
-//        loader.<Controller>getController().setModel(model);
-//        loader.<Controller>getController().setStage(primaryStage);
+        loader.<Controller>getController().setModel(model);
+        loader.<Controller>getController().setStage(primaryStage);
     }
 
 

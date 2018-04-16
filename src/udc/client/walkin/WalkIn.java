@@ -174,8 +174,8 @@ public class WalkIn extends AnchorPane {
 
             int sHour;
             int eHour;
-            String sampm;
-            String eampm;
+            String sampm = null;
+            String eampm = null;
 
 
             if(starthourCmb.getValue() == null || startminCmb.getValue() == null
@@ -194,6 +194,37 @@ public class WalkIn extends AnchorPane {
                 startMin = Integer.parseInt(startminCmb.getValue());
                 endMin = Integer.parseInt(endminCmb.getValue());
 
+
+
+                if (startampmCmb.getValue().equals("pm"))
+                {
+                    if (startHour == 12)
+                        startHour = 12;
+                    else
+                        startHour = startHour + 12;
+
+                    System.out.println(startHour);
+
+                }
+
+                if (endampmCmb.getValue().equals("pm"))
+                {
+                    if (startHour == 12)
+                        startHour = 12;
+                    else
+                        endHour = endHour + 12;
+
+                    System.out.println(endHour);
+
+                }
+
+                sampm = startampmCmb.getValue();
+                eampm = endampmCmb.getValue();
+                System.out.println(startHour);
+                System.out.println(endHour);
+
+
+
             }
 
             if(nameField.getText() == null || stimeTemp == null || etimeTemp == null
@@ -207,12 +238,52 @@ public class WalkIn extends AnchorPane {
 
             }
 
+            else if ((startHour == 12 || startHour == 1 || startHour == 2 || startHour == 3
+                    || startHour == 4 || startHour == 5 || startHour == 6) && sampm.equals("am"))
+            {
+                Alert alert = new Alert (Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid Time.");
+                alert.showAndWait();
+            }
+
+            else if ((startHour == 22 || startHour == 23) && sampm.equals("pm"))
+            {
+                Alert alert = new Alert (Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid Time.");
+                alert.showAndWait();
+            }
+
+            else if ((endHour == 12 || endHour == 1 || endHour == 2 || endHour == 3
+                    || endHour == 4 || endHour == 5 || endHour == 6) && eampm.equals("am"))
+            {
+                Alert alert = new Alert (Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid Time.");
+                alert.showAndWait();
+            }
+
+            else if ((endHour == 22 || endHour == 23) && eampm.equals("pm"))
+            {
+                Alert alert = new Alert (Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid Time.");
+                alert.showAndWait();
+            }
+
             else if(startHour == endHour && startMin == endMin) {
                 Alert alert = new Alert (Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Input");
                 alert.setHeaderText(null);
                 alert.setContentText("Same start time and end time are not allowed.");
                 alert.showAndWait();
+                System.out.println(" ");
+                System.out.println("error: same time");
             }
 
             else if(startHour == endHour && startMin > endMin) {
@@ -221,6 +292,8 @@ public class WalkIn extends AnchorPane {
                 alert.setHeaderText(null);
                 alert.setContentText("End time is greater than the start time.");
                 alert.showAndWait();
+                System.out.println(" ");
+                System.out.println("error: startmin > endmin");
             }
 
             else if(startHour > endHour) {
@@ -229,6 +302,9 @@ public class WalkIn extends AnchorPane {
                 alert.setHeaderText(null);
                 alert.setContentText("End time is greater than the start time.");
                 alert.showAndWait();
+
+                System.out.println(" ");
+                System.out.println("error: starthour > endhouur");
             }
 
             else {
@@ -319,14 +395,14 @@ public class WalkIn extends AnchorPane {
                 w.setContact(contactField.getText());
 
 
-                if (now.isBefore(w.getStart()) || now.isEqual(w.getStart()))
-                {
-                    Alert alert = new Alert (Alert.AlertType.ERROR);
-                    alert.setTitle("Invalid Input");
-                    alert.setHeaderText(null);
-                    alert.setContentText("End time is greater than the start time.");
-                    alert.showAndWait();
-                }
+//                if (now.isBefore(w.getStart()) || now.isEqual(w.getStart()))
+//                {
+//                    Alert alert = new Alert (Alert.AlertType.ERROR);
+//                    alert.setTitle("Invalid Input");
+//                    alert.setHeaderText(null);
+//                    alert.setContentText("That Time has already passed");
+//                    alert.showAndWait();
+//                }
 
 
  ////////////////////////////////////////// /*save to database the information*////////////////////////////////////
