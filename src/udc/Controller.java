@@ -19,7 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import network.threads.ClientThread;
-import udc.client.regular.Client;
+import udc.client.Client;
 import udc.client.walkin.WalkIn;
 import udc.customfx.drawerpanel.DrawerPanel;
 import udc.doctor.Doctor;
