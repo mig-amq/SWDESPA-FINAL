@@ -1,5 +1,6 @@
 package udc.secretary.Controller;
 
+import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public abstract class AbstractControl {
         return String.valueOf(value);
     }
 
-    public int getDataIndexfromList(ArrayList<Appointment> data, String time){
+    public int getDataIndexfromList(ArrayList<Agenda> data, String time){
         //TODO: ADD END TIME
         for (int i = 0; i < data.size(); i++) {
             String agendaTime = convertIntHrorMintoString(data.get(i).getStartTime().getHour()) + convertIntHrorMintoString( data.get(i).getStartTime().getMinute());

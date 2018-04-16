@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 import java.time.LocalDate;
@@ -101,7 +102,7 @@ public class SecWeekControl extends AbstractControl {
         return tvWeekView;
     }
 
-    public void insertFilteredData(ArrayList<ArrayList<Appointment>> dt, LocalDate stDte){
+    public void insertFilteredData(ArrayList<ArrayList<Agenda>> dt, LocalDate stDte){
         //TODO: add Unavailability to arrList when merged with new repo
         //^^ Read comment from SecDayViewControl for instructions
         tvWeekView.getItems().clear();
@@ -111,7 +112,7 @@ public class SecWeekControl extends AbstractControl {
             if(!isOdd(i))
                 hr++;
             if(!dt.isEmpty())
-                tvWeekView.getItems().add(createWeekSchedule(dt,stDte, tm));
+                tvWeekView.getItems().add(createWeekSchedule(dt, stDte, tm));
 
         }
     }
@@ -125,7 +126,7 @@ public class SecWeekControl extends AbstractControl {
     // in their respective constructor for weekly
     // to extract agenda for each day
     //Check AbstractController from this package to check how it works for same day
-    public WeekSchedule createWeekSchedule(ArrayList<ArrayList<Appointment>> dt, LocalDate stDte, String tm){
+    public WeekSchedule createWeekSchedule(ArrayList<ArrayList<Agenda>> dt, LocalDate stDte, String tm){
         return new WeekSchedule(tm, gtDataForDay(dt, tm, stDte), gtDataForDay(dt, tm, stDte.minusDays(-1)), // -1 = +1 day
                 gtDataForDay(dt, tm, stDte.minusDays(-2)), gtDataForDay(dt, tm, stDte.minusDays(-3)),
                 gtDataForDay(dt, tm, stDte.minusDays(-4)), gtDataForDay(dt, tm, stDte.minusDays(-5)),
@@ -133,12 +134,12 @@ public class SecWeekControl extends AbstractControl {
     }
 
     //same comment as above
-    public String gtDataForDay(ArrayList<ArrayList<Appointment>> data, String time, LocalDate stDate) {
+    public String gtDataForDay(ArrayList<ArrayList<Agenda>> data, String time, LocalDate stDate) {
         int DayofWeek = stDate.getDayOfWeek().getValue() - 1;
         int index;
         if (!data.get(DayofWeek).isEmpty() && (index = getDataIndexfromList(data.get(DayofWeek), time)) > -1){
-            Appointment agenda = data.get(DayofWeek).get(index);
-            return "Dr. " + agenda.getDoctorName() + "\nClient: " + agenda.getClientName();
+            Agenda agenda = data.get(DayofWeek).get(index);
+            return "Dr. " + ((Appointment)agenda).getDoctorName() + "\nClient: " + ((Appointment)agenda).getClientName();
         }
         return "";
     }

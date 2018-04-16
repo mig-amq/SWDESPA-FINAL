@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import udc.Model;
 import udc.customfx.calendar.Calendar;
+import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Unavailable;
 import udc.secretary.Controller.SecDayAgendaControl;
@@ -37,10 +38,10 @@ public class MainController {
     private JFXButton btnWalkIn;
     private Model model;
     private ArrayList<String> doctorList;
-    private ArrayList<Appointment> agendas;
+    private ArrayList<Agenda> agendas;
     private Calendar calendar;
 
-    private ArrayList<Unavailable> Unavailability;
+    private ArrayList<Agenda> Unavailability;
 
     public MainController(AnchorPane contentPane, AnchorPane pnlTool, Model model, Calendar calendar) throws Exception{
         doctorList = new ArrayList<>();
@@ -56,7 +57,7 @@ public class MainController {
         calendar.setOnMouseClicked(event -> {
 
         });
-        agendas = model.getDbController().getAppointments(-1, "");
+        agendas =  model.getDbController().getAppointments(-1, "");
         secViewPane.getChildren().setAll(secDayView);
         setDisableButtons(true);
     }
@@ -329,10 +330,10 @@ public class MainController {
         }
     }
 
-    private ArrayList<Appointment> findData(LocalDate selected){
-        ArrayList<Appointment> arrayList = new ArrayList<>();
+    private ArrayList<Agenda> findData(LocalDate selected){
+        ArrayList<Agenda> arrayList = new ArrayList<>();
         for (int i = 0; i < agendas.size(); i++) {
-            Appointment agenda = agendas.get(i);
+            Agenda agenda = agendas.get(i);
             if(isEqualDate(agenda, selected))
                 arrayList.add(agenda);
         }
@@ -353,15 +354,15 @@ public class MainController {
         return localDateTime.getHour() + ":" + localDateTime.getMinute();
     }
 
-    private boolean isEqualDate(Appointment agenda, LocalDate selected){
+    private boolean isEqualDate(Agenda agenda, LocalDate selected){
         String sDoctorName = (String) cmbBoxDoctors.getSelectionModel().getSelectedItem();
 //        System.out.println(sDoctorName == null);
 
-        if(sDoctorName!= null) {
+        if(sDoctorName!= null && agenda instanceof Appointment) {
             System.out.println(dateToString(agenda.getStartTime()) + " startTime | selected" + dateToString(selected));
-            if (sDoctorName.equals("Miguel") && sDoctorName.equals(agenda.getDoctorName().split(" | ")[0])) //mq
+            if (sDoctorName.equals("Miguel") && sDoctorName.equals(((Appointment)agenda).getDoctorName().split(" | ")[0])) //mq
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-            else if(sDoctorName.equals("Mitchell") && sDoctorName.equals(agenda.getDoctorName().split(" | ")[0]))
+            else if(sDoctorName.equals("Mitchell") && sDoctorName.equals(((Appointment) agenda).getDoctorName().split(" | ")[0]))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
             else if(sDoctorName.equals("All"))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
@@ -383,8 +384,8 @@ public class MainController {
         return tempDate;
     }
 
-    private ArrayList<ArrayList<Appointment>> findWeekAgenda(){
-        ArrayList<ArrayList<Appointment>> WeekAgenda = new ArrayList<>();
+    private ArrayList<ArrayList<Agenda>> findWeekAgenda(){
+        ArrayList<ArrayList<Agenda>> WeekAgenda = new ArrayList<>();
         LocalDate StDayofWeek = findStartingDay(calendar.getSelected());
         for (int i = 0; i < 7; i++)
             WeekAgenda.add(findData(StDayofWeek.minusDays(-i)));

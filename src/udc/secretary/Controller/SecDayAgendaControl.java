@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 import java.util.ArrayList;
@@ -41,10 +42,11 @@ public class SecDayAgendaControl extends AbstractControl {
     }
 
 
-    void insertFilteredData(ArrayList<Appointment> data) {
+    void insertFilteredData(ArrayList<Agenda> data) {
         ObservableList<String> string = FXCollections.observableArrayList();
         for (int i = 0; i < data.size(); i++)
-            string.add(data.get(i).getStartTime().toString() + ", Dr." + data.get(i).getDoctorName() + ", " + data.get(i).getClientName());
+            if(data.get(i) instanceof Appointment)
+                string.add(data.get(i).getStartTime().toString() + ", Dr." + ((Appointment)data.get(i)).getDoctorName() + ", " + ((Appointment)data.get(i)).getClientName());
         agendaList.setItems(FXCollections.observableArrayList(string));
     }
 

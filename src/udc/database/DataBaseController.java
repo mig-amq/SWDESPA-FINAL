@@ -334,12 +334,12 @@ public class DataBaseController {
      * @return the temporary ArrayList, where data was instantiated.
      * @throws Exception table is empty.
      */
-    public ArrayList<Appointment> getAppointments(int id, String type) throws Exception {
+    public ArrayList<Agenda> getAppointments(int id, String type) throws Exception {
         SingleAppointmentBuilder builder;
         RecurringAppointmentBuilder rbuilder;
 
         try {
-            ArrayList<Appointment> tempList = new ArrayList<>();
+            ArrayList<Agenda> tempList = new ArrayList<>();
 
             connection = ConnectionConfiguration.getConnection(model);
 
@@ -407,12 +407,12 @@ public class DataBaseController {
      * @return an ArrayList of unavailable times of a specific Doctor
      * @throws Exception table is empty.
      */
-    public ArrayList<Unavailable> getUnvailability(int doctor_id) throws Exception {
+    public ArrayList<Agenda> getUnvailability(int doctor_id) throws Exception {
         SingleUnavailableBuilder builder = new SingleUnavailableBuilder(doctor_id);
         RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder(doctor_id);
 
         try {
-            ArrayList<Unavailable> tempList = new ArrayList<>();
+            ArrayList<Agenda> tempList = new ArrayList<>();
 
             connection = ConnectionConfiguration.getConnection(model);
 
@@ -500,8 +500,8 @@ public class DataBaseController {
                             temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
                     }
 
-                    if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
-                        temp.setImageURI(rSet.getString("image_url"));
+//                    if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
+//                        temp.setImageURI(rSet.getString("image_url"));
                 }
 
                 rSet.close();

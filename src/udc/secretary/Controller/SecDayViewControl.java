@@ -8,6 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class SecDayViewControl extends AbstractControl {
         }
     }
 
-    public void insertFilteredData(ArrayList<Appointment> data){//ArrayList<Appointment> data
+    public void insertFilteredData(ArrayList<Agenda> data){//ArrayList<Appointment> data
 //        data = sortTime(data);
         //TODO: ADD UNAVAILABILITY DISPLAY, PLACE IT INSIDE findData method()
         tbView.getItems().clear();
@@ -70,7 +71,7 @@ public class SecDayViewControl extends AbstractControl {
             if(!isOdd(i))
                 hr++;
              if((index = getDataIndexfromList(data, time)) >= 0 ) {
-                 Appointment agenda = data.get(index);
+                 Appointment agenda = (Appointment) data.get(index);
                  tbView.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName() + "\nClient: " + agenda.getClientName()));
              }
             else

@@ -7,6 +7,7 @@ import udc.objects.account.Account;
 import udc.objects.account.Client;
 import udc.objects.enums.AccountType;
 import udc.objects.enums.ClientType;
+import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 import java.time.LocalDateTime;
@@ -34,12 +35,12 @@ public class AppointmentNotifier extends Thread {
         }
     }
 
-    private synchronized void checkAppointments (ArrayList<Appointment> appointments) {
+    private synchronized void checkAppointments (ArrayList<Agenda> appointments) {
         int timeDelta = 0;
         LocalDateTime ldt;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a");
 
-        for (Appointment a : appointments) {
+        for (Agenda a : appointments) {
             ldt = LocalDateTime.now();
 
             if (ldt.getDayOfMonth() == a.getStartTime().getDayOfMonth() && ldt.getMonthValue() == a.getStartTime().getMonthValue()

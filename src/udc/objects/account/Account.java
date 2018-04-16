@@ -14,7 +14,7 @@ public abstract class Account {
     private AccountType type;
     private String imageURI;
     private String firstName, lastName;
-    private ArrayList<Appointment> appointments;
+    private ArrayList<Agenda> appointments;
 
 
     public Account (int id, String firstName, String lastName) {
@@ -59,12 +59,12 @@ public abstract class Account {
      * @param day - the LocalDateTime containing the day to look for
      * @return an ArrayList of {@link Appointment}
      */
-    public ArrayList<Appointment> appointmentsAtDay (LocalDateTime day) {
+    public ArrayList<Agenda> appointmentsAtDay (LocalDateTime day) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        ArrayList<Appointment> temp = new ArrayList<>();
+        ArrayList<Agenda> temp = new ArrayList<>();
 
         synchronized (this.getAppointments()) {
-            for (Appointment a : this.getAppointments()) {
+            for (Agenda a : this.getAppointments()) {
                 if (a.getStartTime().format(dtf).equals(day.format(dtf)))
                     temp.add(a);
             }
@@ -80,8 +80,8 @@ public abstract class Account {
      * @param day - the day selected
      * @return an ArrayList of all the {@link Appointment}s in the week
      */
-    public ArrayList<Appointment> appointmentsAtWeek(LocalDateTime day) {
-        ArrayList<Appointment> temp = new ArrayList<>();
+    public ArrayList<Agenda> appointmentsAtWeek(LocalDateTime day) {
+        ArrayList<Agenda> temp = new ArrayList<>();
 
         if (day.getDayOfWeek().getValue() > 1)
             day.minusDays(day.getDayOfWeek().getValue() - 1);
@@ -116,7 +116,7 @@ public abstract class Account {
         this.lastName = lastName;
     }
 
-    public void setAppointments(ArrayList<Appointment> appointments) {
+    public void setAppointments(ArrayList<Agenda> appointments) {
         this.appointments = appointments;
     }
 
@@ -140,7 +140,7 @@ public abstract class Account {
         return lastName;
     }
 
-    public ArrayList<Appointment> getAppointments() {
+    public ArrayList<Agenda> getAppointments() {
         return appointments;
     }
 }
