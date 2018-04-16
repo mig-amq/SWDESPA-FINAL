@@ -42,8 +42,6 @@ public class ConnectionConfiguration {
         try {
             Class.forName(driverName);
             connection = DriverManager.getConnection(url, user, password);
-            if (connection != null)
-                System.out.println("Connection to db successful");
         } catch (Exception e) {
             e.printStackTrace();
         }
