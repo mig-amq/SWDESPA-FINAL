@@ -17,13 +17,13 @@ import java.time.ZoneId;
 import java.util.ResourceBundle;
 
 public class AvailabilityViewController extends SuperController implements Initializable {
-    private Scheduler shceduler;
+//    private Scheduler shceduler;
 
     @FXML
     private JFXComboBox cmbSHour, cmbSMin, cmbEHour, cmbEMin, cmbType;
 
     @FXML
-    private JFXButton btnSetAvailable, btnSetUnavailable;
+    private JFXButton  btnSetUnavailable;
 
     @FXML
     private JFXComboBox timeType;
@@ -48,7 +48,9 @@ public class AvailabilityViewController extends SuperController implements Initi
 
 
     public void setBtnActions(){
-        btnSetAvailable.setOnAction(new EventHandler<ActionEvent>() {
+
+
+        btnSetUnavailable.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 /*** INSERT ACTIONS HERE ***/
@@ -100,9 +102,9 @@ public class AvailabilityViewController extends SuperController implements Initi
                         }
                         //model.getList then compare times to check for conflict
                         *//*if(model.getList.getStartTime != startTime && model.getList.getEndTime != endTime){
-                         * }else{//shows dialogue box for conflict of time
-                         *
-                         * }*//*
+                     * }else{//shows dialogue box for conflict of time
+                     *
+                     * }*//*
                     }else{
                         //show dialouge box for invalid time
                     }*/
@@ -111,13 +113,6 @@ public class AvailabilityViewController extends SuperController implements Initi
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("There is already an appointment shceduled there");
                 }
-             }
-        });
-
-        btnSetUnavailable.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                /*** INSERT ACTIONS HERE ***/
             }
         });
     }
