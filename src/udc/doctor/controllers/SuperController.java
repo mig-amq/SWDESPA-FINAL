@@ -1,6 +1,6 @@
-package udc.doctor;
+package udc.doctor.controllers;
 
-import UDC.Model;
+import udc.Model;
 
 import java.time.LocalDateTime;
 

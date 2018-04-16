@@ -1,14 +1,13 @@
-package udc.doctor;
+package udc.doctor.controllers;
 
-import UDC.model.RecurringAppointmentBuilder;
-import UDC.model.Scheduler;
-import UDC.model.SingleAppointmentBuilder;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import udc.objects.time.builders.Scheduler;
+import udc.objects.time.builders.SingleAppointmentBuilder;
 
 import java.net.URL;
 import java.time.Instant;
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
-public class AvailabilityViewController implements Initializable {
+public class AvailabilityViewController extends SuperController implements Initializable {
     private Scheduler shceduler;
 
     @FXML
@@ -63,7 +62,8 @@ public class AvailabilityViewController implements Initializable {
                     LocalDateTime date =
                             LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
 
-                    if((date.getHour() < startTime/100) ||
+                    // ADJUST THESE
+                    /*if((date.getHour() < startTime/100) ||
                             (date.getMinute() == startTime %100 && date.getHour() < startTime/100)){
                         if(cmbType.getSelectionModel().getSelectedItem().toString().equals("Single")){
                             shceduler = new Scheduler(startTime, endTime);
@@ -93,13 +93,13 @@ public class AvailabilityViewController implements Initializable {
                             }
                         }
                         //model.getList then compare times to check for conflict
-                        /*if(model.getList.getStartTime != startTime && model.getList.getEndTime != endTime){
+                        *//*if(model.getList.getStartTime != startTime && model.getList.getEndTime != endTime){
                          * }else{//shows dialogue box for conflict of time
                          *
-                         * }*/
+                         * }*//*
                     }else{
                         //show dialouge box for invalid time
-                    }
+                    }*/
                 }else {
                     //shows dialogue box for invalid input time
                 }
@@ -112,5 +112,10 @@ public class AvailabilityViewController implements Initializable {
                 /*** INSERT ACTIONS HERE ***/
             }
         });
+    }
+
+    @Override
+    public void update(LocalDateTime ldt) {
+
     }
 }

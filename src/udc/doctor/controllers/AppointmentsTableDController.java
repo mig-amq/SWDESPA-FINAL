@@ -1,13 +1,13 @@
-package udc.doctor;
+package udc.doctor.controllers;
 
-import UDC.model.Agenda;
-import UDC.secretary.Controller.DaySchedule;
-import UDC.secretary.Controller.WeekSchedule;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import udc.doctor.objects.DaySchedule;
+import udc.doctor.objects.WeekSchedule;
+import udc.objects.time.concrete.Agenda;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -57,24 +57,6 @@ public class AppointmentsTableDController implements Initializable {
         for (int i = 0; i < tbView.getColumns().size(); i++) {
             TableColumn col = (TableColumn) tbView.getColumns().get(i);
             col.setCellValueFactory(new PropertyValueFactory<WeekSchedule, String>(cells[i]));
-        }
-    }
-
-    public void insertFilteredData(ArrayList<Agenda> data){//ArrayList<Agenda> data
-//        data = sortTime(data);
-        tbView.getItems().clear();
-        int hr = 7;
-        for (int i = 0; i < 30; i++) {
-            String time = getDispTime(hr, i);
-            if(!isOdd(i))
-                hr++;
-            tbView.getItems().add(new DaySchedule(time, ""));
-
-            try {
-                tbView.getItems().add(new DaySchedule(time, data.get(i).getsDoctorName()));
-            }catch(IndexOutOfBoundsException exception){
-                tbView.getItems().add(new DaySchedule(time, ""));
-            }
         }
     }
 

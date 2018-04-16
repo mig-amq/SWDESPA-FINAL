@@ -1,19 +1,20 @@
-package udc.doctor;
+package udc.doctor.controllers;
 
 import javafx.fxml.Initializable;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class AgendaViewWController extends SuperController implements Initializable {
     @Override
-    public void update(LocalDate ldt) {
-//        insertTime(ldt);
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void update(LocalDateTime ldt) {
 
     }
 

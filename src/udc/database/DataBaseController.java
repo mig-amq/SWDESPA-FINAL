@@ -333,8 +333,8 @@ public class DataBaseController {
      * @throws Exception table is empty.
      */
     public ArrayList<Appointment> getAppointments(int id, String type) throws Exception {
-        SingleAppointmentBuilder builder = new SingleAppointmentBuilder();
-        RecurringAppointmentBuilder rbuilder = new RecurringAppointmentBuilder();
+        SingleAppointmentBuilder builder;
+        RecurringAppointmentBuilder rbuilder;
 
         try {
             ArrayList<Appointment> tempList = new ArrayList<>();
@@ -364,6 +364,9 @@ public class DataBaseController {
 
             // Traversing result set and instantiating appointments to list
             while (rSet.next()) {
+                builder = new SingleAppointmentBuilder(rSet.getString("doctor"), rSet.getString("client"));
+                rbuilder = new RecurringAppointmentBuilder(rSet.getString("doctor"), rSet.getString("client"));
+
                 if (rSet.getBoolean("recurring")) {
                     tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
@@ -403,8 +406,8 @@ public class DataBaseController {
      * @throws Exception table is empty.
      */
     public ArrayList<Unavailable> getUnvailability(int doctor_id) throws Exception {
-        SingleUnavailableBuilder builder = new SingleUnavailableBuilder();
-        RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder();
+        SingleUnavailableBuilder builder = new SingleUnavailableBuilder(doctor_id);
+        RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder(doctor_id);
 
         try {
             ArrayList<Unavailable> tempList = new ArrayList<>();

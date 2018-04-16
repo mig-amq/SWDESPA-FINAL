@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
 
 public class SingleUnavailableBuilder extends UnavailableBuilder {
 
+    public SingleUnavailableBuilder(int id) {
+        super(id);
+    }
+
     public Unavailable build (LocalDateTime start, LocalDateTime end, String doctor, String client) {
         this.build(start, end);
 

@@ -6,6 +6,10 @@ import udc.objects.time.concrete.Unavailable;
 import java.time.LocalDateTime;
 
 public class RecurringUnavailableBuilder extends UnavailableBuilder {
+    public RecurringUnavailableBuilder(int id) {
+        super(id);
+    }
+
     public Unavailable build (LocalDateTime start, LocalDateTime end, String doctor, String client) {
         this.build(start, end);
 

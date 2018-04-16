@@ -1,4 +1,4 @@
-package udc.doctor;
+package udc.doctor.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javax.swing.text.html.ListView;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class AgendaViewController extends SuperController implements Initializable {
@@ -14,12 +15,12 @@ public class AgendaViewController extends SuperController implements Initializab
     private ListView listview;
 
     @Override
-    public void update(LocalDate ldt) {
-        insertTime();
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void update(LocalDateTime ldt) {
 
     }
 
