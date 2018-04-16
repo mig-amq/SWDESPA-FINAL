@@ -1,0 +1,50 @@
+#pnlTool {
+    -fx-background-color: #26ad80;
+}
+
+#minimize, #close {
+    -fx-cursor: hand;
+}
+
+#minimize:hover, #close:hover {
+    -fx-background-color: #1f8e69;
+}
+
+#title {
+    -fx-text-fill: #ffffff;
+}
+
+#burger {
+    -fx-cursor: hand;
+}
+
+#burger > StackPane, #drawer DrawerPanel{
+    -fx-background-color: #26ad80;
+}
+
+DrawerPanel AnchorPane Calendar #header {
+    -fx-background-color: #1f8e69 !important;
+}
+
+DrawerPanel Calendar #header #year {
+    -jfx-focus-color: #13684c !important;
+}
+
+DrawerPanel Calendar #header #year .list-view .list-cell{
+    -fx-background-color: #248766 !important;
+}
+
+DrawerPanel Calendar #header #year .list-view .list-cell:hover {
+    -fx-background-color: #26ad80 !important;
+}
+
+DrawerPanel Calendar #header #year .list-view .scroll-bar:vertical .track{
+    -fx-background-color: #13684c !important;
+}
+
+Calendar #header #year .list-view .scroll-bar:vertical .increment-button ,
+Calendar #header #year .list-view .scroll-bar:vertical .decrement-button {
+
+    -fx-background-color: #13684c !important;
+
+}

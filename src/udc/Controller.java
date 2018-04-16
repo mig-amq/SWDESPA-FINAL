@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import network.threads.ClientThread;
+import udc.client.regular.Client;
 import udc.client.walkin.WalkIn;
 import udc.customfx.drawerpanel.DrawerPanel;
 import udc.doctor.Doctor;
@@ -217,6 +218,19 @@ public class Controller implements Initializable{
                         secretary.setStage(child);
                         secretary.setParentStage(this.getStage());
                         model.setViewController(secretary);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else if (account.getType() == AccountType.CLIENT) {
+                    try {
+                        Client client = new Client(model);
+                        Stage child = new Stage(StageStyle.UNDECORATED);
+                        child.setScene(new Scene(client));
+                        child.show();
+
+                        client.setStage(child);
+                        client.setParentStage(this.getStage());
+                        model.setViewController(client);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

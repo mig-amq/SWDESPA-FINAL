@@ -103,6 +103,10 @@ public abstract class PaneledView extends AnchorPane{
                 this.mainPanel.getStylesheets().add(getClass().getResource("../res/styles/secretary.css").toString());
                 this.title.setText("Secretary");
                 break;
+            case CLIENT:
+                this.mainPanel.getStylesheets().add(getClass().getResource("../res/styles/client.css").toString());
+                this.title.setText("Client");
+                break;
             default:
 
         }
