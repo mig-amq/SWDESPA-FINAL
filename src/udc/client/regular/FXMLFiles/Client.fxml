@@ -60,16 +60,6 @@
             <JFXComboBox fx:id="mDoctorCmbBox" layoutX="25.0" layoutY="483.0" prefHeight="25.0" prefWidth="196.0" promptText="All" />
             <JFXRadioButton fx:id="mCalendarView" layoutX="21.0" layoutY="557.0" text="Calendar View" />
             <JFXRadioButton fx:id="mAgendaView" layoutX="21.0" layoutY="584.0" text="Agenda View" />
-            <Label fx:id="mDateLabel" layoutX="400.0" layoutY="461.0" text="Date">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Label>
-            <Label fx:id="mTimeLabel" layoutX="444.0" layoutY="498.0" text="Time">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
             <JFXButton fx:id="editButton" layoutX="400.0" layoutY="545.0" prefHeight="54.0" prefWidth="164.0" ripplerFill="BLACK" style="-fx-background-color: #155e3b;" text="Edit" textFill="WHITE">
                <font>
                   <Font size="25.0" />
