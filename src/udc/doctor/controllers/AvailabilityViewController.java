@@ -135,6 +135,6 @@ public class AvailabilityViewController extends SuperController implements Initi
 
     @Override
     public void update(LocalDateTime ldt) {
-
+        //model.getAccount.setUnavailability(list of unavailable times);
     }
 }

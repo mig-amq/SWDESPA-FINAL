@@ -8,6 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import udc.doctor.objects.DaySchedule;
 import udc.doctor.objects.WeekSchedule;
 import udc.objects.time.concrete.Agenda;
+import udc.objects.time.concrete.Appointment;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -16,6 +17,8 @@ import java.util.ResourceBundle;
 
 
 public class AppointmentsTableDController extends SuperController implements Initializable {
+    private ArrayList<Agenda> unavilable;
+    private ArrayList<Agenda> appointments;
 
     @FXML
     private TableView<DaySchedule> tbView;
@@ -23,7 +26,7 @@ public class AppointmentsTableDController extends SuperController implements Ini
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initPropertValues();
-        insertTime();
+
     }
 
     public boolean isOdd(int i){
@@ -56,23 +59,23 @@ public class AppointmentsTableDController extends SuperController implements Ini
     private void initPropertValues(){
         String[] cells = new String[]{"sTime", "sClientDoctor"};
         for (int i = 0; i < tbView.getColumns().size(); i++) {
-            TableColumn col = (TableColumn) tbView.getColumns().get(i);
-            col.setCellValueFactory(new PropertyValueFactory<WeekSchedule, String>(cells[i]));
+            TableColumn col = tbView.getColumns().get(i);
+            col.setCellValueFactory(new PropertyValueFactory<udc.secretary.Controller.WeekSchedule, String>(cells[i]));
         }
     }
 
-    public void insertTime(){
-        tbView.getItems().clear();
-        int hr = 7;
-        for (int i = 0; i < 30; i++) {
-            String time = getDispTime(hr, i);
-            if (!isOdd(i))
-                hr++;
-            tbView.getItems().add(new DaySchedule(time, ""));
-        }
+    public void insertFilteredData(ArrayList<Agenda> data){//ArrayList<Appointment> data
+//        data = sortTime(data);
+        //TODO: ADD UNAVAILABILITY DISPLAY, PLACE IT INSIDE findData method()
+        appointments = model.getAccount().getAppointments();//is this where the unavailable shceds are??
+//        unavilable = model.getAccount().getUnavailable();
+        //if(time form appointments is the same as the in the column)
+        //then print unavailable and change color
+
     }
 
     @Override
     public void update(LocalDateTime ldt) {
+        //call function to display unavailability here?
     }
 }
