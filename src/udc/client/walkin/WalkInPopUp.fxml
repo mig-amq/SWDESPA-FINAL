@@ -22,7 +22,7 @@
             </AnchorPane>
          </right>
       </JFXToolbar>
-      <Label fx:id="hereLbl" layoutX="28.0" layoutY="84.0" text="HERE IS YOUR CODE:">
+      <Label fx:id="hereLbl" layoutX="25.0" layoutY="59.0" text="Details:">
          <font>
             <Font name="Malgun Gothic Bold" size="48.0" />
          </font>
@@ -37,9 +37,9 @@
             <Font name="Malgun Gothic Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="codeLbl" layoutX="32.0" layoutY="206.0" prefHeight="69.0" prefWidth="488.0" textAlignment="CENTER">
+      <Label fx:id="codeLbl" layoutX="57.0" layoutY="147.0" prefHeight="34.0" prefWidth="103.0" text="Name: " textAlignment="CENTER">
          <font>
-            <Font name="Malgun Gothic Bold" size="48.0" />
+            <Font name="Malgun Gothic Bold" size="24.0" />
          </font>
       </Label>
       <JFXButton fx:id="mainCloseBtn" layoutX="220.0" layoutY="426.0" prefHeight="39.0" prefWidth="103.0" style="-fx-background-color: red;" text="Close" textFill="WHITE">
@@ -47,5 +47,30 @@
             <Font size="18.0" />
          </font>
       </JFXButton>
+      <Label fx:id="codeLbl1" layoutX="57.0" layoutY="208.0" prefHeight="34.0" prefWidth="103.0" text="Time:" textAlignment="CENTER">
+         <font>
+            <Font name="Malgun Gothic Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="codeLbl2" layoutX="57.0" layoutY="265.0" prefHeight="34.0" prefWidth="103.0" text="Doctor:" textAlignment="CENTER">
+         <font>
+            <Font name="Malgun Gothic Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="nameLbl" layoutX="141.0" layoutY="147.0" prefHeight="34.0" prefWidth="320.0" textAlignment="CENTER">
+         <font>
+            <Font name="Malgun Gothic Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="timelbl" layoutX="141.0" layoutY="208.0" prefHeight="34.0" prefWidth="320.0" textAlignment="CENTER">
+         <font>
+            <Font name="Malgun Gothic Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="doctorLbl" layoutX="163.0" layoutY="265.0" prefHeight="34.0" prefWidth="320.0" textAlignment="CENTER">
+         <font>
+            <Font name="Malgun Gothic Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </fx:root>

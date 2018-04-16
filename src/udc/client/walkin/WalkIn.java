@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -91,8 +92,11 @@ public class WalkIn extends AnchorPane {
 
     @FXML
     private Label colonLbl2;
+    WalkInModel w = new WalkInModel();
 
-    DataBaseController db;
+    public WalkInModel getW() {
+        return w;
+    }
 
     public WalkIn(Model model)
     {
@@ -108,28 +112,9 @@ public class WalkIn extends AnchorPane {
     }
     @FXML
     void initialize() {
-        assert Welcomelbl != null : "fx:id=\"Welcomelbl\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert datelbl != null : "fx:id=\"datelbl\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert nameLbl != null : "fx:id=\"nameLbl\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert nameField != null : "fx:id=\"nameField\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert datePicker != null : "fx:id=\"datePicker\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert timeLbl != null : "fx:id=\"timeLbl\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert starthourCmb != null : "fx:id=\"starthourCmb\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert closeBtn != null : "fx:id=\"closeBtn\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert minBtn != null : "fx:id=\"minBtn\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert bookBtn != null : "fx:id=\"bookBtn\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert doctorLbl1 != null : "fx:id=\"doctorLbl1\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert doctorCmb != null : "fx:id=\"doctorCmb\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert startminCmb != null : "fx:id=\"startminCmb\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert colonLbl != null : "fx:id=\"colonLbl\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert toLbl != null : "fx:id=\"toLbl\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert endhourCmb != null : "fx:id=\"endhourCmb\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert endminCmb != null : "fx:id=\"endminCmb\" was not injected: check your FXML file 'WalkIn.fxml'.";
-        assert colonLbl2 != null : "fx:id=\"colonLbl2\" was not injected: check your FXML file 'WalkIn.fxml'.";
-
         setComboBox();
         popUp();
-        close();
+//        close();
     }
 
     public void setComboBox() {
@@ -148,20 +133,14 @@ public class WalkIn extends AnchorPane {
         startminCmb.setItems(list);
         endminCmb.setItems(list);
 
-/////////////////////////////////////*LOAD THE DOCTORS*//////////////////////////////////////////////////////////
-     //   list = FXCollections.observableArrayList(db.loadDoctors());
-        list = FXCollections.observableArrayList("Dr. Mitch", "Dr. Shad", "Dr. Migs");
-
+        list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
+     //   list = FXCollections.observableArrayList("Dr. Mitch", "Dr. Shad", "Dr. Migs");
         doctorCmb.setItems(list);
-
-
 
     }
 
     public void popUp() {
         bookBtn.setOnAction(event -> {
-
-            WalkInModel w = new WalkInModel();
 
             String stimeTemp;
             String etimeTemp;
@@ -240,37 +219,51 @@ public class WalkIn extends AnchorPane {
                 alert.showAndWait();
             }
 
-
             else {
-
                 String smin;
                 String emin;
+                String smonth;
+                String sday;
+                String shour;
+                String ehour;
+                LocalDateTime start;
+                LocalDateTime end;
+ /*-------------------------------------------------------------------------------------*/
                 if (startHour < 12)
-                {
-                    sampm = "am";
-                }
+                    sampm = "AM";
                 else
                 {
-                    sampm = "pm";
+                    sampm = "PM";
                     if (startHour == 12)
                         startHour = 12;
                      else
                          startHour = (startHour - 12);
                 }
+                if(startHour < 10)
+                    shour = "0" + startHour;
+                else
+                    shour = String.valueOf(startHour);
+
 
                 if (endHour < 12)
                 {
-                    eampm = "am";
+                    eampm = "AM";
                 }
                 else
                 {
-                    eampm = "pm";
-
+                    eampm = "PM";
                     if (endHour == 12)
                         endHour = 12;
                     else
                         endHour = (endHour - 12);
                 }
+
+                if(endHour < 10)
+                    ehour = "0" + endHour;
+                else
+                    ehour = String.valueOf(endHour);
+
+/*-------------------------------------------------------------------------------------*/
 
                 if (startMin == 0)
                     smin = "00";
@@ -283,16 +276,33 @@ public class WalkIn extends AnchorPane {
                 else
                     emin = "30";
 
-                stemp = date.getYear() + "/" + date.getMonthValue() + "/" + date.getDayOfMonth()
-                        + " " + startHour + ":" + smin + " " + sampm;
+ /*-------------------------------------------------------------------------------------*/
 
-                etemp = date.getYear() + "/" + date.getMonthValue() + "/" + date.getDayOfMonth()
-                        + " " + endHour + ":" + emin + " " + sampm;
+                if (date.getMonthValue() < 10)
+                    smonth = "0" + date.getMonthValue();
+                else
+                    smonth = String.valueOf(date.getMonthValue());
+
+                if (date.getDayOfMonth() < 10)
+                    sday = "0" + date.getDayOfMonth();
+                else
+                    sday = String.valueOf(date.getDayOfMonth());
+
+/*-------------------------------------------------------------------------------------*/
+
+                stemp = date.getYear() + "/" + smonth + "/" + sday
+                        + " " + shour + ":" + smin + " " + sampm;
+
+                etemp = date.getYear() + "/" + smonth + "/" + sday
+                        + " " + ehour + ":" + emin + " " + eampm;
+
+                start = sToTime(stemp);
+                end = sToTime(etemp);
 
                 w.setName(nameField.getText());
                 w.setDate(datePicker.getValue());
-                w.setStart(stemp);
-                w.setEnd(etemp);
+                w.setStart(start);
+                w.setEnd(end);
                 w.setDoctor(doctorCmb.getValue());
 
                 System.out.println("name: " + nameField.getText() + "\n" +
@@ -301,27 +311,38 @@ public class WalkIn extends AnchorPane {
                                     "end: " + etemp + "\n" +
                                     "doctor: " + doctorCmb.getValue());
 
- /////////////////////////////////////////////// /*save to database the information*////////////////////////////////////
 
-                WalkInPopUpController popUp = new WalkInPopUpController();
+ ////////////////////////////////////////// /*save to database the information*////////////////////////////////////
+
+                String[] splited = w.getName().split(" ");
+                model.getDbController().addWalkIn(splited[0], splited[1]);
+//                model.getDbController().addAppointment(start, end, 0, 0);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue());
                 Stage child = new Stage(StageStyle.UNDECORATED);
                 child.setScene(new Scene(popUp));
                 child.show();
 
                 Stage stage = (Stage) getScene().getWindow();
                 stage.close();
-
-
             }
         });
     }
 
     public void close() {
         closeBtn.setOnAction(event -> {
-
             Stage stage = (Stage) closeBtn.getScene().getWindow();
             stage.close();
         });
+    }
+
+    public LocalDateTime sToTime(String time)
+    {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a");
+        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+        return dateTime;
     }
 
     
