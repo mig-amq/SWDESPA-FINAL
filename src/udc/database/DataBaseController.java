@@ -5,10 +5,12 @@ import udc.objects.account.Account;
 import udc.objects.account.Client;
 import udc.objects.account.Doctor;
 import udc.objects.account.Secretary;
+import udc.objects.enums.AgendaType;
 import udc.objects.time.builders.RecurringAppointmentBuilder;
 import udc.objects.time.builders.RecurringUnavailableBuilder;
 import udc.objects.time.builders.SingleAppointmentBuilder;
 import udc.objects.time.builders.SingleUnavailableBuilder;
+import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Unavailable;
 
@@ -518,6 +520,49 @@ public class DataBaseController {
         }
 
         throw new Exception("Error: That account does not exist.");
+    }
+
+    public ArrayList<Agenda> getExceptions (int doctor_id) {
+        ArrayList<Agenda> temp0 = new ArrayList<>();
+        Agenda temp1;
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement("SELECT U.except_dates AS ed FROM doctor D WHERE doctor_id = " + doctor_id + "\n" +
+                    " INNER JOIN unavailability U ON U.doctor_id = D.doctor_id");
+            rSet = pStmt.executeQuery();
+
+            while (rSet.next()) {
+                if (rSet.getBoolean("recurring")) {
+                    String[] temp2 = rSet.getString("ed").split(";");
+                    for (int i = 0; i < temp2.length; i++) {
+                        temp1 = new Agenda();
+
+                        String time1 = temp2[i].split(" - ")[0];
+                        String time2 = temp2[i].split(" - ")[1];
+
+                        temp1.setStartTime(strToTime(time1));
+                        temp1.setEndTime(strToTime(time2));
+                        temp1.setType(AgendaType.SINGLE);
+
+                        temp0.add(temp1);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return temp0;
     }
 
     public Model getModel() {
