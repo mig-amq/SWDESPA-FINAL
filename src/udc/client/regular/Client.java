@@ -2,7 +2,7 @@ package udc.client.regular;
 
 import javafx.scene.image.Image;
 import udc.Model;
-import udc.client.regular.FXMLControllers.ClientController;
+//import udc.client.regular.FXMLControllers.ClientController;
 import udc.doctor.Doctor;
 import udc.objects.enums.PanelType;
 
@@ -14,7 +14,7 @@ import java.util.Locale;
 
 public class Client extends Doctor {
 
-    private ClientController clientController;
+//    private ClientController clientController;
     public Client(double width, double height, Locale lang) throws IOException {
         super(width, height, lang);
 
@@ -34,8 +34,8 @@ public class Client extends Doctor {
 
         try {
             contentPane.getChildren().clear();
-            clientController = new ClientController(this, model);
-            contentPane.getChildren().add(clientController);
+//            clientController = new ClientController(this, model);
+//            contentPane.getChildren().add(clientController);
         }catch (Exception e){
             e.printStackTrace();
         }
