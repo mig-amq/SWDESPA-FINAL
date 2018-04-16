@@ -97,6 +97,12 @@ public class WalkIn extends AnchorPane {
     @FXML
     private JFXTextField contactField;
 
+    @FXML
+    private JFXComboBox<String> startampmCmb;
+
+    @FXML
+    private JFXComboBox<String> endampmCmb;
+
     WalkInModel w = new WalkInModel();
 
     public WalkInModel getW() {
@@ -123,13 +129,9 @@ public class WalkIn extends AnchorPane {
     }
 
     public void setComboBox() {
-        ObservableList<String> list = FXCollections.observableArrayList();
-        for (int i = 7; i < 21; i++) {
-            if (i < 10)
-                list.add("0" + i);
-            else
+        ObservableList<String> list = FXCollections.observableArrayList("07", "08" , "09", "10", "11", "12");
+        for (int i = 1; i < 10; i++)
                 list.add(i + "");
-        }
 
         starthourCmb.setItems(list);
         endhourCmb.setItems(list);
@@ -137,6 +139,10 @@ public class WalkIn extends AnchorPane {
         list = FXCollections.observableArrayList("00", "30");
         startminCmb.setItems(list);
         endminCmb.setItems(list);
+
+        list = FXCollections.observableArrayList("am", "pm");
+        startampmCmb.setItems(list);
+        endampmCmb.setItems(list);
 
         list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
      //   list = FXCollections.observableArrayList("Dr. Mitch", "Dr. Shad", "Dr. Migs");
@@ -149,6 +155,8 @@ public class WalkIn extends AnchorPane {
 
             String stimeTemp;
             String etimeTemp;
+
+            LocalDateTime now = LocalDateTime.now();
 
             LocalDate date = datePicker.getValue();
             stimeTemp = starthourCmb.getValue();
@@ -185,12 +193,11 @@ public class WalkIn extends AnchorPane {
                 endHour = Integer.parseInt(endhourCmb.getValue());
                 startMin = Integer.parseInt(startminCmb.getValue());
                 endMin = Integer.parseInt(endminCmb.getValue());
+
             }
 
-            w.setDoctor(doctorCmb.getValue());
-
             if(nameField.getText() == null || stimeTemp == null || etimeTemp == null
-                    || date == null || doctorCmb.getValue() == null)
+                    || date == null || doctorCmb.getValue() == null  || contactField.getText() == null)
             {
                 Alert alert = new Alert (Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Input");
@@ -242,7 +249,7 @@ public class WalkIn extends AnchorPane {
                     if (startHour == 12)
                         startHour = 12;
                      else
-                         startHour = (startHour - 12);
+                         startHour = startHour - 12;
                 }
                 if(startHour < 10)
                     shour = "0" + startHour;
@@ -311,28 +318,30 @@ public class WalkIn extends AnchorPane {
                 w.setDoctor(doctorCmb.getValue());
                 w.setContact(contactField.getText());
 
-                System.out.println("name: " + nameField.getText() + "\n" +
-                                    "Date: " + datePicker.getValue() + "\n" +
-                                    "start: " + stemp + "\n" +
-                                    "end: " + etemp + "\n" +
-                                    "doctor: " + doctorCmb.getValue());
+
+                if (now.isBefore(w.getStart()) || now.isEqual(w.getStart()))
+                {
+                    Alert alert = new Alert (Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Input");
+                    alert.setHeaderText(null);
+                    alert.setContentText("End time is greater than the start time.");
+                    alert.showAndWait();
+                }
 
 
  ////////////////////////////////////////// /*save to database the information*////////////////////////////////////
+                    String[] splited = w.getName().split(" ");
+                    model.getDbController().addWalkIn(splited[0], splited[1]);
+          //         model.getDbController().addAppointment(start, end, 0, 0);
 
-                String[] splited = w.getName().split(" ");
-                model.getDbController().addWalkIn(splited[0], splited[1]);
-//                model.getDbController().addAppointment(start, end, 0, 0);
+                    WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
+                    Stage child = new Stage(StageStyle.UNDECORATED);
+                    child.setScene(new Scene(popUp));
+                    child.show();
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    Stage stage = (Stage) getScene().getWindow();
+                    stage.close();
 
-                WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
-                Stage child = new Stage(StageStyle.UNDECORATED);
-                child.setScene(new Scene(popUp));
-                child.show();
-
-                Stage stage = (Stage) getScene().getWindow();
-                stage.close();
             }
         });
     }

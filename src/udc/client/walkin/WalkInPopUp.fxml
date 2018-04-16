@@ -27,14 +27,14 @@
             <Font name="Malgun Gothic Bold" size="48.0" />
          </font>
       </Label>
-      <Label fx:id="presentLbl" layoutX="155.0" layoutY="323.0" text="Please present it to">
+      <Label fx:id="presentLbl" layoutX="36.0" layoutY="325.0" text="Please present it to the secretary upon arrival">
          <font>
-            <Font name="Malgun Gothic Bold" size="24.0" />
+            <Font name="Malgun Gothic Bold" size="22.0" />
          </font>
       </Label>
-      <Label fx:id="secLbl" layoutX="119.0" layoutY="357.0" text="the secretary upon arrival">
+      <Label fx:id="secLbl" layoutX="77.0" layoutY="357.0" text="To know if it has been approved or not">
          <font>
-            <Font name="Malgun Gothic Bold" size="24.0" />
+            <Font name="Malgun Gothic Bold" size="20.0" />
          </font>
       </Label>
       <Label fx:id="codeLbl" layoutX="50.0" layoutY="143.0" prefHeight="34.0" prefWidth="103.0" text="Name: " textAlignment="CENTER">

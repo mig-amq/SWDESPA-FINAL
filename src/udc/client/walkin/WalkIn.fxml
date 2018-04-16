@@ -28,7 +28,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="175.0" layoutY="30.0" prefHeight="473.0" prefWidth="400.0" scaleZ="10.0" translateZ="10.0">
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="175.0" layoutY="30.0" prefHeight="473.0" prefWidth="400.0">
          <children>
             <AnchorPane fx:id="mainPanel" prefHeight="473.0" prefWidth="400.0">
                <children>
@@ -54,49 +54,58 @@
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label layoutX="24.0" layoutY="118.0" prefHeight="32.0" prefWidth="68.0" text="Date:">
+                  <Label layoutX="26.0" layoutY="102.0" prefHeight="32.0" prefWidth="68.0" text="Date:">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker fx:id="datePicker" defaultColor="#ab2626" layoutX="118.0" layoutY="120.0" prefHeight="28.0" prefWidth="267.0" />
-                  <Label layoutX="26.0" layoutY="173.0" prefHeight="32.0" prefWidth="68.0" text="Time:">
+                  <JFXDatePicker fx:id="datePicker" defaultColor="#ab2626" layoutX="123.0" layoutY="104.0" prefHeight="28.0" prefWidth="263.0" />
+                  <Label layoutX="23.0" layoutY="146.0" prefHeight="32.0" prefWidth="68.0" text="Time:">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <JFXComboBox fx:id="starthourCmb" focusColor="#ab2626" layoutX="118.0" layoutY="174.0" prefHeight="28.0" prefWidth="89.0" />
-                  <JFXComboBox fx:id="startminCmb" focusColor="#ab2626" layoutX="259.0" layoutY="175.0" prefHeight="28.0" prefWidth="89.0" />
-                  <Label layoutX="231.0" layoutY="162.0" text=":">
+                  <JFXComboBox fx:id="starthourCmb" focusColor="#ab2626" layoutX="124.0" layoutY="148.0" prefHeight="28.0" prefWidth="61.0" />
+                  <JFXComboBox fx:id="startminCmb" focusColor="#ab2626" layoutX="210.0" layoutY="149.0" prefHeight="28.0" prefWidth="61.0" />
+                  <Label layoutX="195.0" layoutY="139.0" text=":">
                      <font>
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <Label layoutX="220.0" layoutY="214.0" prefHeight="45.0" prefWidth="30.0" text="to">
+                  <Label layoutX="223.0" layoutY="178.0" prefHeight="45.0" prefWidth="30.0" text="to">
                      <font>
-                        <Font size="27.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
-                  <JFXComboBox fx:id="endhourCmb" focusColor="#ab2626" layoutX="118.0" layoutY="268.0" prefHeight="28.0" prefWidth="89.0" />
-                  <JFXComboBox fx:id="endminCmb" focusColor="#ab2626" layoutX="259.0" layoutY="269.0" prefHeight="28.0" prefWidth="89.0" />
-                  <Label layoutX="231.0" layoutY="256.0" text=":">
+                  <JFXComboBox fx:id="endhourCmb" focusColor="#ab2626" layoutX="127.0" layoutY="223.0" prefHeight="28.0" prefWidth="61.0" />
+                  <JFXComboBox fx:id="endminCmb" focusColor="#ab2626" layoutX="210.0" layoutY="224.0" prefHeight="28.0" prefWidth="61.0" />
+                  <Label layoutX="195.0" layoutY="215.0" text=":">
                      <font>
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <Label layoutX="26.0" layoutY="326.0" prefHeight="32.0" prefWidth="68.0" text="Doctor:">
+                  <Label layoutX="23.0" layoutY="259.0" prefHeight="32.0" prefWidth="68.0" text="Doctor:">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <JFXComboBox fx:id="doctorCmb" focusColor="#ab2626" layoutX="117.0" layoutY="328.0" prefHeight="28.0" prefWidth="235.0" />
+                  <JFXComboBox fx:id="doctorCmb" focusColor="#ab2626" layoutX="128.0" layoutY="261.0" prefHeight="28.0" prefWidth="225.0" />
                   <Label layoutX="66.0" layoutY="14.0" text="WELCOME GUEST!">
                      <font>
                         <Font name="Malgun Gothic Bold" size="32.0" />
                      </font>
                   </Label>
+                  <Label layoutX="23.0" layoutY="313.0" prefHeight="32.0" prefWidth="98.0" text="Contact #:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="contactField" focusColor="#ab2626" labelFloat="true" layoutX="129.0" layoutY="316.0" prefHeight="25.0" prefWidth="225.0" />
+                  <JFXComboBox fx:id="startampmCmb" focusColor="#ab2626" layoutX="284.0" layoutY="149.0" prefHeight="28.0" prefWidth="61.0" />
+                  <JFXComboBox fx:id="endampmCmb" focusColor="#ab2626" layoutX="284.0" layoutY="223.0" prefHeight="28.0" prefWidth="61.0" />
                </children>
             </AnchorPane>
-         </children></JFXDrawer>
+         </children>
+      </JFXDrawer>
    </children>
 </fx:root>
