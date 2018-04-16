@@ -6,26 +6,9 @@ public class WalkInModel {
 
     String name;
     LocalDate date;
-    String timeStart;
-    String timeEnd;
+    String start;
+    String end;
     String doctor;
-
-    public String getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(String timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public String getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(String timeEnd) {
-        this.timeEnd = timeEnd;
-    }
-
 
     public String getName() {
         return name;
@@ -50,6 +33,22 @@ public class WalkInModel {
 
     public void setDoctor(String doctor) {
         this.doctor = doctor;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
     }
 
 

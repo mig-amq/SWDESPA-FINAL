@@ -24,6 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import udc.Model;
+import udc.database.DataBaseController;
 
 import javax.swing.*;
 
@@ -91,6 +92,8 @@ public class WalkIn extends AnchorPane {
     @FXML
     private Label colonLbl2;
 
+    DataBaseController db;
+
     public WalkIn(Model model)
     {
         try {
@@ -145,6 +148,8 @@ public class WalkIn extends AnchorPane {
         startminCmb.setItems(list);
         endminCmb.setItems(list);
 
+/////////////////////////////////////*LOAD THE DOCTORS*//////////////////////////////////////////////////////////
+     //   list = FXCollections.observableArrayList(db.loadDoctors());
         list = FXCollections.observableArrayList("Dr. Mitch", "Dr. Shad", "Dr. Migs");
 
         doctorCmb.setItems(list);
@@ -153,33 +158,32 @@ public class WalkIn extends AnchorPane {
 
     }
 
-
-
     public void popUp() {
         bookBtn.setOnAction(event -> {
 
             WalkInModel w = new WalkInModel();
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("H:mm:ss");
 
             String stimeTemp;
             String etimeTemp;
 
             LocalDate date = datePicker.getValue();
-
-            w.setName(nameField.getText());
             stimeTemp = starthourCmb.getValue();
             stimeTemp += ":" + startminCmb.getValue();
-
-            w.setTimeStart(stimeTemp);
-
             etimeTemp = endhourCmb.getValue();
             etimeTemp += ":" + endminCmb.getValue();
 
+            String stemp;
+            String etemp;
 
             int startHour;
             int endHour;
             int startMin;
             int endMin;
+
+            int sHour;
+            int eHour;
+            String sampm;
+            String eampm;
 
 
             if(starthourCmb.getValue() == null || startminCmb.getValue() == null
@@ -238,6 +242,67 @@ public class WalkIn extends AnchorPane {
 
 
             else {
+
+                String smin;
+                String emin;
+                if (startHour < 12)
+                {
+                    sampm = "am";
+                }
+                else
+                {
+                    sampm = "pm";
+                    if (startHour == 12)
+                        startHour = 12;
+                     else
+                         startHour = (startHour - 12);
+                }
+
+                if (endHour < 12)
+                {
+                    eampm = "am";
+                }
+                else
+                {
+                    eampm = "pm";
+
+                    if (endHour == 12)
+                        endHour = 12;
+                    else
+                        endHour = (endHour - 12);
+                }
+
+                if (startMin == 0)
+                    smin = "00";
+
+                else
+                    smin = "30";
+
+                if(endMin == 0)
+                    emin = "00";
+                else
+                    emin = "30";
+
+                stemp = date.getYear() + "/" + date.getMonthValue() + "/" + date.getDayOfMonth()
+                        + " " + startHour + ":" + smin + " " + sampm;
+
+                etemp = date.getYear() + "/" + date.getMonthValue() + "/" + date.getDayOfMonth()
+                        + " " + endHour + ":" + emin + " " + sampm;
+
+                w.setName(nameField.getText());
+                w.setDate(datePicker.getValue());
+                w.setStart(stemp);
+                w.setEnd(etemp);
+                w.setDoctor(doctorCmb.getValue());
+
+                System.out.println("name: " + nameField.getText() + "\n" +
+                                    "Date: " + datePicker.getValue() + "\n" +
+                                    "start: " + stemp + "\n" +
+                                    "end: " + etemp + "\n" +
+                                    "doctor: " + doctorCmb.getValue());
+
+ /////////////////////////////////////////////// /*save to database the information*////////////////////////////////////
+
                 WalkInPopUpController popUp = new WalkInPopUpController();
                 Stage child = new Stage(StageStyle.UNDECORATED);
                 child.setScene(new Scene(popUp));
@@ -250,7 +315,6 @@ public class WalkIn extends AnchorPane {
             }
         });
     }
-
 
     public void close() {
         closeBtn.setOnAction(event -> {
