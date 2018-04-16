@@ -1,6 +1,7 @@
 package udc.database;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DBTest {
     private static String dbName = "clinic_db";
@@ -18,49 +19,32 @@ public class DBTest {
     private static ResultSet rSet2 = null;
 
     public static void main(String[] args) {
-        try {
+
 
             connection = getConnection();
-            int id = 0;
-            String type = "";
+            ArrayList<String> doctorList = new ArrayList<>();
+            try {
 
-            String stmt = "SELECT \n" +
-                    "    time_start,\n" +
-                    "    time_end,\n" +
-                    "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
-                    "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
-                    "FROM\n" +
-                    "    clinic_db.appointment\n" +
-                    "        INNER JOIN\n" +
-                    "    clinic_db.doctor AS D ON D.doctor_id = clinic_db.appointment.doctor_id\n" +
-                    "        INNER JOIN\n" +
-                    "    clinic_db.client AS C ON C.client_id = clinic_db.appointment.client_id\n";
+                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.doctor");
+                rSet = pStmt.executeQuery();
 
-            if (type.equalsIgnoreCase("DOCTOR")) {
-                stmt += "WHERE doctor_id = '" + id + "'";
-            } else if (type.equalsIgnoreCase("CLIENT"))
-                stmt += "WHERE client_id = '" + id + "'";
+                while (rSet.next())
+                    doctorList.add(rSet.getString("first_name"));
 
-            pStmt = connection.prepareStatement(stmt);
-
-            rSet = pStmt.executeQuery();
-
-            // Traversing result set and instantiating appointments to list
-            while (rSet.next()) {
-                System.out.println(rSet.getString("time_start") + " " + rSet.getString("doctor") + " " + rSet.getString("client"));
-            }
-
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        } finally {
-            if(connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        }
+            for (int i = 0; i < doctorList.size(); i++) {
+                System.out.println(doctorList.get(i));
+            }
 
 
     }
