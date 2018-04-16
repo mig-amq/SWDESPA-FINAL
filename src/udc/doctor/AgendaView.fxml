@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label fx:id="lblSlots" layoutX="12.0" layoutY="6.0" prefHeight="34.0" prefWidth="551.0" text="Slots for">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <ScrollPane fx:id="agendaScrollPane" layoutY="48.0" prefHeight="572.0" prefWidth="575.0">
+            <content>
+                <AnchorPane fx:id="agendaPane" minHeight="0.0" minWidth="0.0" prefHeight="571.0" prefWidth="574.0">
+               <children>
+                  <ListView fx:id="listview" layoutX="3.0" prefHeight="554.0" prefWidth="551.0" />
+               </children></AnchorPane>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>

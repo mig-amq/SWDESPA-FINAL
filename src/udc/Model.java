@@ -47,7 +47,8 @@ public class Model {
                         break;
                 }
 
-                viewController.update();
+                if (viewController != null)
+                    viewController.update();
             } catch (Exception e) {
                 e.printStackTrace();
             }
