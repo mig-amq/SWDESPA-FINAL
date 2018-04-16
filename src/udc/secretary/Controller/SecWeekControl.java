@@ -46,8 +46,10 @@ public class SecWeekControl extends AbstractControl {
         for (int i = 0; i <  NodeComponents.size(); i++) {
             Node node = NodeComponents.get(i);
             if(node instanceof TableView && node.getId() != null)
-                if(node.getId().equals("tvWeekView"))
+                if(node.getId().equals("tvWeekView")) {
                     tvWeekView = (TableView<WeekSchedule>) node;
+                    tvWeekView.getSelectionModel().setCellSelectionEnabled(true);
+                }
             //add more for additional components
         }
     }

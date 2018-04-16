@@ -4,8 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import udc.Model;
@@ -17,11 +19,14 @@ import udc.secretary.Controller.SecDayAgendaControl;
 import udc.secretary.Controller.SecDayViewControl;
 import udc.secretary.Controller.SecWeekControl;
 import udc.secretary.Controller.WalkInControl;
+import udc.secretary.Secretary;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainController {
     private AnchorPane contentPane, secViewPane;
@@ -40,7 +45,6 @@ public class MainController {
     private ArrayList<String> doctorList;
     private ArrayList<Agenda> agendas;
     private Calendar calendar;
-
     private ArrayList<Agenda> Unavailability;
 
     public MainController(AnchorPane contentPane, AnchorPane pnlTool, Model model, Calendar calendar) throws Exception{
@@ -50,10 +54,10 @@ public class MainController {
         this.contentPane = contentPane;
         this.calendar = calendar;
         SecretaryMainNode = null;
-        Unavailability = model.getDbController().getUnvailability(-1);
         initContainerComponents();
         initData(pnlTool);
         initNodesChildren();
+        addAction();
         calendar.setOnMouseClicked(event -> {
 
         });
@@ -64,7 +68,7 @@ public class MainController {
 
     private void appendDoctorsToList(ArrayList<String> tempList){
         for (int i = 0; i < tempList.size(); i++) {
-            doctorList.add(tempList.get(i));
+            doctorList.add("Dr. " + tempList.get(i));
         }
         doctorList.remove(doctorList.size() - 1);
     }
@@ -143,8 +147,7 @@ public class MainController {
             }
 
         }
-        cmbBoxDoctors.getItems().setAll(doctorList);
-
+        cmbBoxDoctors.getItems().setAll(doctorList); // 0 = all  1 = doctor id of doctor1 2 = doctor id of doctor 2
         setButtonActions();
     }
 
@@ -357,12 +360,13 @@ public class MainController {
     private boolean isEqualDate(Agenda agenda, LocalDate selected){
         String sDoctorName = (String) cmbBoxDoctors.getSelectionModel().getSelectedItem();
 //        System.out.println(sDoctorName == null);
-
+        if(sDoctorName != null && !sDoctorName.equals("All"))
+            sDoctorName = sDoctorName.substring(4);
+        System.out.println(sDoctorName);
         if(sDoctorName!= null && agenda instanceof Appointment) {
-            System.out.println(dateToString(agenda.getStartTime()) + " startTime | selected" + dateToString(selected));
-            if (sDoctorName.equals("Miguel") && sDoctorName.equals(((Appointment)agenda).getDoctorName().split(" | ")[0])) //mq
+            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Appointment)agenda).getDoctorName())) //mq
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-            else if(sDoctorName.equals("Mitchell") && sDoctorName.equals(((Appointment) agenda).getDoctorName().split(" | ")[0]))
+            else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Appointment) agenda).getDoctorName()))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
             else if(sDoctorName.equals("All"))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
@@ -392,14 +396,23 @@ public class MainController {
         return WeekAgenda;
     }
 
-    private void calendarViewCondition(){
+    public void calendarViewCondition(){
         if (rdbtnDayView.isSelected()){
             secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()));
+            setColumnName((String) cmbBoxDoctors.getSelectionModel().getSelectedItem());
             secViewPane.getChildren().setAll(secDayView);
         } else if (rdbtnWeekView.isSelected()){
             secWeekControl.insertFilteredData(findWeekAgenda(), findStartingDay(calendar.getSelected()));
             secViewPane.getChildren().setAll(secWeekView);
         }
+    }
+
+    private void addAction(){
+
+    }
+
+    private void setColumnName(String name){
+        secDayViewControl.getTbView().getColumns().get(secDayViewControl.getTbView().getColumns().size() -1).setText(name);
     }
 
 }

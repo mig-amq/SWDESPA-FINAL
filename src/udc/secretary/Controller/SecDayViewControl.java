@@ -83,5 +83,8 @@ public class SecDayViewControl extends AbstractControl {
         return SecDayViewNode;
     }
 
+    public TableView<DaySchedule> getTbView(){
+        return tbView;
+    }
 
 }
