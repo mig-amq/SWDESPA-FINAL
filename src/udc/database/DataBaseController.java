@@ -457,6 +457,8 @@ public class DataBaseController {
      * @throws Exception account does not exist
      */
     public Account login(String username, String password) throws Exception {
+        Account temp = null;
+
         try {
             connection = ConnectionConfiguration.getConnection(model);
             pStmt = connection.prepareStatement("SELECT * FROM clinic_db.account WHERE `username` = '" + username +
@@ -484,17 +486,22 @@ public class DataBaseController {
                 if (rSet2.next()) {
                     switch (rSet.getString("type")) {
                         case "doctor":
-                            return new Doctor(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("doctor_id"));
+                            temp = new Doctor(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("doctor_id"));
+                            break;
                         case "client":
-                            return new Client(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("client_id"));
+                            temp = new Client(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("client_id"));
+                            break;
                         default:
-                            return new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
+                            temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
                     }
+
+                    temp.setImageURI(rSet.getString("image_url"));
                 }
 
                 rSet.close();
                 rSet2.close();
 
+                return temp;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
