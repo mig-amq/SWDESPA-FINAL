@@ -57,7 +57,7 @@ public class Model {
         }
     }
 
-    private void setState () {
+    public void setState () {
         if (thread != null) {
             this.getThread().update();
         }

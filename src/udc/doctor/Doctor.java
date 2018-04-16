@@ -98,6 +98,18 @@ public class Doctor extends PaneledView {
             dc = loader.<DoctorController>getController();
             dc.setModel(this.getModel());
             dc.setCalendar(this.calendar);
+
+            JFXButton test = new JFXButton("Test Server");
+            test.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
+            test.setLayoutY(60);
+
+            test.setMinWidth(150);
+            test.setOnAction(event -> {
+                if (this.getModel().getThread() != null && this.getModel().getThread().isStarted())
+                    this.getModel().setState();
+            });
+
+            buttonPanel.getChildren().add(test);
             JFXButton btnLogout = new JFXButton("Log Out");
             btnLogout.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
             btnLogout.setOnAction(event -> {
