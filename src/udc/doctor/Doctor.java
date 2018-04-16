@@ -16,6 +16,7 @@ import udc.Model;
 import udc.customfx.calendar.Calendar;
 import udc.customfx.drawerpanel.DrawerPanel;
 import udc.customfx.paneledview.PaneledView;
+import udc.doctor.controllers.DoctorController;
 import udc.notifier.AppointmentNotifier;
 import udc.objects.account.Account;
 import udc.objects.enums.PanelType;
@@ -34,6 +35,7 @@ public class Doctor extends PaneledView {
     private Calendar calendar;
     private AnchorPane userPane;
     private AnchorPane calPane;
+    private DoctorController dc;
 
     private DrawerPanel drawerPane;
     protected AppointmentNotifier notifier;
@@ -86,9 +88,15 @@ public class Doctor extends PaneledView {
         calPane = new AnchorPane();
         calPane.setPrefHeight(255);
 
+        dc = new DoctorController();
+
         try {
             AnchorPane buttonPanel = new AnchorPane();
-
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(getClass().getResource("../doctor/fxml/Doctor.fxml"));
+            dc = loader.getController();
+            dc.setModel(this.getModel());
+            dc.setCalendar(this.calendar);
             JFXButton btnLogout = new JFXButton("Log Out");
             btnLogout.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
             btnLogout.setOnAction(event -> {

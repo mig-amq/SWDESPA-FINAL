@@ -10,11 +10,12 @@ import udc.doctor.objects.WeekSchedule;
 import udc.objects.time.concrete.Agenda;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
-public class AppointmentsTableDController implements Initializable {
+public class AppointmentsTableDController extends SuperController implements Initializable {
 
     @FXML
     private TableView<DaySchedule> tbView;
@@ -71,4 +72,7 @@ public class AppointmentsTableDController implements Initializable {
         }
     }
 
+    @Override
+    public void update(LocalDateTime ldt) {
+    }
 }
