@@ -37,7 +37,6 @@ public class Secretary extends PaneledView {
     private AnchorPane calPane;
 
     private DrawerPanel drawerPane;
-    protected AppointmentNotifier notifier;
     public Secretary(double width, double height, Locale lang) throws IOException {
         super(width, height, lang);
 
@@ -126,12 +125,11 @@ public class Secretary extends PaneledView {
             JFXButton btnLogout = new JFXButton("Log Out");
             btnLogout.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
             btnLogout.setOnAction(event -> {
-                if (this.getModel().getAccount() != null && this.notifier != null && this.notifier.isStarted()) {
+                if (this.getModel().getAccount() != null) {
                     if (this.getModel().getThread() != null) {
                         this.getModel().getThread().off();
                     }
-
-                    this.notifier.off();
+                    
                     if (this.getParentStage() != null) {
                         this.getParentStage().show();
                         this.getParentStage().toFront();
