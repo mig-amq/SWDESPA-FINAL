@@ -1,9 +1,8 @@
-package udc.doctor;
+package udc.secretary;
+
 
 import com.jfoenix.controls.JFXButton;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,10 +15,11 @@ import udc.Model;
 import udc.customfx.calendar.Calendar;
 import udc.customfx.drawerpanel.DrawerPanel;
 import udc.customfx.paneledview.PaneledView;
-import udc.doctor.controllers.DoctorController;
+import udc.doctor.Doctor;
 import udc.notifier.AppointmentNotifier;
 import udc.objects.account.Account;
 import udc.objects.enums.PanelType;
+import udc.secretary.Controller.MainController;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,37 +27,68 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Locale;
 
-public class Doctor extends PaneledView {
-
+public class Secretary extends PaneledView {
+    MainController mainController;
     protected Label username;
     protected ImageView img;
 
     private Calendar calendar;
     private AnchorPane userPane;
     private AnchorPane calPane;
-    private DoctorController dc;
 
     private DrawerPanel drawerPane;
-    protected AppointmentNotifier notifier;
-
-    public Doctor(double width, double height, Locale lang) throws IOException {
+    public Secretary(double width, double height, Locale lang) throws IOException {
         super(width, height, lang);
+
     }
 
-    public Doctor(double width, double height) throws IOException {
+    public Secretary(double width, double height) throws IOException {
         super(width, height);
     }
 
-    public Doctor(Model model) throws IOException {
+    public Secretary () throws Exception {
         super(800, 650);
-        this.setModel(model);
+    }
+
+    public Secretary(Model model) throws IOException {
+        super(800, 650);
+        //this.setAccount(account);
+        setModel(model);
+        try {
+            mainController = new MainController(contentPane, pnlTool, model, calendar);
+            calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
+                mainController.calendarViewCondition();
+                this.getTitle().setText("Secretary - " + date);
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }   
     }
 
     @Override
     public void init() {
-        this.initPanel(PanelType.DOCTOR);
+        initEr();
+        this.initPanel(PanelType.SECRETARY);
 
-        this.drawerPane = new DrawerPanel(265, 650, false);
+        this.getTitle().setText("Secretary - " +
+               calendar.selectedProperty().getValue()
+                       .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));
+    }
+
+    @Override
+    public void update() {
+        try{
+            mainController.updateData();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void initEr(){
+        this.initPanel(PanelType.SECRETARY);
+
+            this.drawerPane = new DrawerPanel(265, 650, false);
         userPane = new AnchorPane();
         userPane.setPrefHeight(200);
 
@@ -88,38 +119,17 @@ public class Doctor extends PaneledView {
         calPane = new AnchorPane();
         calPane.setPrefHeight(255);
 
-        dc = new DoctorController();
-
         try {
             AnchorPane buttonPanel = new AnchorPane();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Doctor.fxml"));
-            this.contentPane.getChildren().add(loader.load());
 
-            dc = loader.getController();
-            dc.setModel(this.getModel());
-            dc.setCalendar(this.calendar);
-
-            JFXButton test = new JFXButton("Test Server");
-            test.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
-            test.setLayoutY(60);
-
-            test.setMinWidth(150);
-            test.setOnAction(event -> {
-                if (this.getModel().getThread() != null && this.getModel().getThread().isStarted())
-                    this.getModel().setState();
-            });
-
-            buttonPanel.getChildren().add(test);
             JFXButton btnLogout = new JFXButton("Log Out");
             btnLogout.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
             btnLogout.setOnAction(event -> {
-                if (this.getModel().getAccount() != null && this.notifier != null && this.notifier.isStarted()) {
+                if (this.getModel().getAccount() != null) {
                     if (this.getModel().getThread() != null) {
                         this.getModel().getThread().off();
                     }
-
-                    this.notifier.off();
-
+                    
                     if (this.getParentStage() != null) {
                         this.getParentStage().show();
                         this.getParentStage().toFront();
@@ -140,14 +150,6 @@ public class Doctor extends PaneledView {
 
             this.drawerPane.add(drawerPane.SPACER(180));
             this.drawerPane.add(calPane);
-            this.getTitle().setText("Doctor - " +
-                    this.calendar.selectedProperty().getValue()
-                            .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));
-
-            this.calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
-                this.getTitle().setText("Doctor - " + date);
-            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -158,27 +160,14 @@ public class Doctor extends PaneledView {
         this.getDrawer().setContent(contentPane);
     }
 
-    @Override
-    public void update() {
-
-    }
-
-    public Calendar getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
-    }
-
-    @Override
-    public void setModel(Model model) {
-        super.setModel(model);
-
-        this.username.setText("Dr. " + model.getAccount().getFirstName() + " " + model.getAccount().getLastName());
-        this.img.setImage(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(model.getAccount().getImageURI()))));
-        this.notifier = new AppointmentNotifier(this.getModel().getAccount());
-        this.notifier.start();
-
+//    public Account getAccount(){
+//        return account;
+//    }
+//
+//
+    public void setModel(Model account) {
+        super.setModel(account);
+        this.username.setText("Sec. " + account.getAccount().getFirstName() + " " + account.getAccount().getLastName());
+        this.img.setImage(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(account.getAccount().getImageURI()))));
     }
 }

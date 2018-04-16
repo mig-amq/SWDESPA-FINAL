@@ -13,10 +13,9 @@
       <JFXComboBox fx:id="cmbEMin" layoutX="292.0" layoutY="167.0" />
       <Label layoutX="182.0" layoutY="176.0" text="To" />
       <Label layoutX="21.0" layoutY="78.0" text="Time" />
-      <JFXButton fx:id="btnSetAvailable" layoutX="85.0" layoutY="361.0" mnemonicParsing="false" text="Set Available" />
       <JFXButton fx:id="btnSetUnavailable" layoutX="207.0" layoutY="361.0" mnemonicParsing="false" text="Set Unavailable" />
       <Label layoutX="291.0" layoutY="73.0" text="Type" />
       <JFXComboBox fx:id="cmbType" layoutX="277.0" layoutY="95.0" />
-      <JFXComboBox id="timeType" layoutX="374.0" layoutY="167.0" />
+      <JFXComboBox fx:id="timeType" layoutX="374.0" layoutY="167.0" />
    </children>
 </AnchorPane>

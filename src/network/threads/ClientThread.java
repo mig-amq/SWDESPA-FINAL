@@ -2,8 +2,7 @@ package network.threads;
 
 import udc.Model;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -19,12 +18,13 @@ public class ClientThread extends Thread {
         this.setSocket(new Socket(model.getServerAddress(), model.getServerPort()));
         this.setHasMessage(false);
         this.setStarted(true);
-
+        System.out.println("added thread");
     }
 
     public void update() {
         synchronized (this.messages) {
-            this.messages.add("UPDATE");
+            System.out.println("updating");
+            this.messages.push("UPDATE");
             this.setHasMessage(!this.messages.isEmpty());
         }
     }
@@ -32,15 +32,15 @@ public class ClientThread extends Thread {
     @Override
     public void run() {
         String message = "";
-        Scanner in;
+        BufferedReader in;
         PrintWriter out;
 
         while (this.isStarted() && socket != null && !socket.isClosed()) {
             try {
-                in = new Scanner(socket.getInputStream());
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                if (in.hasNextLine()) { // check if server sent a message
-                    if(in.nextLine().equals("UPDATE")) {
+                if (in.ready()) { // check if server sent a message
+                    if(in.readLine().equals("UPDATE")) {
                         this.model.getState();
                     }
                 }

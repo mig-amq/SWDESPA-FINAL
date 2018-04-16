@@ -14,7 +14,8 @@ import java.io.IOException;
 
 public class ClientController extends AnchorPane {
 
-    @FXML private AnchorPane mainPane, homePane, bookPane, managePane, smth;
+    @FXML private AnchorPane mainPane, homePane, bookPane, managePane;
+    @FXML private AnchorPane bookTablePane, manageTablePane;
 
     //    @FXML private AnchorPane dCalDay, dCalWeek, cCalDay, cCalWeek;
 //    @FXML private AnchorPane cAgendaDay, cAgendaWeek, dAgendaDay, dAgendaWeek;
@@ -37,14 +38,13 @@ public class ClientController extends AnchorPane {
         this.client = client;
         this.model = model;
         initializeButtons();
-
     }
 
-    private void loadFXML(String path) {
+    private void loadFXML(String path, AnchorPane anchorPane) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
-            smth.getChildren().clear();
-            smth.getChildren().add(loader.load());
+            anchorPane.getChildren().clear();
+            anchorPane.getChildren().add(loader.load());
 
             clientSuperController = loader.<ClientAgendaDayController>getController();
             clientSuperController.setModel(model);
@@ -58,14 +58,14 @@ public class ClientController extends AnchorPane {
 
         book.setOnAction(event -> {
             bookPane.toFront();
-            loadFXML("../DoctorCalDay.fxml");
+            loadFXML("../FXMLFiles/DoctorCalDay.fxml", bookTablePane);
             bCalendarView.setSelected(true);
             bDayView.setSelected(true);
         });
 
         manage.setOnAction(event -> {
             managePane.toFront();
-            loadFXML("../ClientCalDay.fxml");
+            loadFXML("../FXMLFiles/ClientCalDay.fxml", manageTablePane);
             mCalendarView.setSelected(true);
             mDayView.setSelected(true);
         });
@@ -95,74 +95,74 @@ public class ClientController extends AnchorPane {
 
         bCalendarView.setOnAction(event -> {
             if(bDayView.isSelected()) {
-                loadFXML("../DoctorCalDay.fxml");
+                loadFXML("../FXMLFiles/DoctorCalDay.fxml", bookTablePane);
             }
             else if(bWeekView.isSelected()) {
-                loadFXML("../DoctorCalWeek.fxml");
+                loadFXML("../FXMLFiles/DoctorCalWeek.fxml", bookTablePane);
             }
         });
 
         bAgendaView.setOnAction(event -> {
             if(bDayView.isSelected()) {
-                loadFXML("../DoctorAgendaDay.fxml");
+                loadFXML("../FXMLFiles/DoctorAgendaDay.fxml", bookTablePane);
             }
             else if(bWeekView.isSelected()) {
-                loadFXML("../DoctorAgendaWeek.fxml");
+                loadFXML("../FXMLFiles/DoctorAgendaWeek.fxml", bookTablePane);
             }
         });
 
 
         bDayView.setOnAction(event -> {
             if(bCalendarView.isSelected()) {
-                loadFXML("../DoctorCalDay.fxml");
+                loadFXML("../FXMLFiles/DoctorCalDay.fxml", bookTablePane);
             }
             else if(bAgendaView.isSelected()) {
-                loadFXML("../DoctorAgendaDay.fxml");
+                loadFXML("../FXMLFiles/DoctorAgendaDay.fxml", bookTablePane);
             }
         });
 
         bWeekView.setOnAction(event -> {
             if(bCalendarView.isSelected()) {
-                loadFXML("../DoctorCalWeek.fxml");
+                loadFXML("../FXMLFiles/DoctorCalWeek.fxml", bookTablePane);
             }
             else if(bAgendaView.isSelected()) {
-                loadFXML("../DoctorAgendaWeek.fxml");
+                loadFXML("../FXMLFiles/DoctorAgendaWeek.fxml", bookTablePane);
             }
         });
 
         mCalendarView.setOnAction(event -> {
             if(mDayView.isSelected()) {
-                loadFXML("../ClientCalDay.fxml");
+                loadFXML("../FXMLFiles/ClientCalDay.fxml", manageTablePane);
             }
             else if(mWeekView.isSelected()) {
-                loadFXML("../ClientCalWeek.fxml");
+                loadFXML("../FXMLFiles/ClientCalWeek.fxml", manageTablePane);
             }
         });
 
         mAgendaView.setOnAction(event -> {
             if(mDayView.isSelected()) {
-                loadFXML("../ClientAgendaDay.fxml");
+                loadFXML("../FXMLFiles/ClientAgendaDay.fxml", manageTablePane);
             }
             else if(mWeekView.isSelected()) {
-                loadFXML("../ClientAgendaWeek.fxml");
+                loadFXML("../FXMLFiles/ClientAgendaWeek.fxml", manageTablePane);
             }
         });
 
         mDayView.setOnAction(event -> {
             if(mCalendarView.isSelected()) {
-                loadFXML("../ClientCalDay.fxml");
+                loadFXML("../FXMLFiles/ClientCalDay.fxml", manageTablePane);
             }
             else if(mAgendaView.isSelected()) {
-                loadFXML("../ClientAgendaDay.fxml");
+                loadFXML("../FXMLFiles/ClientAgendaDay.fxml", manageTablePane);
             }
         });
 
         mWeekView.setOnAction(event -> {
             if(mCalendarView.isSelected()) {
-                loadFXML("../ClientCalWeek.fxml");
+                loadFXML("../FXMLFiles/ClientCalWeek.fxml", manageTablePane);
             }
             else if(mAgendaView.isSelected()) {
-                loadFXML("../ClientAgendaWeek.fxml");
+                loadFXML("../FXMLFiles/ClientAgendaWeek.fxml", manageTablePane);
             }
         });
 

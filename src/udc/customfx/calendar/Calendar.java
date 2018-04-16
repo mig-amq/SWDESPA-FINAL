@@ -53,14 +53,22 @@ public class Calendar extends AnchorPane{
     @FXML
     public void initialize() {
         arrow_left.setOnMouseClicked(event -> {
-            date.set(date.get().minus(1, ChronoUnit.MONTHS));
-            date.get().withDayOfMonth(1);
-            this.paint();
+            if (date.get().minus(1, ChronoUnit.MONTHS).getMonthValue() >= LocalDate.now().getMonthValue()) {
+                date.set(date.get().minus(1, ChronoUnit.MONTHS));
+                date.get().withDayOfMonth(1);
+                this.paint();
+            } else if (date.get().minus(1, ChronoUnit.MONTHS).getMonthValue() == LocalDate.now().getMonthValue()) {
+                arrow_left.setDisable(true);
+            }
         });
 
         arrow_right.setOnMouseClicked(event -> {
             date.set(date.get().plus(1, ChronoUnit.MONTHS));
             date.get().withDayOfMonth(1);
+
+            if (arrow_left.isDisabled())
+                arrow_left.setDisable(false);
+
             this.paint();
         });
 
@@ -123,7 +131,7 @@ public class Calendar extends AnchorPane{
 
             panel.getChildren().add(label);
 
-            if (temp.getDayOfMonth() >= today.getDayOfMonth()) {
+            if (temp.isAfter(LocalDate.now()) || temp.isEqual(LocalDate.now())) {
                 LocalDate finalTemp = temp;
                 label.setOnMouseClicked(event -> this.select(finalTemp));
 
@@ -178,10 +186,10 @@ public class Calendar extends AnchorPane{
 
         year.getItems().clear();
 
-        for (int i = date.get().getYear() - 50; i < date.get().getYear() + 50; i++)
+        for (int i = date.get().getYear(); i < date.get().getYear() + 50; i++)
             year.getItems().add(NumberFormat.getInstance(this.getLocale()).format(i).replaceAll("[,.]", ""));
 
-        year.getSelectionModel().select(50);
+        year.getSelectionModel().select(0);
 
         if (selected.getValue() == null)
             this.select(LocalDate.now());

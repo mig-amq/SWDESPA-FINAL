@@ -52,7 +52,7 @@ public class DataBaseController {
             rSet = pStmt.executeQuery();
 
             while (rSet.next())
-                doctorList.add(rSet.getString("first_name"));
+                doctorList.add(rSet.getString("first_name") + " " + rSet.getString("last_name"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -334,17 +334,17 @@ public class DataBaseController {
      * @return the temporary ArrayList, where data was instantiated.
      * @throws Exception table is empty.
      */
-    public ArrayList<Appointment> getAppointments(int id, String type) throws Exception {
+    public ArrayList<Agenda> getAppointments(int id, String type) throws Exception {
         SingleAppointmentBuilder builder;
         RecurringAppointmentBuilder rbuilder;
 
         try {
-            ArrayList<Appointment> tempList = new ArrayList<>();
+            ArrayList<Agenda> tempList = new ArrayList<>();
 
             connection = ConnectionConfiguration.getConnection(model);
 
             String stmt = "SELECT \n" +
-                    "    time_start, recurring,\n" +
+                    "    time_start, recurring, appointment_id,\n" +
                     "    time_end,\n" +
                     "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
                     "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
@@ -370,12 +370,16 @@ public class DataBaseController {
                 rbuilder = new RecurringAppointmentBuilder(rSet.getString("doctor"), rSet.getString("client"));
 
                 if (rSet.getBoolean("recurring")) {
+//                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
+//                            strToTime(rSet.getString("time_start")),
                     tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
                 } else {
-                    tempList.add(builder.build(strToTime(rSet.getString("time_start")),
+//                    tempList.add(builder.build(rSet.getInt("appointment_id"),
+//                            strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
@@ -407,12 +411,12 @@ public class DataBaseController {
      * @return an ArrayList of unavailable times of a specific Doctor
      * @throws Exception table is empty.
      */
-    public ArrayList<Unavailable> getUnvailability(int doctor_id) throws Exception {
+    public ArrayList<Agenda> getUnvailability(int doctor_id) throws Exception {
         SingleUnavailableBuilder builder = new SingleUnavailableBuilder(doctor_id);
         RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder(doctor_id);
 
         try {
-            ArrayList<Unavailable> tempList = new ArrayList<>();
+            ArrayList<Agenda> tempList = new ArrayList<>();
 
             connection = ConnectionConfiguration.getConnection(model);
 
@@ -427,10 +431,12 @@ public class DataBaseController {
             // Traversing result set and instantiating unavailability to temp list
             while (rSet.next()) {
                 if (rSet.getBoolean("recurring")) {
-                    tempList.add(builder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(builder.build(rSet.getInt("doctor_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
                 } else {
-                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(rSet.getInt("doctor_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
                 }
             }
@@ -500,7 +506,8 @@ public class DataBaseController {
                             temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
                     }
 
-                    temp.setImageURI(rSet.getString("image_url"));
+//                    if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
+//                        temp.setImageURI(rSet.getString("image_url"));
                 }
 
                 rSet.close();

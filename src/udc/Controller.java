@@ -25,6 +25,7 @@ import udc.customfx.drawerpanel.DrawerPanel;
 import udc.doctor.Doctor;
 import udc.objects.account.Account;
 import udc.objects.enums.AccountType;
+import udc.secretary.Secretary;
 //import udc.secretary.Secretary;
 
 import java.io.IOException;
@@ -209,18 +210,18 @@ public class Controller implements Initializable{
                         e.printStackTrace();
                     }
                 } else if (account.getType() == AccountType.SECRETARY) {
-                    /*try {
-                        Secretary secretary = new Secretary(model);
+                    try {
+                        Secretary sec = new Secretary(model);
                         Stage child = new Stage(StageStyle.UNDECORATED);
-                        child.setScene(new Scene(secretary));
+                        child.setScene(new Scene(sec));
                         child.show();
 
-                        secretary.setStage(child);
-                        secretary.setParentStage(this.getStage());
-                        model.setViewController(secretary);
+                        sec.setStage(child);
+                        sec.setParentStage(this.getStage());
+                        model.setViewController(sec);
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }*/
+                    }
                 } else if (account.getType() == AccountType.CLIENT) {
                     try {
                         Client client = new Client(model);

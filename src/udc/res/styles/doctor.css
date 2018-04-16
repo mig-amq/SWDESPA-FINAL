@@ -2,11 +2,6 @@
     -fx-background-color: #d13a3a;
 }
 
-#mainPanel {
-    -fx-border-width: 1px;
-    -fx-border-color: #d13a3a;
-}
-
 #minimize, #close {
     -fx-cursor: hand;
 }
@@ -31,6 +26,8 @@ DrawerPanel JFXButton {
     -fx-text-fill: #ffffff;
     -fx-cursor: hand;
     -fx-background-color: transparent !important;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #ffffff;
     -fx-background-radius: 0;
     -fx-border-radius: 0;
     -fx-padding: 10px;
