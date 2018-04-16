@@ -344,7 +344,7 @@ public class DataBaseController {
             connection = ConnectionConfiguration.getConnection(model);
 
             String stmt = "SELECT \n" +
-                    "    time_start, recurring,\n" +
+                    "    time_start, recurring, appointment_id,\n" +
                     "    time_end,\n" +
                     "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
                     "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
