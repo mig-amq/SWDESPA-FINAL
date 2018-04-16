@@ -37,6 +37,7 @@ public class Client extends PaneledView {
     private DrawerPanel drawerPane;
 
     private ClientController clientController;
+
     public Client(double width, double height, Locale lang) throws IOException {
         super(width, height, lang);
 
@@ -106,6 +107,12 @@ public class Client extends PaneledView {
                 if (this.getModel().getAccount() != null) {
                     if (this.getModel().getThread() != null) {
                         this.getModel().getThread().off();
+                    }
+
+                    if (this.getParentStage() != null) {
+                        this.getParentStage().show();
+                        this.getParentStage().toFront();
+                        this.getStage().close();
                     }
                 }
             });
