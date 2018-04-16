@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
 
 public class RecurringAppointmentBuilder extends AppointmentBuilder {
 
+    public RecurringAppointmentBuilder(String doctor, String client) {
+        super(doctor, client);
+    }
+
     public Appointment build (LocalDateTime start, LocalDateTime end, String doctor, String client) {
         this.build(start, end);
         this.getAppointment().setDoctorName(doctor);

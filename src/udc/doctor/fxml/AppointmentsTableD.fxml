@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="587.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="udc.doctor.controllers.AppointmentsTableDController">
+    <content>
+        <AnchorPane fx:id="tablePane" minHeight="0.0" minWidth="0.0" prefHeight="620.0" prefWidth="570.0">
+            <children>
+                <TableView fx:id="tbView" prefHeight="620.0" prefWidth="575.0">
+                    <columns>
+                        <TableColumn fx:id="colTime" editable="false" prefWidth="132.00000607967377" resizable="false" text="Time" />
+                        <TableColumn fx:id="colDoctors" editable="false" prefWidth="439.1999816894531" resizable="false" text="Schedule" />
+                    </columns>
+                </TableView>
+            </children></AnchorPane>
+    </content>
+</ScrollPane>

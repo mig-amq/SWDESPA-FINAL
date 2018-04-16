@@ -926,19 +926,19 @@
       <Engine>InnoDB</Engine>
       <Collation>utf8_general_ci</Collation>
     </table>
-    <table id="234" parent="4" name="availability">
+    <table id="234" parent="4" name="client">
       <Engine>InnoDB</Engine>
       <Collation>utf8_general_ci</Collation>
     </table>
-    <table id="235" parent="4" name="client">
+    <table id="235" parent="4" name="doctor">
       <Engine>InnoDB</Engine>
       <Collation>utf8_general_ci</Collation>
     </table>
-    <table id="236" parent="4" name="doctor">
+    <table id="236" parent="4" name="secretary">
       <Engine>InnoDB</Engine>
       <Collation>utf8_general_ci</Collation>
     </table>
-    <table id="237" parent="4" name="secretary">
+    <table id="237" parent="4" name="unavailability">
       <Engine>InnoDB</Engine>
       <Collation>utf8_general_ci</Collation>
     </table>
@@ -967,56 +967,56 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="242" parent="232" name="PRIMARY">
+    <column id="242" parent="232" name="image_url">
+      <Position>5</Position>
+      <DataType>longtext|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="243" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>account_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="243" parent="233" name="appointment_id">
+    <column id="244" parent="233" name="appointment_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="244" parent="233" name="date">
+    <column id="245" parent="233" name="time_start">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="245" parent="233" name="time_start">
-      <Position>3</Position>
-      <DataType>varchar(255)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
     <column id="246" parent="233" name="time_end">
-      <Position>4</Position>
-      <DataType>varchar(255)|0</DataType>
+      <Position>3</Position>
+      <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="247" parent="233" name="doctor_id">
-      <Position>5</Position>
+      <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="248" parent="233" name="client_id">
-      <Position>6</Position>
+      <Position>5</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="249" parent="233" name="recurring">
-      <Position>7</Position>
+      <Position>6</Position>
       <DataType>tinyint(4)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="250" parent="233" name="except_dates">
-      <Position>8</Position>
-      <DataType>varchar(255)|0</DataType>
+      <Position>7</Position>
+      <DataType>varchar(999)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <index id="251" parent="233" name="fk_appointment_doctor1_idx">
@@ -1042,52 +1042,51 @@
       <RefTableName>client</RefTableName>
       <RefColNames>client_id</RefColNames>
     </foreign-key>
-    <column id="256" parent="234" name="availability_id">
+    <column id="256" parent="234" name="client_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="257" parent="234" name="doctor_id">
+    <column id="257" parent="234" name="first_name">
       <Position>2</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="258" parent="234" name="date">
+    <column id="258" parent="234" name="last_name">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="259" parent="234" name="time_start">
+    <column id="259" parent="234" name="account_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="260" parent="234" name="time_end">
+    <column id="260" parent="234" name="type">
       <Position>5</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
+      <DataType>varchar(45)|0</DataType>
+      <DefaultExpression>&apos;normal&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="261" parent="234" name="fk_availability_doctor_idx">
-      <ColNames>doctor_id</ColNames>
+    <index id="261" parent="234" name="fk_client_account1_idx">
+      <ColNames>account_id</ColNames>
     </index>
     <key id="262" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>availability_id</ColNames>
+      <ColNames>client_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="263" parent="234" name="fk_availability_doctor">
-      <ColNames>doctor_id</ColNames>
+    <foreign-key id="263" parent="234" name="fk_client_account1">
+      <ColNames>account_id</ColNames>
       <RefSchemaName>clinic_db</RefSchemaName>
-      <RefTableName>doctor</RefTableName>
-      <RefColNames>doctor_id</RefColNames>
+      <RefTableName>account</RefTableName>
+      <RefColNames>account_id</RefColNames>
     </foreign-key>
-    <column id="264" parent="235" name="client_id">
+    <column id="264" parent="235" name="doctor_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
@@ -1109,105 +1108,99 @@
     <column id="267" parent="235" name="account_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="268" parent="235" name="type">
-      <Position>5</Position>
-      <DataType>varchar(45)|0</DataType>
-      <DefaultExpression>&apos;normal&apos;</DefaultExpression>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="269" parent="235" name="fk_client_account1_idx">
+    <index id="268" parent="235" name="fk_doctor_account1_idx">
       <ColNames>account_id</ColNames>
     </index>
-    <key id="270" parent="235" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>client_id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="271" parent="235" name="fk_client_account1">
-      <ColNames>account_id</ColNames>
-      <RefSchemaName>clinic_db</RefSchemaName>
-      <RefTableName>account</RefTableName>
-      <RefColNames>account_id</RefColNames>
-    </foreign-key>
-    <column id="272" parent="236" name="doctor_id">
-      <Position>1</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="273" parent="236" name="first_name">
-      <Position>2</Position>
-      <DataType>varchar(45)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="274" parent="236" name="last_name">
-      <Position>3</Position>
-      <DataType>varchar(45)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="275" parent="236" name="account_id">
-      <Position>4</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="276" parent="236" name="fk_doctor_account1_idx">
-      <ColNames>account_id</ColNames>
-    </index>
-    <key id="277" parent="236" name="PRIMARY">
+    <key id="269" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>doctor_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="278" parent="236" name="fk_doctor_account1">
+    <foreign-key id="270" parent="235" name="fk_doctor_account1">
       <ColNames>account_id</ColNames>
       <RefSchemaName>clinic_db</RefSchemaName>
       <RefTableName>account</RefTableName>
       <RefColNames>account_id</RefColNames>
     </foreign-key>
-    <column id="279" parent="237" name="secretary_id">
+    <column id="271" parent="236" name="secretary_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="280" parent="237" name="first_name">
+    <column id="272" parent="236" name="first_name">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="281" parent="237" name="last_name">
+    <column id="273" parent="236" name="last_name">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="282" parent="237" name="account_id">
+    <column id="274" parent="236" name="account_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="283" parent="237" name="fk_secretary_account1_idx">
+    <index id="275" parent="236" name="fk_secretary_account1_idx">
       <ColNames>account_id</ColNames>
     </index>
-    <key id="284" parent="237" name="PRIMARY">
+    <key id="276" parent="236" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>secretary_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="285" parent="237" name="fk_secretary_account1">
+    <foreign-key id="277" parent="236" name="fk_secretary_account1">
       <ColNames>account_id</ColNames>
       <RefSchemaName>clinic_db</RefSchemaName>
       <RefTableName>account</RefTableName>
       <RefColNames>account_id</RefColNames>
+    </foreign-key>
+    <column id="278" parent="237" name="doctor_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="279" parent="237" name="time_start">
+      <Position>2</Position>
+      <DataType>varchar(45)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="280" parent="237" name="time_end">
+      <Position>3</Position>
+      <DataType>varchar(45)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="281" parent="237" name="recurring">
+      <Position>4</Position>
+      <DataType>tinyint(4)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="282" parent="237" name="except_dates">
+      <Position>5</Position>
+      <DataType>varchar(999)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="283" parent="237" name="fk_availability_doctor_idx">
+      <ColNames>doctor_id</ColNames>
+    </index>
+    <foreign-key id="284" parent="237" name="fk_availability_doctor">
+      <ColNames>doctor_id</ColNames>
+      <RefSchemaName>clinic_db</RefSchemaName>
+      <RefTableName>doctor</RefTableName>
+      <RefColNames>doctor_id</RefColNames>
     </foreign-key>
   </database-model>
 </dataSource>

@@ -5,10 +5,12 @@ import udc.objects.account.Account;
 import udc.objects.account.Client;
 import udc.objects.account.Doctor;
 import udc.objects.account.Secretary;
+import udc.objects.enums.AgendaType;
 import udc.objects.time.builders.RecurringAppointmentBuilder;
 import udc.objects.time.builders.RecurringUnavailableBuilder;
 import udc.objects.time.builders.SingleAppointmentBuilder;
 import udc.objects.time.builders.SingleUnavailableBuilder;
+import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Unavailable;
 
@@ -333,8 +335,8 @@ public class DataBaseController {
      * @throws Exception table is empty.
      */
     public ArrayList<Appointment> getAppointments(int id, String type) throws Exception {
-        SingleAppointmentBuilder builder = new SingleAppointmentBuilder();
-        RecurringAppointmentBuilder rbuilder = new RecurringAppointmentBuilder();
+        SingleAppointmentBuilder builder;
+        RecurringAppointmentBuilder rbuilder;
 
         try {
             ArrayList<Appointment> tempList = new ArrayList<>();
@@ -342,21 +344,21 @@ public class DataBaseController {
             connection = ConnectionConfiguration.getConnection(model);
 
             String stmt = "SELECT \n" +
-                    "    time_start,\n" +
+                    "    time_start, recurring,\n" +
                     "    time_end,\n" +
                     "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
                     "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
                     "FROM\n" +
-                    "    clinic_db.appointment\n" +
+                    "    clinic_db.appointment AS A \n" +
                     "        INNER JOIN\n" +
-                    "    clinic_db.doctor AS D ON D.doctor_id = clinic_db.appointment.doctor_id\n" +
+                    "    clinic_db.doctor AS D ON D.doctor_id = A.doctor_id\n" +
                     "        INNER JOIN\n" +
-                    "    clinic_db.client AS C ON C.client_id = clinic_db.appointment.client_id\n";
+                    "    clinic_db.client AS C ON C.client_id = A.client_id\n";
 
             if (type.equalsIgnoreCase("DOCTOR")) {
-                stmt += "WHERE doctor_id = '" + id + "'";
+                stmt += "WHERE D.doctor_id = '" + id + "'";
             } else if (type.equalsIgnoreCase("CLIENT"))
-                stmt += "WHERE client_id = '" + id + "'";
+                stmt += "WHERE C.client_id = '" + id + "'";
 
             pStmt = connection.prepareStatement(stmt);
 
@@ -364,6 +366,9 @@ public class DataBaseController {
 
             // Traversing result set and instantiating appointments to list
             while (rSet.next()) {
+                builder = new SingleAppointmentBuilder(rSet.getString("doctor"), rSet.getString("client"));
+                rbuilder = new RecurringAppointmentBuilder(rSet.getString("doctor"), rSet.getString("client"));
+
                 if (rSet.getBoolean("recurring")) {
                     tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
@@ -403,8 +408,8 @@ public class DataBaseController {
      * @throws Exception table is empty.
      */
     public ArrayList<Unavailable> getUnvailability(int doctor_id) throws Exception {
-        SingleUnavailableBuilder builder = new SingleUnavailableBuilder();
-        RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder();
+        SingleUnavailableBuilder builder = new SingleUnavailableBuilder(doctor_id);
+        RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder(doctor_id);
 
         try {
             ArrayList<Unavailable> tempList = new ArrayList<>();
@@ -457,6 +462,8 @@ public class DataBaseController {
      * @throws Exception account does not exist
      */
     public Account login(String username, String password) throws Exception {
+        Account temp = null;
+
         try {
             connection = ConnectionConfiguration.getConnection(model);
             pStmt = connection.prepareStatement("SELECT * FROM clinic_db.account WHERE `username` = '" + username +
@@ -484,17 +491,22 @@ public class DataBaseController {
                 if (rSet2.next()) {
                     switch (rSet.getString("type")) {
                         case "doctor":
-                            return new Doctor(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("doctor_id"));
+                            temp = new Doctor(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("doctor_id"));
+                            break;
                         case "client":
-                            return new Client(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("client_id"));
+                            temp = new Client(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("client_id"));
+                            break;
                         default:
-                            return new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
+                            temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
                     }
+
+                    temp.setImageURI(rSet.getString("image_url"));
                 }
 
                 rSet.close();
                 rSet2.close();
 
+                return temp;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -508,6 +520,49 @@ public class DataBaseController {
         }
 
         throw new Exception("Error: That account does not exist.");
+    }
+
+    public ArrayList<Agenda> getExceptions (int doctor_id) {
+        ArrayList<Agenda> temp0 = new ArrayList<>();
+        Agenda temp1;
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement("SELECT U.except_dates AS ed FROM doctor D INNER JOIN unavailability U ON U.doctor_id = D.doctor_id WHERE U.doctor_id = " + doctor_id);
+
+            rSet = pStmt.executeQuery();
+
+            while (rSet.next()) {
+                if (rSet.getBoolean("recurring")) {
+                    String[] temp2 = rSet.getString("ed").split(";");
+                    for (int i = 0; i < temp2.length; i++) {
+                        temp1 = new Agenda();
+
+                        String time1 = temp2[i].split(" - ")[0];
+                        String time2 = temp2[i].split(" - ")[1];
+
+                        temp1.setStartTime(strToTime(time1));
+                        temp1.setEndTime(strToTime(time2));
+                        temp1.setType(AgendaType.SINGLE);
+
+                        temp0.add(temp1);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return temp0;
     }
 
     public Model getModel() {
