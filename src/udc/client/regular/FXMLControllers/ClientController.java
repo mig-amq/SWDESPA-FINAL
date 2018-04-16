@@ -8,7 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import udc.Model;
-import udc.client.regular.Client;
+import udc.client.Client;
 
 import java.io.IOException;
 
