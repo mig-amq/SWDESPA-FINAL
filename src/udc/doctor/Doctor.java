@@ -92,9 +92,10 @@ public class Doctor extends PaneledView {
 
         try {
             AnchorPane buttonPanel = new AnchorPane();
-            FXMLLoader loader = new FXMLLoader();
-            loader.load(getClass().getResource("../doctor/fxml/Doctor.fxml"));
-            dc = loader.getController();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Doctor.fxml"));
+            this.contentPane.getChildren().add(loader.load());
+
+            dc = loader.<DoctorController>getController();
             dc.setModel(this.getModel());
             dc.setCalendar(this.calendar);
             JFXButton btnLogout = new JFXButton("Log Out");
