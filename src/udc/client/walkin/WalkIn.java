@@ -325,7 +325,6 @@ public class WalkIn extends AnchorPane {
     }
 
     
-    @Override
     public Node getStyleableNode() {
         return null;
     }
