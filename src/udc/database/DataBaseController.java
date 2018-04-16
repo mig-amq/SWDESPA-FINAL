@@ -342,21 +342,21 @@ public class DataBaseController {
             connection = ConnectionConfiguration.getConnection(model);
 
             String stmt = "SELECT \n" +
-                    "    time_start,\n" +
+                    "    time_start, recurring,\n" +
                     "    time_end,\n" +
                     "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
                     "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
                     "FROM\n" +
-                    "    clinic_db.appointment\n" +
+                    "    clinic_db.appointment AS A \n" +
                     "        INNER JOIN\n" +
-                    "    clinic_db.doctor AS D ON D.doctor_id = clinic_db.appointment.doctor_id\n" +
+                    "    clinic_db.doctor AS D ON D.doctor_id = A.doctor_id\n" +
                     "        INNER JOIN\n" +
-                    "    clinic_db.client AS C ON C.client_id = clinic_db.appointment.client_id\n";
+                    "    clinic_db.client AS C ON C.client_id = A.client_id\n";
 
             if (type.equalsIgnoreCase("DOCTOR")) {
-                stmt += "WHERE doctor_id = '" + id + "'";
+                stmt += "WHERE D.doctor_id = '" + id + "'";
             } else if (type.equalsIgnoreCase("CLIENT"))
-                stmt += "WHERE client_id = '" + id + "'";
+                stmt += "WHERE C.client_id = '" + id + "'";
 
             pStmt = connection.prepareStatement(stmt);
 
