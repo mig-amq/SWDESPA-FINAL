@@ -13,9 +13,10 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-public class DoctorController implements Initializable{
+public class DoctorController extends SuperController implements Initializable{
     private ToggleGroup viewTypeGroup;
     private ToggleGroup dayWeekViewGroup;
     private ToggleGroup availGroup;
@@ -316,4 +317,8 @@ public class DoctorController implements Initializable{
         });
     }
 
+    @Override
+    public void update(LocalDateTime ldt) {
+
+    }
 }

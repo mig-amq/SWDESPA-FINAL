@@ -67,6 +67,7 @@ public class AvailabilityViewController extends SuperController implements Initi
                     LocalDateTime date =
                             LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
 
+
                     // ADJUST THESE
                     /*if((date.getHour() < startTime/100) ||
                             (date.getMinute() == startTime %100 && date.getHour() < startTime/100)){
