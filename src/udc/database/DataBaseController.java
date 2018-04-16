@@ -370,12 +370,14 @@ public class DataBaseController {
                 rbuilder = new RecurringAppointmentBuilder(rSet.getString("doctor"), rSet.getString("client"));
 
                 if (rSet.getBoolean("recurring")) {
-                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
                 } else {
-                    tempList.add(builder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(builder.build(rSet.getInt("appointment_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
@@ -427,10 +429,12 @@ public class DataBaseController {
             // Traversing result set and instantiating unavailability to temp list
             while (rSet.next()) {
                 if (rSet.getBoolean("recurring")) {
-                    tempList.add(builder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(builder.build(rSet.getInt("appointment_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
                 } else {
-                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
                 }
             }

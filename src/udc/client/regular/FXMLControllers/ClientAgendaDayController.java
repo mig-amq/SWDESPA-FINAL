@@ -24,7 +24,8 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        items = dayList.getItems();
+        insertFilterData();
+//        items = dayList.getItems();
 //        setList();
 //        dayList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 //            @Override
@@ -46,6 +47,7 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
     @Override
     public void insertFilterData() {
-
+        items = dayList.getItems();
+        setList();
     }
 }
