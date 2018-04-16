@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import static udc.objects.time.concrete.Agenda.strToTime;
+
 public class DataBaseController {
     private Connection connection = null;
     private PreparedStatement pStmt = null;
@@ -339,42 +341,39 @@ public class DataBaseController {
 
             connection = ConnectionConfiguration.getConnection(model);
 
-            pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment");
+            String stmt = "SELECT \n" +
+                    "    time_start,\n" +
+                    "    time_end,\n" +
+                    "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
+                    "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
+                    "FROM\n" +
+                    "    clinic_db.appointment\n" +
+                    "        INNER JOIN\n" +
+                    "    clinic_db.doctor AS D ON D.doctor_id = clinic_db.appointment.doctor_id\n" +
+                    "        INNER JOIN\n" +
+                    "    clinic_db.client AS C ON C.client_id = clinic_db.appointment.client_id\n";
 
             if (type.equalsIgnoreCase("DOCTOR")) {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment " +
-                        "WHERE doctor_id = '" + id + "'");
-            } else if (type.equalsIgnoreCase("CLIENT")) {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment " +
-                        "WHERE client_id = '" + id + "'");
-            } else {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.appointment");
-            }
+                stmt += "WHERE doctor_id = '" + id + "'";
+            } else if (type.equalsIgnoreCase("CLIENT"))
+                stmt += "WHERE client_id = '" + id + "'";
+
+            pStmt = connection.prepareStatement(stmt);
 
             rSet = pStmt.executeQuery();
 
-            pStmt = connection.prepareStatement("SELECT first_name, last_name FROM clinic_db.doctor" +
-                    " INNER JOIN clinic_db.appointment" +
-                    " ON clinic_db.appointment.doctor_id = clinic_db.doctor.doctor_id");
-            rSet1 = pStmt.executeQuery();
-
-            pStmt = connection.prepareStatement("SELECT first_name, last_name FROM clinic_db.client" +
-                    " INNER JOIN clinic_db.appointment" +
-                    " ON clinic_db.appointment.doctor_id = clinic_db.client.client_id");
-            rSet2 = pStmt.executeQuery();
-
             // Traversing result set and instantiating appointments to list
-            while (rSet.next() && rSet1.next() && rSet2.next()) {
+            while (rSet.next()) {
                 if (rSet.getBoolean("recurring")) {
                     tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
-                            rSet1.getString("first_name") + " " + rSet1.getString("last_name"),
-                            rSet2.getString("first_name") + " " + rSet2.getString("last_name")));
+                            rSet.getString("doctor"),
+                            rSet.getString("client")));
                 } else {
                     tempList.add(builder.build(strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
-                            rSet1.getString("first_name") + " " + rSet1.getString("last_name"),
-                            rSet2.getString("first_name") + " " + rSet2.getString("last_name")));
+                            rSet.getString("doctor"),
+                            rSet.getString("client")));
                 }
             }
 
@@ -477,6 +476,7 @@ public class DataBaseController {
                         sql = "SELECT * FROM client WHERE account_id = " + rSet.getInt("account_id");
                         break;
                 }
+            }
 
                 pStmt = connection.prepareStatement(sql);
                 ResultSet rSet2 = pStmt.executeQuery();
@@ -494,8 +494,6 @@ public class DataBaseController {
 
                 rSet.close();
                 rSet2.close();
-
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
