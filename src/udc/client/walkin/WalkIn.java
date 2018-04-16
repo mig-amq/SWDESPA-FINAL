@@ -92,6 +92,10 @@ public class WalkIn extends AnchorPane {
 
     @FXML
     private Label colonLbl2;
+
+    @FXML
+    private JFXTextField contactField;
+
     WalkInModel w = new WalkInModel();
 
     public WalkInModel getW() {
@@ -304,6 +308,7 @@ public class WalkIn extends AnchorPane {
                 w.setStart(start);
                 w.setEnd(end);
                 w.setDoctor(doctorCmb.getValue());
+                w.setContact(contactField.getText());
 
                 System.out.println("name: " + nameField.getText() + "\n" +
                                     "Date: " + datePicker.getValue() + "\n" +
@@ -320,7 +325,7 @@ public class WalkIn extends AnchorPane {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue());
+                WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
                 Stage child = new Stage(StageStyle.UNDECORATED);
                 child.setScene(new Scene(popUp));
                 child.show();
