@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,6 +33,9 @@ import javax.swing.*;
 public class WalkIn extends AnchorPane {
 
     private Model model;
+
+    @FXML
+    private AnchorPane close, minimize;
 
     @FXML
     private ResourceBundle resources;
@@ -59,9 +63,6 @@ public class WalkIn extends AnchorPane {
 
     @FXML
     private JFXComboBox<String> starthourCmb;
-
-    @FXML
-    private JFXButton closeBtn;
 
     @FXML
     private JFXButton minBtn;
@@ -114,7 +115,7 @@ public class WalkIn extends AnchorPane {
     void initialize() {
         setComboBox();
         popUp();
-//        close();
+        close();
     }
 
     public void setComboBox() {
@@ -332,9 +333,14 @@ public class WalkIn extends AnchorPane {
     }
 
     public void close() {
-        closeBtn.setOnAction(event -> {
-            Stage stage = (Stage) closeBtn.getScene().getWindow();
+        close.setOnMouseClicked(event -> {
+            Stage stage = (Stage) close.getScene().getWindow();
             stage.close();
+        });
+
+        minimize.setOnMouseClicked(event -> {
+            Stage stage = (Stage) close.getScene().getWindow();
+            stage.toBack();
         });
     }
 

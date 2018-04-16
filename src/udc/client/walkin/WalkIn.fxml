@@ -16,10 +16,14 @@
    <children>
       <AnchorPane fx:id="pnlTool" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #d13a3a;">
          <children>
-            <AnchorPane fx:id="minimize" layoutX="340.0" prefHeight="30.0" prefWidth="30.0" />
+            <AnchorPane fx:id="minimize" layoutX="340.0" prefHeight="30.0" prefWidth="30.0">
+               <children>
+                  <FontAwesomeIconView fill="WHITE" glyphName="WINDOW_MINIMIZE" layoutX="7.0" layoutY="21.0" size="16" />
+               </children>
+            </AnchorPane>
             <AnchorPane fx:id="close" layoutX="370.0" prefHeight="30.0" prefWidth="30.0">
                <children>
-                  <FontAwesomeIconView fx:id="closeBtn" fill="WHITE" glyphName="TIMES_CIRCLE" layoutX="7.0" layoutY="21.0" size="16" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" layoutX="7.0" layoutY="21.0" size="16" />
                </children>
             </AnchorPane>
          </children>
