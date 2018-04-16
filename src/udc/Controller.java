@@ -190,6 +190,9 @@ public class Controller implements Initializable{
                 Account account = model.getDbController().login(txtUsername.getText().replaceAll("\\s+", ""),
                         txtPassword.getText().replaceAll("\\s+", ""));
 
+                txtUsername.setText("");
+                txtPassword.setText("");
+
                 model.setAccount(account);
                 if (account.getType() == AccountType.DOCTOR) {
                     try {
@@ -200,6 +203,7 @@ public class Controller implements Initializable{
 
                         doctor.setStage(child);
                         doctor.setParentStage(this.getStage());
+                        model.setViewController(doctor);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -212,6 +216,7 @@ public class Controller implements Initializable{
 
                         secretary.setStage(child);
                         secretary.setParentStage(this.getStage());
+                        model.setViewController(secretary);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
