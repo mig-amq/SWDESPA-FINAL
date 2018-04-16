@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="dCalWeek" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="543.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="543.0">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="867.0">
+               <children>
+                  <TableView fx:id="weekTable" nodeOrientation="LEFT_TO_RIGHT" prefHeight="376.0" prefWidth="867.0">
+                     <columns>
+                        <TableColumn fx:id="time" prefWidth="97.0" resizable="false" text="Time" />
+                        <TableColumn fx:id="mon" prefWidth="110.0" resizable="false" text="Mon" />
+                        <TableColumn fx:id="tue" prefWidth="110.0" resizable="false" text="Tue" />
+                        <TableColumn fx:id="wed" prefWidth="110.0" resizable="false" text="Wed" />
+                        <TableColumn fx:id="thu" prefWidth="110.0" resizable="false" text="Thu" />
+                        <TableColumn fx:id="fri" prefWidth="110.0" resizable="false" text="Fri" />
+                        <TableColumn fx:id="sat" prefWidth="110.0" resizable="false" text="Sat" />
+                        <TableColumn fx:id="sun" prefWidth="110.0" resizable="false" text="Sun" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

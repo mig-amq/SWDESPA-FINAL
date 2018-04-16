@@ -187,7 +187,7 @@ public class DataBaseController {
         try {
             connection = ConnectionConfiguration.getConnection(model);
 
-            String stmt = "INSERT INTO clinic_db.client (first_name, last_name, type) VALUES (?, ?, ?, ?)";
+            String stmt = "INSERT INTO clinic_db.client (first_name, last_name, type) VALUES (?, ?, ?)";
 
             pStmt = connection.prepareStatement(stmt);
             pStmt.setString(1, firstName);
