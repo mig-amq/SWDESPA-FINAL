@@ -46,6 +46,8 @@ public class Model {
                         this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "CLIENT"));
                         break;
                 }
+
+                viewController.update();
             } catch (Exception e) {
                 e.printStackTrace();
             }
