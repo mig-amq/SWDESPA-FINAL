@@ -109,7 +109,6 @@ public class WalkInPopUpController extends AnchorPane {
         });
     }
 
-    @Override
     public Node getStyleableNode() {
         return null;
     }

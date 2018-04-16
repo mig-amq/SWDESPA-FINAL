@@ -1,7 +1,7 @@
-package udc.client;
+package udc.secretary;
+
 
 import com.jfoenix.controls.JFXButton;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -12,13 +12,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import udc.Model;
-//import udc.client.regular.FXMLControllers.ClientController;
-import udc.client.regular.FXMLControllers.ClientController;
 import udc.customfx.calendar.Calendar;
 import udc.customfx.drawerpanel.DrawerPanel;
 import udc.customfx.paneledview.PaneledView;
-import udc.doctor.controllers.DoctorController;
+import udc.doctor.Doctor;
+import udc.notifier.AppointmentNotifier;
+import udc.objects.account.Account;
 import udc.objects.enums.PanelType;
+import udc.secretary.Controller.MainController;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -26,7 +27,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Locale;
 
-public class Client extends PaneledView {
+public class Secretary extends PaneledView {
+    MainController mainController;
     protected Label username;
     protected ImageView img;
 
@@ -35,38 +37,57 @@ public class Client extends PaneledView {
     private AnchorPane calPane;
 
     private DrawerPanel drawerPane;
-
-    private ClientController clientController;
-
-    public Client(double width, double height, Locale lang) throws IOException {
+    protected AppointmentNotifier notifier;
+    public Secretary(double width, double height, Locale lang) throws IOException {
         super(width, height, lang);
 
     }
 
-    public Client(double width, double height) throws IOException {
+    public Secretary(double width, double height) throws IOException {
         super(width, height);
     }
 
-    public Client () throws Exception {
+    public Secretary () throws Exception {
         super(800, 650);
     }
 
-    public Client(Model model) throws IOException {
+    public Secretary(Model model) throws IOException {
         super(800, 650);
-        this.setModel(model);
-
+        //this.setAccount(account);
+        setModel(model);
         try {
-            contentPane.getChildren().clear();
-            clientController = new ClientController(this, model);
-            contentPane.getChildren().add(clientController);
+            mainController = new MainController(contentPane, pnlTool, model, calendar);
+        }catch (Exception e){
+            e.printStackTrace();
+        }   
+    }
+
+    @Override
+    public void init() {
+        initEr();
+        this.initPanel(PanelType.SECRETARY);
+
+        this.getTitle().setText("Secretary - " +
+               calendar.selectedProperty().getValue()
+                       .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));
+
+        calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
+           String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
+           this.getTitle().setText("Secretary - " + date);
+       });
+    }
+
+    @Override
+    public void update() {
+        try{
+            mainController.updateData();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void init() {
-        this.initPanel(PanelType.CLIENT);
+    private void initEr(){
+        this.initPanel(PanelType.SECRETARY);
 
         this.drawerPane = new DrawerPanel(265, 650, false);
         userPane = new AnchorPane();
@@ -101,14 +122,16 @@ public class Client extends PaneledView {
 
         try {
             AnchorPane buttonPanel = new AnchorPane();
+
             JFXButton btnLogout = new JFXButton("Log Out");
             btnLogout.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
             btnLogout.setOnAction(event -> {
-                if (this.getModel().getAccount() != null) {
+                if (this.getModel().getAccount() != null && this.notifier != null && this.notifier.isStarted()) {
                     if (this.getModel().getThread() != null) {
                         this.getModel().getThread().off();
                     }
 
+                    this.notifier.off();
                     if (this.getParentStage() != null) {
                         this.getParentStage().show();
                         this.getParentStage().toFront();
@@ -129,13 +152,13 @@ public class Client extends PaneledView {
 
             this.drawerPane.add(drawerPane.SPACER(180));
             this.drawerPane.add(calPane);
-            this.getTitle().setText("Client - " +
+            this.getTitle().setText("Doctor - " +
                     this.calendar.selectedProperty().getValue()
                             .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));
 
             this.calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
-                this.getTitle().setText("Client - " + date);
+                this.getTitle().setText("Doctor - " + date);
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -145,37 +168,16 @@ public class Client extends PaneledView {
         this.getDrawer().setDefaultDrawerSize(this.drawerPane.getDrawerWidth() - 25);
         this.getDrawer().setSidePane(this.drawerPane);
         this.getDrawer().setContent(contentPane);
-
-        try {
-            this.getTitle().setText("Client - " +
-                    this.getCalendar().selectedProperty().getValue()
-                            .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));
-
-            this.getCalendar().selectedProperty().addListener((observable, oldValue, newValue) -> {
-                String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
-                this.getTitle().setText("Client - " + date);
-            });
-        } catch (Exception e) {}
     }
 
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void setModel(Model model) {
-        super.setModel(model);
-
-        this.username.setText(model.getAccount().getFirstName() + " " + model.getAccount().getLastName());
-        this.img.setImage(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(model.getAccount().getImageURI()))));
-    }
-
-    public Calendar getCalendar() {
-        return calendar;
-    }
-
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
+//    public Account getAccount(){
+//        return account;
+//    }
+//
+//
+    public void setModel(Model account) {
+        super.setModel(account);
+        this.username.setText("Sec. " + account.getAccount().getFirstName() + " " + account.getAccount().getLastName());
+        this.img.setImage(new Image(new ByteArrayInputStream(Base64.getDecoder().decode(account.getAccount().getImageURI()))));
     }
 }

@@ -110,7 +110,7 @@ public class Model {
                 database.getElementsByTagName("username").item(0).setTextContent(this.getDbUser());
                 database.getElementsByTagName("password").item(0).setTextContent(this.getDbPass());
 
-                Transformer t = TransformerFactory.newDefaultInstance().newTransformer();
+                Transformer t = TransformerFactory.newInstance().newTransformer();
                 Result output = new StreamResult(f);
                 Source src = new DOMSource(dom);
 
