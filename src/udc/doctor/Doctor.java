@@ -95,7 +95,7 @@ public class Doctor extends PaneledView {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Doctor.fxml"));
             this.contentPane.getChildren().add(loader.load());
 
-            dc = loader.<DoctorController>getController();
+            dc = loader.getController();
             dc.setModel(this.getModel());
             dc.setCalendar(this.calendar);
 
