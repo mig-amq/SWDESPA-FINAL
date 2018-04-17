@@ -1,7 +1,6 @@
 package udc.client;
 
 import com.jfoenix.controls.JFXButton;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -17,7 +16,6 @@ import udc.client.regular.FXMLControllers.ClientController;
 import udc.customfx.calendar.Calendar;
 import udc.customfx.drawerpanel.DrawerPanel;
 import udc.customfx.paneledview.PaneledView;
-import udc.doctor.controllers.DoctorController;
 import udc.objects.enums.PanelType;
 
 import java.io.ByteArrayInputStream;

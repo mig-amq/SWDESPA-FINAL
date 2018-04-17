@@ -52,7 +52,7 @@ public class DataBaseController {
             rSet = pStmt.executeQuery();
 
             while (rSet.next())
-                doctorList.add(rSet.getString("first_name"));
+                doctorList.add(rSet.getString("first_name") + " " + rSet.getString("last_name"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -299,7 +299,7 @@ public class DataBaseController {
      */
     public void updateUnavailability(int doctor_id, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring) {
         String stmt = "UPDATE clinic_db.unavailability " +
-                "SET time_start = ? time_end = ?, recurring = ? " +
+                "SET time_start = ?, time_end = ?, recurring = ? " +
                 "WHERE doctor_id = '" + doctor_id + "'";
         try {
             connection = ConnectionConfiguration.getConnection(model);
@@ -370,14 +370,16 @@ public class DataBaseController {
                 rbuilder = new RecurringAppointmentBuilder(rSet.getString("doctor"), rSet.getString("client"));
 
                 if (rSet.getBoolean("recurring")) {
-                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
-                            strToTime(rSet.getString("time_start")),
+//                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
+//                            strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
                 } else {
-                    tempList.add(builder.build(rSet.getInt("appointment_id"),
-                            strToTime(rSet.getString("time_start")),
+//                    tempList.add(builder.build(rSet.getInt("appointment_id"),
+//                            strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));

@@ -56,6 +56,11 @@ public class Secretary extends PaneledView {
         setModel(model);
         try {
             mainController = new MainController(contentPane, pnlTool, model, calendar);
+            calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
+                String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
+                mainController.calendarViewCondition();
+                this.getTitle().setText("Secretary - " + date);
+            });
         }catch (Exception e){
             e.printStackTrace();
         }   
@@ -69,11 +74,6 @@ public class Secretary extends PaneledView {
         this.getTitle().setText("Secretary - " +
                calendar.selectedProperty().getValue()
                        .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));
-
-        calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
-           String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
-           this.getTitle().setText("Secretary - " + date);
-       });
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Secretary extends PaneledView {
     private void initEr(){
         this.initPanel(PanelType.SECRETARY);
 
-        this.drawerPane = new DrawerPanel(265, 650, false);
+            this.drawerPane = new DrawerPanel(265, 650, false);
         userPane = new AnchorPane();
         userPane.setPrefHeight(200);
 
@@ -150,14 +150,6 @@ public class Secretary extends PaneledView {
 
             this.drawerPane.add(drawerPane.SPACER(180));
             this.drawerPane.add(calPane);
-            this.getTitle().setText("Doctor - " +
-                    this.calendar.selectedProperty().getValue()
-                            .format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale())));
-
-            this.calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
-                this.getTitle().setText("Doctor - " + date);
-            });
         } catch (IOException e) {
             e.printStackTrace();
         }

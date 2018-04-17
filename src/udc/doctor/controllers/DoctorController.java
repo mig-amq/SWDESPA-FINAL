@@ -86,8 +86,8 @@ public class DoctorController extends SuperController implements Initializable{
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AppointmentsTableD.fxml"));
-                            loader.<AppointmentsTableDController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AppointmentsTableD.fxml"));
+//                            loader.<AppointmentsTableDController>getController().setModel(model);
                             loader.<AppointmentsTableDController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -99,8 +99,8 @@ public class DoctorController extends SuperController implements Initializable{
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AppointmentsTableS.fxml"));
-                            loader.<AppointmentsTableSController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AppointmentsTableS.fxml"));
+//                            loader.<AppointmentsTableSController>getController().setModel(model);
                             loader.<AppointmentsTableSController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -114,24 +114,26 @@ public class DoctorController extends SuperController implements Initializable{
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AgendaView.fxml"));
-                            loader.<AgendaViewController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AgendaView.fxml"));
+//                            loader.<AgendaViewController>getController().setModel(model);
                             loader.<AgendaViewController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        viewPane.getChildren().add(node);
                     }
 
                     if(rdBtnWeekView.isSelected()){
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AgendaViewW.fxml"));
-                            loader.<AgendaViewWController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AgendaViewW.fxml"));
+//                            loader.<AgendaViewWController>getController().setModel(model);
                             loader.<AgendaViewWController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        viewPane.getChildren().add(node);
                     }
                 }
             }
@@ -147,8 +149,8 @@ public class DoctorController extends SuperController implements Initializable{
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AgendaViewW.fxml"));
-                            loader.<AgendaViewWController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AgendaView.fxml"));
+//                            loader.<AgendaViewWController>getController().setModel(model);
                             loader.<AgendaViewWController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -160,8 +162,8 @@ public class DoctorController extends SuperController implements Initializable{
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AgendaViewW.fxml"));
-                            loader.<AgendaViewWController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AgendaViewW.fxml"));
+//                            loader.<AgendaViewWController>getController().setModel(model);
                             loader.<AgendaViewWController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -175,8 +177,8 @@ public class DoctorController extends SuperController implements Initializable{
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AgendaViewW.fxml"));
-                            loader.<AgendaViewWController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AgendaView.fxml"));
+//                            loader.<AgendaViewWController>getController().setModel(model);
                             loader.<AgendaViewWController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -188,8 +190,8 @@ public class DoctorController extends SuperController implements Initializable{
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AgendaViewW.fxml"));
-                            loader.<AgendaViewWController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AgendaViewW.fxml"));
+//                            loader.<AgendaViewWController>getController().setModel(model);
                             loader.<AgendaViewWController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -215,8 +217,8 @@ public class DoctorController extends SuperController implements Initializable{
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AppointmentsTableD.fxml"));
-                            loader.<AppointmentsTableDController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AppointmentsTableD.fxml"));
+//                            loader.<AppointmentsTableDController>getController().setModel(model);
                             loader.<AppointmentsTableDController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -228,8 +230,8 @@ public class DoctorController extends SuperController implements Initializable{
                         Node node = null;
                         try {
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AppointmentsTableS.fxml"));
-                            loader.<AppointmentsTableSController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AppointmentsTableS.fxml"));
+//                            loader.<AppointmentsTableSController>getController().setModel(model);
                             loader.<AppointmentsTableSController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -250,10 +252,10 @@ public class DoctorController extends SuperController implements Initializable{
                     if(rdBtnDayView.isSelected()){
                         Node node = null;
                         try {
-                            node = FXMLLoader.load(getClass().getResource("../doctor/AgendaView.fxml"));
+
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AgendaView.fxml"));
-                            loader.<AgendaViewController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AgendaView.fxml"));
+//                            loader.<AgendaViewController>getController().setModel(model);
                             loader.<AgendaViewController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -264,10 +266,10 @@ public class DoctorController extends SuperController implements Initializable{
                     if(rdBtnWeekView.isSelected()){
                         Node node = null;
                         try {
-                            node = FXMLLoader.load(getClass().getResource("../doctor/AgendaViewW.fxml"));
+                            node = FXMLLoader.load(getClass().getResource("../fxml/AgendaViewW.fxml"));
                             FXMLLoader loader = new FXMLLoader();
-                            node = loader.load(getClass().getResource("../doctor/AgendaViewW.fxml"));
-                            loader.<AgendaViewWController>getController().setModel(model);
+                            node = loader.load(getClass().getResource("../fxml/AgendaViewW.fxml"));
+//                            loader.<AgendaViewWController>getController().setModel(model);
                             loader.<AgendaViewWController>getController().setCalendar(calendar);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -287,15 +289,14 @@ public class DoctorController extends SuperController implements Initializable{
                 rdBtnWeekView.setSelected(false);
                 Node node = null;
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/AvailabilityView.fxml"));
-                    node = loader.load();
-                    loader.<AvailabilityViewController>getController().setModel(model);
+                    FXMLLoader loader = new FXMLLoader();
+                    node = loader.load(getClass().getResource("../fxml/AvailabilityView.fxml"));
+//                    loader.<AvailabilityViewController>getController().setModel(model);
                     loader.<AvailabilityViewController>getController().setCalendar(calendar);
-
-                    viewPane.getChildren().add(node);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                viewPane.getChildren().add(node);
             }
         });
     }

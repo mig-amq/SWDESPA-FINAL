@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import udc.doctor.Doctor;
 import udc.objects.time.concrete.Agenda;
 
 import java.time.format.DateTimeFormatter;
@@ -18,6 +19,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
 
         Parent root = loader.load();
+//        Doctor root = new Doctor(600, 600);
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();

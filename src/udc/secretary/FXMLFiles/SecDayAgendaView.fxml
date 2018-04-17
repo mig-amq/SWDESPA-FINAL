@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="agendaMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="lblSlots" layoutX="12.0" layoutY="6.0" prefHeight="34.0" prefWidth="551.0" text="Slots">
+      <Label fx:id="lblSlots" layoutX="12.0" layoutY="6.0" prefHeight="34.0" prefWidth="551.0" text="Slots for ">
          <font>
             <Font size="18.0" />
          </font>

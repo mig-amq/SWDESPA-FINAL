@@ -53,12 +53,17 @@ public class WalkInPopUpController extends AnchorPane {
     @FXML
     private Label doctorLbl;
 
+    @FXML
+    private Label contactLbl;
+
     String name;
     String start;
     String end;
     String doctor;
+    String contact;
 
-    public WalkInPopUpController(String name, String start, String end, String doctor)
+
+    public WalkInPopUpController(String name, String start, String end, String doctor, String contact)
     {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("WalkInPopUp.fxml"));
@@ -73,6 +78,7 @@ public class WalkInPopUpController extends AnchorPane {
         this.start = start;
         this.end = end;
         this.doctor = doctor;
+        this.contact = contact;
 
         settingText();
     }
@@ -99,6 +105,7 @@ public class WalkInPopUpController extends AnchorPane {
         nameLbl.setText(name);
         timelbl.setText(start + " - " + end);
         doctorLbl.setText(doctor);
+        contactLbl.setText(contact);
 
     }
 

@@ -10,6 +10,15 @@ public class WalkInModel {
     LocalDateTime start;
     LocalDateTime end;
     String doctor;
+    String contact;
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
     public String getName() {
         return name;

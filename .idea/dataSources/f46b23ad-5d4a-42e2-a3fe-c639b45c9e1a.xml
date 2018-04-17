@@ -1049,142 +1049,147 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="255" parent="230" name="account_id">
+    <column id="255" parent="230" name="contact">
       <Position>4</Position>
+      <DataType>varchar(45)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="256" parent="230" name="account_id">
+      <Position>5</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="256" parent="230" name="type">
-      <Position>5</Position>
+    <column id="257" parent="230" name="type">
+      <Position>6</Position>
       <DataType>varchar(45)|0</DataType>
       <DefaultExpression>&apos;normal&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="257" parent="230" name="fk_client_account1_idx">
+    <index id="258" parent="230" name="fk_client_account1_idx">
       <ColNames>account_id</ColNames>
     </index>
-    <key id="258" parent="230" name="PRIMARY">
+    <key id="259" parent="230" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>client_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="259" parent="230" name="fk_client_account1">
+    <foreign-key id="260" parent="230" name="fk_client_account1">
       <ColNames>account_id</ColNames>
       <RefSchemaName>clinic_db</RefSchemaName>
       <RefTableName>account</RefTableName>
       <RefColNames>account_id</RefColNames>
     </foreign-key>
-    <column id="260" parent="231" name="doctor_id">
+    <column id="261" parent="231" name="doctor_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="261" parent="231" name="first_name">
+    <column id="262" parent="231" name="first_name">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="262" parent="231" name="last_name">
+    <column id="263" parent="231" name="last_name">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="263" parent="231" name="account_id">
+    <column id="264" parent="231" name="account_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="264" parent="231" name="fk_doctor_account1_idx">
+    <index id="265" parent="231" name="fk_doctor_account1_idx">
       <ColNames>account_id</ColNames>
     </index>
-    <key id="265" parent="231" name="PRIMARY">
+    <key id="266" parent="231" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>doctor_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="266" parent="231" name="fk_doctor_account1">
+    <foreign-key id="267" parent="231" name="fk_doctor_account1">
       <ColNames>account_id</ColNames>
       <RefSchemaName>clinic_db</RefSchemaName>
       <RefTableName>account</RefTableName>
       <RefColNames>account_id</RefColNames>
     </foreign-key>
-    <column id="267" parent="232" name="secretary_id">
+    <column id="268" parent="232" name="secretary_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="268" parent="232" name="first_name">
+    <column id="269" parent="232" name="first_name">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="269" parent="232" name="last_name">
+    <column id="270" parent="232" name="last_name">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="270" parent="232" name="account_id">
+    <column id="271" parent="232" name="account_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="271" parent="232" name="fk_secretary_account1_idx">
+    <index id="272" parent="232" name="fk_secretary_account1_idx">
       <ColNames>account_id</ColNames>
     </index>
-    <key id="272" parent="232" name="PRIMARY">
+    <key id="273" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>secretary_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="273" parent="232" name="fk_secretary_account1">
+    <foreign-key id="274" parent="232" name="fk_secretary_account1">
       <ColNames>account_id</ColNames>
       <RefSchemaName>clinic_db</RefSchemaName>
       <RefTableName>account</RefTableName>
       <RefColNames>account_id</RefColNames>
     </foreign-key>
-    <column id="274" parent="233" name="doctor_id">
+    <column id="275" parent="233" name="doctor_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="275" parent="233" name="time_start">
+    <column id="276" parent="233" name="time_start">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="276" parent="233" name="time_end">
+    <column id="277" parent="233" name="time_end">
       <Position>3</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="277" parent="233" name="recurring">
+    <column id="278" parent="233" name="recurring">
       <Position>4</Position>
       <DataType>tinyint(4)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="278" parent="233" name="except_dates">
+    <column id="279" parent="233" name="except_dates">
       <Position>5</Position>
       <DataType>varchar(999)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="279" parent="233" name="fk_availability_doctor_idx">
+    <index id="280" parent="233" name="fk_availability_doctor_idx">
       <ColNames>doctor_id</ColNames>
     </index>
-    <foreign-key id="280" parent="233" name="fk_availability_doctor">
+    <foreign-key id="281" parent="233" name="fk_availability_doctor">
       <ColNames>doctor_id</ColNames>
       <RefSchemaName>clinic_db</RefSchemaName>
       <RefTableName>doctor</RefTableName>

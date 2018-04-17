@@ -27,17 +27,17 @@
             <Font name="Malgun Gothic Bold" size="48.0" />
          </font>
       </Label>
-      <Label fx:id="presentLbl" layoutX="155.0" layoutY="323.0" text="Please present it to">
+      <Label fx:id="presentLbl" layoutX="36.0" layoutY="325.0" text="Please present it to the secretary upon arrival">
          <font>
-            <Font name="Malgun Gothic Bold" size="24.0" />
+            <Font name="Malgun Gothic Bold" size="22.0" />
          </font>
       </Label>
-      <Label fx:id="secLbl" layoutX="119.0" layoutY="357.0" text="the secretary upon arrival">
+      <Label fx:id="secLbl" layoutX="77.0" layoutY="357.0" text="To know if it has been approved or not">
          <font>
-            <Font name="Malgun Gothic Bold" size="24.0" />
+            <Font name="Malgun Gothic Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="codeLbl" layoutX="57.0" layoutY="147.0" prefHeight="34.0" prefWidth="103.0" text="Name: " textAlignment="CENTER">
+      <Label fx:id="codeLbl" layoutX="50.0" layoutY="143.0" prefHeight="34.0" prefWidth="103.0" text="Name: " textAlignment="CENTER">
          <font>
             <Font name="Malgun Gothic Bold" size="24.0" />
          </font>
@@ -47,27 +47,37 @@
             <Font size="18.0" />
          </font>
       </JFXButton>
-      <Label fx:id="codeLbl1" layoutX="57.0" layoutY="208.0" prefHeight="34.0" prefWidth="103.0" text="Time:" textAlignment="CENTER">
+      <Label fx:id="codeLbl1" layoutX="50.0" layoutY="187.0" prefHeight="34.0" prefWidth="103.0" text="Time:" textAlignment="CENTER">
          <font>
             <Font name="Malgun Gothic Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="codeLbl2" layoutX="57.0" layoutY="265.0" prefHeight="34.0" prefWidth="103.0" text="Doctor:" textAlignment="CENTER">
+      <Label fx:id="codeLbl2" layoutX="50.0" layoutY="231.0" prefHeight="34.0" prefWidth="103.0" text="Doctor:" textAlignment="CENTER">
          <font>
             <Font name="Malgun Gothic Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="nameLbl" layoutX="141.0" layoutY="147.0" prefHeight="34.0" prefWidth="320.0" textAlignment="CENTER">
+      <Label fx:id="nameLbl" layoutX="141.0" layoutY="145.0" prefHeight="34.0" prefWidth="320.0" textAlignment="CENTER">
          <font>
             <Font name="Malgun Gothic Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="timelbl" layoutX="141.0" layoutY="208.0" prefHeight="34.0" prefWidth="320.0" textAlignment="CENTER">
+      <Label fx:id="timelbl" layoutX="141.0" layoutY="187.0" prefHeight="34.0" prefWidth="320.0" textAlignment="CENTER">
          <font>
             <Font name="Malgun Gothic Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="doctorLbl" layoutX="163.0" layoutY="265.0" prefHeight="34.0" prefWidth="320.0" textAlignment="CENTER">
+      <Label fx:id="doctorLbl" layoutX="156.0" layoutY="231.0" prefHeight="34.0" prefWidth="320.0" textAlignment="CENTER">
+         <font>
+            <Font name="Malgun Gothic Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="codeLbl21" layoutX="26.0" layoutY="276.0" prefHeight="34.0" prefWidth="127.0" text="Contact#:" textAlignment="CENTER">
+         <font>
+            <Font name="Malgun Gothic Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="contactLbl" layoutX="153.0" layoutY="276.0" prefHeight="34.0" prefWidth="306.0" textAlignment="CENTER">
          <font>
             <Font name="Malgun Gothic Bold" size="24.0" />
          </font>

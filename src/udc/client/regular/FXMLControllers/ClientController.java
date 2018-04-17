@@ -3,12 +3,18 @@ package udc.client.regular.FXMLControllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import udc.Model;
 import udc.client.Client;
+import udc.client.regular.Controller.ClientSuperController;
 
 import java.io.IOException;
 
@@ -16,15 +22,13 @@ public class ClientController extends AnchorPane {
 
     @FXML private AnchorPane mainPane, homePane, bookPane, managePane;
     @FXML private AnchorPane bookTablePane, manageTablePane;
-
-    //    @FXML private AnchorPane dCalDay, dCalWeek, cCalDay, cCalWeek;
-//    @FXML private AnchorPane cAgendaDay, cAgendaWeek, dAgendaDay, dAgendaWeek;
     @FXML private JFXButton home, book, manage;
     @FXML private JFXButton bookButton, editButton;
     @FXML private JFXRadioButton bAgendaView, bCalendarView, bDayView, bWeekView;
     @FXML private JFXRadioButton mAgendaView, mCalendarView, mDayView, mWeekView;
-    @FXML private JFXComboBox<?> bDoctorCmbBox, mDoctorCmbBox;
+    @FXML private JFXComboBox<String> bDoctorCmbBox, mDoctorCmbBox;
     @FXML private ToggleGroup viewTypeGroup, filterViewGroup;
+
     @FXML private Client client;
     @FXML private Model model;
     @FXML private ClientSuperController clientSuperController;
@@ -37,39 +41,12 @@ public class ClientController extends AnchorPane {
 
         this.client = client;
         this.model = model;
+        setToggleGroup();
+        setComboBox();
         initializeButtons();
     }
 
-    private void loadFXML(String path, AnchorPane anchorPane) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
-            anchorPane.getChildren().clear();
-            anchorPane.getChildren().add(loader.load());
-
-            clientSuperController = loader.<ClientAgendaDayController>getController();
-            clientSuperController.setModel(model);
-        } catch(Exception e) {}
-    }
-
-    private void initializeButtons() {
-        home.setOnAction(event -> {
-            homePane.toFront();
-        });
-
-        book.setOnAction(event -> {
-            bookPane.toFront();
-            loadFXML("../FXMLFiles/DoctorCalDay.fxml", bookTablePane);
-            bCalendarView.setSelected(true);
-            bDayView.setSelected(true);
-        });
-
-        manage.setOnAction(event -> {
-            managePane.toFront();
-            loadFXML("../FXMLFiles/ClientCalDay.fxml", manageTablePane);
-            mCalendarView.setSelected(true);
-            mDayView.setSelected(true);
-        });
-
+    private void setToggleGroup() {
         viewTypeGroup = new ToggleGroup();
         filterViewGroup = new ToggleGroup();
 
@@ -92,7 +69,33 @@ public class ClientController extends AnchorPane {
         mDayView.setToggleGroup(filterViewGroup);
         mWeekView.setToggleGroup(filterViewGroup);
         mWeekView.setToggleGroup(filterViewGroup);
+    }
 
+    public void setComboBox() {
+        ObservableList<String> list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
+        list.add(0, "All");
+        bDoctorCmbBox.setItems(list);
+        mDoctorCmbBox.setItems(list);
+    }
+
+    private void initializeButtons() {
+        home.setOnAction(event -> homePane.toFront());
+
+        book.setOnAction(event -> {
+            bookPane.toFront();
+            loadFXML("../FXMLFiles/DoctorCalDay.fxml", bookTablePane);
+            bCalendarView.setSelected(true);
+            bDayView.setSelected(true);
+        });
+
+        manage.setOnAction(event -> {
+            managePane.toFront();
+            loadFXML("../FXMLFiles/ClientCalDay.fxml", manageTablePane);
+            mCalendarView.setSelected(true);
+            mDayView.setSelected(true);
+        });
+
+        //JFXRadioButtons
         bCalendarView.setOnAction(event -> {
             if(bDayView.isSelected()) {
                 loadFXML("../FXMLFiles/DoctorCalDay.fxml", bookTablePane);
@@ -167,12 +170,27 @@ public class ClientController extends AnchorPane {
         });
 
         bookButton.setOnAction(event -> {
+            ReserveController reserve = new ReserveController(model);
+            Stage child = new Stage(StageStyle.UNDECORATED);
+            child.setScene(new Scene(reserve));
+            child.show();
 
         });
 
         editButton.setOnAction(event -> {
 
         });
+    }
 
+    private void loadFXML(String path, AnchorPane anchorPane) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+            anchorPane.getChildren().clear();
+            anchorPane.getChildren().add(loader.load());
+
+            clientSuperController = loader.<ClientAgendaDayController>getController();
+            clientSuperController.setModel(model);
+            clientSuperController.setCalendar(client.getCalendar());
+        } catch(Exception e) {}
     }
 }
