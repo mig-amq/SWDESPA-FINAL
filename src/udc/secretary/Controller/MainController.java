@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class MainController {
     private AnchorPane contentPane, secViewPane;
-    private Node SecretaryMainNode, secWeekView, secDayView, secDayAgendaView, secWeekAgendaView, secWalkInView;
+    private Node SecretaryMainNode, secWeekView, secDayView, secDayAgendaView, secWalkInView;
     private Pane SecretaryMainPane;
     private ObservableList<Node> SCMpaneComponents;
     private SecWeekControl secWeekControl;
@@ -224,34 +224,9 @@ public class MainController {
     public void updateData() throws Exception {
         agendas = model.getDbController().getAppointments(-1, "");
         if (rdbtnCalendarView.isSelected()) {
-            if (rdbtnDayView.isSelected()) {
-                if (rdbtnAvailable.isSelected()) {
-
-                } else {
-
-                }
-            } else if (rdbtnWeekView.isSelected()) {
-                if (rdbtnAvailable.isSelected()) {
-
-                } else {
-
-                }
-            }
+            calendarViewCondition();
         } else if (rdbtnAgendaView.isSelected()){
-            secDayAgendaControl.reset();
-            if (rdbtnDayView.isSelected()){
-                if (rdbtnAvailable.isSelected()){
-
-                } else{
-
-                }
-            } else if (rdbtnWeekView.isSelected()){
-                if (rdbtnAvailable.isSelected()){
-
-                } else{
-
-                }
-            }
+            agendaViewCondition();
         }
     }
 
@@ -342,9 +317,11 @@ public class MainController {
             secDayAgendaControl.reset();
             secDayAgendaControl.setLabel(calendar.selectedProperty().get());
             if (rdbtnAvailable.isSelected()){
+                secDayAgendaControl.setRemoveButtonDisabled(true);
                 secDayAgendaControl.insertFilteredData(getAvailableSlots(calendar.selectedProperty().get(), cmbBoxDoctors.getSelectionModel().getSelectedItem().toString()));
                 secViewPane.getChildren().setAll(secDayAgendaView);
             } else{
+                secDayAgendaControl.setRemoveButtonDisabled(false);
                 secDayAgendaControl.insertFilteredData(findData(calendar.selectedProperty().get()));
                 secViewPane.getChildren().setAll(secDayAgendaView);
             }
@@ -355,6 +332,10 @@ public class MainController {
 
             }
         }
+    }
+
+    public boolean isCalendarRdBtnSelected(){
+        return rdbtnCalendarView.isSelected();
     }
 
     private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctorName){
@@ -378,20 +359,26 @@ public class MainController {
         }
 
         try {
-            ArrayList<Agenda> unavailable = model.getDbController().getUnvailability(doctorName);
-            for (int i = 0; i < availableSlots.size(); i++){
-                for (int j = 0; j < unavailable.size(); j++){
-                    if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())) {
-                        availableSlots.remove(i);
-                        break;
+            if (!doctorName.equalsIgnoreCase("All")) {
+                ArrayList<Agenda> unavailable = model.getDbController().getUnvailability(doctorName);
+                for (int i = 0; i < availableSlots.size(); i++) {
+                    for (int j = 0; j < unavailable.size(); j++) {
+                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())) {
+                            availableSlots.remove(i);
+                            break;
+                        }
                     }
                 }
-            }
-            availableSlots.trimToSize();
+                availableSlots.trimToSize();
+            } else{
+                ArrayList<Agenda> unavailable = model.getDbController().getUnvailability(-1);
 
+            }
+
+            ArrayList<Agenda> appointments = findData(selected);
             for (int i = 0; i < availableSlots.size(); i++){
-                for (int j = 0; j < agendas.size(); j++){
-                    if (availableSlots.get(i).getStartTime().equals(agendas.get(j).getStartTime())){
+                for (int j = 0; j < appointments.size(); j++){
+                    if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())){
                         availableSlots.remove(i);
                         break;
                     }

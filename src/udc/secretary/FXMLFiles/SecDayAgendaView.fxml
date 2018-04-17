@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -15,9 +16,10 @@
       </Label>
       <ScrollPane fx:id="agendaScroll" layoutY="48.0" prefHeight="572.0" prefWidth="575.0">
         <content>
-          <AnchorPane fx:id="anchorAgenda" minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="574.0">
+          <AnchorPane fx:id="anchorAgenda" minHeight="0.0" minWidth="0.0" prefHeight="569.0" prefWidth="570.0">
                <children>
-                  <JFXListView fx:id="agendaList" prefHeight="572.0" prefWidth="575.0" />
+                  <JFXListView fx:id="agendaList" prefHeight="534.0" prefWidth="568.0" />
+                  <JFXButton fx:id="btnRemove" layoutX="433.0" layoutY="534.0" prefHeight="34.0" prefWidth="134.0" style="-fx-background-color: #1c6c9e; -fx-border-color: #1c6c9e;" text="Cancel Appointment" textFill="WHITE" />
                </children></AnchorPane>
         </content>
       </ScrollPane>

@@ -1,5 +1,6 @@
 package udc.secretary.Controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,11 +22,19 @@ public class SecDayAgendaControl extends AbstractControl {
     private Node ndSecDayAgendaViewNode;
     private Label lblSlots;
     private JFXListView agendaList;
+    private JFXButton btnRemove;
 
     public SecDayAgendaControl(){
         ndSecDayAgendaViewNode = loadSecDayAgendaView();
         initComponents();
         agendaList.setItems(FXCollections.observableArrayList(""));
+        btnRemove.setOnAction(event -> {
+
+        });
+    }
+
+    public void setRemoveButtonDisabled(boolean cond){
+        btnRemove.setDisable(cond);
     }
 
     private Node loadSecDayAgendaView(){
@@ -43,6 +52,7 @@ public class SecDayAgendaControl extends AbstractControl {
         lblSlots = (Label) n;
         n = ((AnchorPane) ndSecDayAgendaViewNode).lookup("#agendaScroll");
         agendaList = (JFXListView) ((AnchorPane) ((ScrollPane) n).getContent().lookup("#anchorAgenda")).getChildren().get(0);
+        btnRemove = (JFXButton) ((AnchorPane) ((ScrollPane) n).getContent().lookup("#anchorAgenda")).getChildren().get(1);
     }
 
     public Node getNdSecDayAgendaViewNode(){
@@ -102,7 +112,7 @@ public class SecDayAgendaControl extends AbstractControl {
         }
 
         if (data instanceof Appointment){
-            string.add(data.getStartTime().getMonthValue() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear()
+            string.add(data.getId() + " " +  data.getStartTime().getMonthValue() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear()
                     + ": " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
                     + ", Dr." + ((Appointment) data).getDoctorName() + ", " + ((Appointment) data).getClientName());
         }
@@ -111,8 +121,7 @@ public class SecDayAgendaControl extends AbstractControl {
                     + ": " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
                     + ", Dr." + ((Unavailable) data).getDoctorName() + ", Unavailable");
         } else if (data instanceof Available){
-            string.add(data.getStartTime().getMonthValue() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear()
-                    + ": " + hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Available) data).getDoctorName() + ", Open");
+            string.add(hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Available) data).getDoctorName() + ", Open");
         }
     }
 }
