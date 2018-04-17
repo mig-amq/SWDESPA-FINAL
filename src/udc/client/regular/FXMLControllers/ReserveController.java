@@ -32,7 +32,6 @@ import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Unavailable;
 
 public class ReserveController extends AnchorPane {
-
     @FXML private AnchorPane pnlTool;
     @FXML private AnchorPane close;
     @FXML private JFXDrawer drawer;
@@ -177,10 +176,7 @@ public class ReserveController extends AnchorPane {
                     alert.showAndWait();
                 }
                 else {
-                    System.out.println("OKAY!!");
                     boolean canAdd = true;
-
-
 
                     while(startTime.isBefore(endTime) || startTime.equals(endTime)) {
                         if(isOverLap(startTime)) {
@@ -196,8 +192,8 @@ public class ReserveController extends AnchorPane {
                         startTime = startTime.plusMinutes(30);
                     }
                     if(canAdd) {
-                        System.out.println("CAN ADD!");
                         Account account = model.getAccount();
+                        System.out.println("account id:"+account.getId());
                         String client = account.getFirstName() + " " + account.getLastName();
 
                         //Add parameter for recurring??

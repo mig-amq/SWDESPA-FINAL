@@ -14,11 +14,11 @@ public abstract class ClientSuperController implements Initializable {
     protected ArrayList<Agenda> agendas;
 
     public abstract void insertFilterData(ArrayList<Agenda> data);
+    public abstract void insertFilterData(LocalDate selected);
 
-    public void setModel(Model model) {
-        this.model = model;
-    }
+    public void setModel(Model model) { this.model = model; }
     public void setCalendar(Calendar calendar) { this.calendar = calendar; }
+    
     public boolean isOdd(int i){
         return i % 2 != 0;
     }
