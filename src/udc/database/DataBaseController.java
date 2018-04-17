@@ -414,6 +414,8 @@ public class DataBaseController {
     public ArrayList<Agenda> getUnvailability(int doctor_id) throws Exception {
         SingleUnavailableBuilder builder = new SingleUnavailableBuilder(doctor_id);
         RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder(doctor_id);
+        ArrayList<Agenda> temp0 = new ArrayList<>();
+        Agenda temp1;
 
         try {
             ArrayList<Agenda> tempList = new ArrayList<>();
@@ -434,6 +436,22 @@ public class DataBaseController {
                     tempList.add(builder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
+
+                    String[] temp2 = rSet.getString("ed").split(";");
+                    for (int i = 0; i < temp2.length; i++) {
+                        temp1 = new Agenda();
+
+                        String time1 = temp2[i].split(" - ")[0];
+                        String time2 = temp2[i].split(" - ")[1];
+
+                        temp1.setStartTime(strToTime(time1));
+                        temp1.setEndTime(strToTime(time2));
+                        temp1.setType(AgendaType.SINGLE);
+
+                        temp0.add(temp1);
+                    }
+
+                    ((Unavailable) tempList.get(tempList.size() - 1)).setExceptions(temp0);
                 } else {
                     tempList.add(rbuilder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),
@@ -527,49 +545,6 @@ public class DataBaseController {
                 }
             }
         }
-    }
-
-    public ArrayList<Agenda> getExceptions (int doctor_id) {
-        ArrayList<Agenda> temp0 = new ArrayList<>();
-        Agenda temp1;
-
-        try {
-            connection = ConnectionConfiguration.getConnection(model);
-            pStmt = connection.prepareStatement("SELECT U.except_dates AS ed FROM doctor D INNER JOIN unavailability U ON U.doctor_id = D.doctor_id WHERE U.doctor_id = " + doctor_id);
-
-            rSet = pStmt.executeQuery();
-
-            while (rSet.next()) {
-                if (rSet.getBoolean("recurring")) {
-                    String[] temp2 = rSet.getString("ed").split(";");
-                    for (int i = 0; i < temp2.length; i++) {
-                        temp1 = new Agenda();
-
-                        String time1 = temp2[i].split(" - ")[0];
-                        String time2 = temp2[i].split(" - ")[1];
-
-                        temp1.setStartTime(strToTime(time1));
-                        temp1.setEndTime(strToTime(time2));
-                        temp1.setType(AgendaType.SINGLE);
-
-                        temp0.add(temp1);
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return temp0;
     }
 
     public Model getModel() {
