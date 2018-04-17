@@ -155,18 +155,8 @@ public class WalkIn extends AnchorPane {
 
             String stimeTemp;
             String etimeTemp;
-
-            LocalDateTime now = LocalDateTime.now();
-
-            LocalDate date = datePicker.getValue();
-            stimeTemp = starthourCmb.getValue();
-            stimeTemp += ":" + startminCmb.getValue();
-            etimeTemp = endhourCmb.getValue();
-            etimeTemp += ":" + endminCmb.getValue();
-
             String stemp;
             String etemp;
-
             int startHour;
             int endHour;
             int startMin;
@@ -177,6 +167,13 @@ public class WalkIn extends AnchorPane {
             String sampm = null;
             String eampm = null;
 
+            LocalDateTime now = LocalDateTime.now();
+
+            LocalDate date = datePicker.getValue();
+            stimeTemp = starthourCmb.getValue();
+            stimeTemp += ":" + startminCmb.getValue();
+            etimeTemp = endhourCmb.getValue();
+            etimeTemp += ":" + endminCmb.getValue();
 
             if(starthourCmb.getValue() == null || startminCmb.getValue() == null
                     || endhourCmb.getValue() == null || endminCmb.getValue() == null)
@@ -194,8 +191,6 @@ public class WalkIn extends AnchorPane {
                 startMin = Integer.parseInt(startminCmb.getValue());
                 endMin = Integer.parseInt(endminCmb.getValue());
 
-
-
                 if (startampmCmb.getValue().equals("pm"))
                 {
                     if (startHour == 12)
@@ -203,28 +198,24 @@ public class WalkIn extends AnchorPane {
                     else
                         startHour = startHour + 12;
 
-                    System.out.println(startHour);
+                    System.out.println("start hour: " + startHour);
 
                 }
 
                 if (endampmCmb.getValue().equals("pm"))
                 {
-                    if (startHour == 12)
-                        startHour = 12;
+                    if (endHour == 12)
+                        endHour = 12;
                     else
                         endHour = endHour + 12;
 
-                    System.out.println(endHour);
+                    System.out.println("end hour: " + endHour);
 
                 }
-
                 sampm = startampmCmb.getValue();
                 eampm = endampmCmb.getValue();
-                System.out.println(startHour);
-                System.out.println(endHour);
-
-
-
+                System.out.println("start2: " + startHour);
+                System.out.println("end2: " + endHour);
             }
 
             if(nameField.getText() == null || stimeTemp == null || etimeTemp == null
@@ -275,6 +266,7 @@ public class WalkIn extends AnchorPane {
                 alert.setContentText("Invalid Time.");
                 alert.showAndWait();
             }
+
 
             else if(startHour == endHour && startMin == endMin) {
                 Alert alert = new Alert (Alert.AlertType.ERROR);
@@ -404,11 +396,11 @@ public class WalkIn extends AnchorPane {
 //                    alert.showAndWait();
 //                }
 
-
- ////////////////////////////////////////// /*save to database the information*////////////////////////////////////
+//                else
+//                {
                     String[] splited = w.getName().split(" ");
                     model.getDbController().addWalkIn(splited[0], splited[1]);
-          //         model.getDbController().addAppointment(start, end, 0, 0);
+                    //    model.getDbController().addAppointment(start, end, 0, 0);
 
                     WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
                     Stage child = new Stage(StageStyle.UNDECORATED);
@@ -417,7 +409,7 @@ public class WalkIn extends AnchorPane {
 
                     Stage stage = (Stage) getScene().getWindow();
                     stage.close();
-
+  //              }
             }
         });
     }

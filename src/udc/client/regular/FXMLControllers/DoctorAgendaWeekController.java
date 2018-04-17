@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class DoctorAgendaWeekController extends ClientSuperController implements Initializable {
 
-    @FXML private ListView<?> weekList;
+    @FXML private ListView<String> weekList;
 
     private ObservableList<Agenda> mon;
     private ObservableList<Agenda> tues;
