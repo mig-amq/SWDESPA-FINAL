@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Unavailable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,18 +73,29 @@ public class SecDayViewControl extends AbstractControl {
         int hr = 7;
         for (int i = 0; i < 30; i++) {
             int index;
+
             String time = getDispTime(hr, i);
             if(!isOdd(i))
                 hr++;
+             String index1 = getUnavailabilityFromList(data, time);
              if((index = getDataIndexfromList(data, time)) >= 0 ) {
-                 Appointment agenda = (Appointment) data.get(index);
-                 tbView.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName() + "\nClient: " + agenda.getClientName()));
+                    Appointment agenda = (Appointment) data.get(index);
+                    tbView.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName() + "\nClient: " + agenda.getClientName()));
+             }else if(!index1.equals("")){
+                 String[] a = index1.split(" | ");
+                 if(a.length == 2) {
+                     tbView.getItems().add(new DaySchedule(time, "(Unavailable)"));
+                 } else if(a.length == 1){
+                     Unavailable agenda = (Unavailable) data.get(Integer.parseInt(a[a.length -1]));
+                     tbView.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName() + " - " + "Unavailable"));
+                 }else {
+                     tbView.getItems().add(new DaySchedule(time, ""));
+                 }
              }
             else
                 tbView.getItems().add(new DaySchedule(time, ""));
         }
         setColumnCellFactory(tcDoctorColumn);
-
     }
 
     public Node getSecDayViewNode(){
