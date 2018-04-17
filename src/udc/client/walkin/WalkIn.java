@@ -30,6 +30,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import udc.Model;
 import udc.database.DataBaseController;
+import udc.objects.time.concrete.Agenda;
 
 import javax.swing.*;
 
@@ -416,8 +417,8 @@ public class WalkIn extends AnchorPane {
                         + " " + ehour + ":" + emin + " " + eampm;
 
 
-                start = sToTime(stemp);
-                end = sToTime(etemp);
+                start = Agenda.strToTime(stemp.toUpperCase());
+                end = Agenda.strToTime(etemp.toUpperCase());
 
                 w.setName(nameField.getText());
                 w.setDate(datePicker.getValue());
@@ -429,20 +430,18 @@ public class WalkIn extends AnchorPane {
                 System.out.println(w.start);
 
 
-//                if (now.isBefore(w.getStart()) || now.isEqual(w.getStart()))
-//                {
-//                    Alert alert = new Alert (Alert.AlertType.ERROR);
-//                    alert.setTitle("Invalid Input");
-//                    alert.setHeaderText(null);
-//                    alert.setContentText("That Time has already passed");
-//                    alert.showAndWait();
-//                }
-
-//                else
-//                {
+                if (now.isAfter(w.getStart()) || now.isEqual(w.getStart()))
+                {
+                    Alert alert = new Alert (Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Input");
+                    alert.setHeaderText(null);
+                    alert.setContentText("That Time has already passed");
+                    alert.showAndWait();
+                } else
+                {
                     String[] splited = w.getName().split(" ");
-               //     model.getDbController().addWalkIn(splited[0], splited[1]);
-               //     model.getDbController().addAppointment(start, end, w.getDoctor() , w.getName());
+                    model.getDbController().addWalkIn(splited[0], splited[1]);
+                    model.getDbController().addAppointment(start, end, w.getDoctor() , w.getName());
 
                     WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
                     Stage child = new Stage(StageStyle.UNDECORATED);
@@ -451,7 +450,7 @@ public class WalkIn extends AnchorPane {
 
                     Stage stage = (Stage) getScene().getWindow();
                     stage.close();
-  //              }
+                }
             }
         });
     }
@@ -466,23 +465,6 @@ public class WalkIn extends AnchorPane {
             Stage stage = (Stage) close.getScene().getWindow();
             stage.toBack();
         });
-    }
-
-    public LocalDateTime sToTime(String time)
-    {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a");
-//        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
-//        String text = dateTime.format(formatter);
-//        LocalDate parsedDate = LocalDate.parse(text, formatter);
-
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a");
-//
-//        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
-//
-//        dateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a").format(localDate);
-
-        LocalDateTime dateTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"));
-        return dateTime;
     }
 
     
