@@ -11,6 +11,8 @@ import udc.objects.time.builders.RecurringUnavailableBuilder;
 import udc.objects.time.builders.SingleAppointmentBuilder;
 import udc.objects.time.builders.SingleUnavailableBuilder;
 import udc.objects.time.concrete.Agenda;
+import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Unavailable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -213,9 +215,6 @@ public class DataBaseController {
         addAppointment(time_start, time_end, getDocID(doctorName), getClientID(clientName));
     }
 
-    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, int doctorID, int clientID) {
-        addAppointment(time_start, time_end, doctorID, clientID, false);
-    }
     /**
      * Inserts a new appointment to the appointment table.
      *
@@ -228,8 +227,8 @@ public class DataBaseController {
      * @param doctorID   — ID of the specific doctor assigned to the appointment
      * @param clientID   — ID of the client
      */
-    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, int doctorID, int clientID, boolean recurring) {
-        String stmt = "INSERT INTO clinic_db.appointment (time_start, time_end, doctor_id, client_id, recurring) VALUES (?, ?, ?, ?, ?)";
+    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, int doctorID, int clientID) {
+        String stmt = "INSERT INTO clinic_db.appointment (time_start, time_end, doctor_id, client_id) VALUES (?, ?, ?, ?)";
         try {
             connection = ConnectionConfiguration.getConnection(model);
             pStmt = connection.prepareStatement(stmt);
@@ -237,7 +236,6 @@ public class DataBaseController {
             pStmt.setString(2, timeToStr(time_end));
             pStmt.setInt(3, doctorID);
             pStmt.setInt(4, clientID);
-            pStmt.setBoolean(5, recurring);
 
             if (pStmt.executeUpdate() == 1)
                 System.out.println("New appointment successfully added to database.");
@@ -493,7 +491,7 @@ public class DataBaseController {
         return new ArrayList<>();
     }
 
-    public ArrayList<Agenda> getUnvailability(String doctorName) throws Exception {
+    public ArrayList<Unavailable> getUnvailability(String doctorName) throws Exception {
 
         return getUnvailability(getDocID(doctorName));
     }
@@ -508,14 +506,14 @@ public class DataBaseController {
      * @return an ArrayList of unavailable times of a specific Doctor
      * @throws Exception table is empty.
      */
-    public ArrayList<Agenda> getUnvailability(int doctor_id) throws Exception {
+    public ArrayList<Unavailable> getUnvailability(int doctor_id) throws Exception {
         SingleUnavailableBuilder builder = new SingleUnavailableBuilder(doctor_id);
         RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder(doctor_id);
         ArrayList<Agenda> temp0 = new ArrayList<>();
         Agenda temp1;
 
         try {
-            ArrayList<Agenda> tempList = new ArrayList<>();
+            ArrayList<Unavailable> tempList = new ArrayList<>();
 
             connection = ConnectionConfiguration.getConnection(model);
 
@@ -620,8 +618,8 @@ public class DataBaseController {
                             temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
                     }
 
-              //      if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
-                //        temp.setImageURI(rSet.getString("image_url"));
+//                    if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
+//                        temp.setImageURI(rSet.getString("image_url"));
                 }
 
                 rSet.close();

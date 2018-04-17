@@ -11,8 +11,8 @@
          <children>
             <TableView fx:id="tbView" prefHeight="620.0" prefWidth="575.0">
               <columns>
-                <TableColumn fx:id="colTime" editable="false" prefWidth="132.00000607967377" resizable="false" text="Time" />
-                <TableColumn fx:id="colDoctors" editable="false" prefWidth="439.1999816894531" resizable="false" text="Doctor1" />
+                <TableColumn fx:id="colTime" editable="false" prefWidth="80.00000607967377" resizable="false" text="Time" />
+                <TableColumn fx:id="colDoctors" editable="false" prefWidth="480.1999816894531" resizable="false" text="Choose Filter" />
               </columns>
             </TableView>
          </children></AnchorPane>

@@ -48,6 +48,7 @@ public class ReserveController extends AnchorPane {
             loader.setController(this);
             loader.load();
         } catch (IOException e) {}
+
         setComboBox();
         initializeButtons();
     }
@@ -69,6 +70,11 @@ public class ReserveController extends AnchorPane {
         startMin.setItems(minList);
         endMin.setItems(minList);
         doctorCmb.setItems(doctorList);
+
+        startHour.setValue("07");
+        endHour.setValue("08");
+        startMin.setValue("30");
+        endMin.setValue("00");
 
         datePicker.setValue(LocalDate.now());
         datePicker.setShowWeekNumbers(true);
@@ -107,13 +113,13 @@ public class ReserveController extends AnchorPane {
         });
 
         reserve.setOnMouseClicked(event -> {
-            String startTime = startHour.getValue();
+            String startTime = startHour.getSelectionModel().getSelectedItem();
             startTime += ":";
-            startTime += startMin.getValue();
+            startTime += startMin.getSelectionModel().getSelectedItem();
 
-            String endTime = endHour.getValue();
+            String endTime = endHour.getSelectionModel().getSelectedItem();
             endTime += ":";
-            endTime += endMin.getValue();
+            endTime += endMin.getSelectionModel().getSelectedItem();
 
             System.out.println(startTime + " to " + endTime);
         });

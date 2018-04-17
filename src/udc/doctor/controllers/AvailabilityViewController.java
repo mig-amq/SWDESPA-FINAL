@@ -32,6 +32,9 @@ public class AvailabilityViewController extends SuperController implements Initi
     @FXML
     private JFXComboBox timeType;
 
+    @FXML
+    private JFXComboBox timeType2;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setData();
@@ -45,7 +48,9 @@ public class AvailabilityViewController extends SuperController implements Initi
             cmbEHour.getItems().add(hour);
         }
         timeType.getItems().addAll("AM", "PM");
+        timeType2.getItems().addAll("AM", "PM");
         cmbType.getItems().addAll("Single", "Recurring");
+        cmbType.getSelectionModel().selectFirst();
         cmbSMin.getItems().addAll("00", "30");
         cmbEMin.getItems().addAll("00", "30");
     }
@@ -58,27 +63,27 @@ public class AvailabilityViewController extends SuperController implements Initi
             @Override
             public void handle(ActionEvent event) {
                 /*** INSERT ACTIONS HERE ***/
-                String hour, min, hours, mins, type,typeTime ,startString, endString;
+                String hour, min, hours, mins, type, typeTime, typeTime2,startString, endString;
                 int startTime, endTime;
                 hour = cmbSHour.getSelectionModel().getSelectedItem().toString();
                 min = cmbSMin.getSelectionModel().getSelectedItem().toString();
                 hours = cmbEHour.getSelectionModel().getSelectedItem().toString();
                 mins = cmbEMin.getSelectionModel().getSelectedItem().toString();
                 typeTime = timeType.getSelectionModel().getSelectedItem().toString();
+                typeTime2 = timeType2.getSelectionModel().getSelectedItem().toString();
                 type = cmbType.getSelectionModel().getSelectedItem().toString();
                 //System.out.println(hour+min);
                 //System.out.println(hours+mins);
-                startString = hour+":"+min+" "+type;
-                endString = hours+":"+mins+" "+type;
-                startTime = Integer.parseInt(hour+":"+min+" "+timeType);
-                endTime = Integer.parseInt(hours+":"+mins+" "+timeType);
+                startString = hour+":"+min+" "+typeTime;
+                endString = hours+":"+mins+" "+typeTime2;
+                startTime = Integer.parseInt(hour+min);
+                endTime = Integer.parseInt(hours+mins);
                 System.out.println(startTime < endTime);
                 if(startTime < endTime){
                     LocalDateTime date =
                             LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
-
-
                     // ADJUST THESE
+                    ArrayList<Agenda> appointments = model.getAccount().getAppointments();
                     if((date.getHour() < startTime/100) ||
                             (date.getMinute() == startTime %100 && date.getHour() < startTime/100)){
                         boolean isConflict = false;
@@ -86,10 +91,11 @@ public class AvailabilityViewController extends SuperController implements Initi
                         LocalTime timeStart, timeEnd;
                         LocalDateTime start, end;
                         timeStart = LocalTime.parse(startString, dtf);
+                        System.out.println(calendar.getSelected().getMonthValue());
                         start = LocalDateTime.of(calendar.getSelected(), timeStart);
                         timeEnd = LocalTime.parse(endString, dtf);
                         end = LocalDateTime.of(calendar.getSelected(), timeEnd);
-                        ArrayList<Agenda> appointments = model.getAccount().getAppointments();
+//                        ArrayList<Agenda> appointments = model.getAccount().getAppointments();
                         for(int i = 0; i < appointments.size(); i++){
                             if((appointments.get(i).getStartTime().isBefore(start) && appointments.get(i).getEndTime().isBefore(start)) ||
                                     (appointments.get(i).getStartTime().isBefore(end) && appointments.get(i).getEndTime().isBefore(end)) ||
@@ -102,13 +108,13 @@ public class AvailabilityViewController extends SuperController implements Initi
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setContentText("There is already an appointment shceduled at that time");
                         }else{
-                            if(cmbType.getSelectionModel().getSelectedItem().toString().equals("Single")){
+                            if(type.equals("Single")){
                                 shceduler = new Scheduler(start, end);
                                 shceduler.setBuiilder(new SingleUnavailableBuilder(model.getAccount().getId()));
                                 shceduler.buildUnavailability();
                             }
 
-                            else if(cmbType.getSelectionModel().getSelectedItem().toString().equals("Recurring")){
+                            else if(type.equals("Recurring")){
                                 shceduler = new Scheduler(start, end);
                                 shceduler.setBuiilder(new RecurringUnavailableBuilder(model.getAccount().getId()));
                                 shceduler.buildUnavailability();

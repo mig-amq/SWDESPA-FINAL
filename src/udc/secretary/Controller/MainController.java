@@ -16,6 +16,7 @@ import udc.customfx.calendar.Calendar;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Available;
+import udc.objects.time.concrete.Unavailable;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -40,7 +41,7 @@ public class MainController {
     private ArrayList<String> doctorList;
     private ArrayList<Agenda> agendas;
     private Calendar calendar;
-    private ArrayList<Agenda> Unavailability; //implement later when bored
+    private ArrayList<Unavailable> Unavailability; //implement later when bored
 
     public MainController(AnchorPane contentPane, AnchorPane pnlTool, Model model, Calendar calendar) throws Exception{
         doctorList = new ArrayList<>();
@@ -59,6 +60,7 @@ public class MainController {
         agendas =  model.getDbController().getAppointments(-1, "");
         secViewPane.getChildren().setAll(secDayView);
         setDisableButtons(true);
+
     }
 
     private void appendDoctorsToList(ArrayList<String> tempList){
@@ -91,9 +93,12 @@ public class MainController {
             Unavailability = model.getDbController().getUnvailability(-1);
             agendas = model.getDbController().getAppointments(-1, "");
         }catch(Exception e){
-            Unavailability = null;
+            e.printStackTrace();
         }
-
+        for (int i = 0; i < Unavailability.size(); i++) {
+            if(Unavailability.get(i) instanceof Unavailable)
+                System.out.println(i + " " + ((Unavailable) Unavailability.get(i)).getDoctorName());
+        }
     }
 
     private void initMainPane(AnchorPane pnlTool, ArrayList<String> tempList){
@@ -360,7 +365,7 @@ public class MainController {
 
         try {
             if (!doctorName.equalsIgnoreCase("All")) {
-                ArrayList<Agenda> unavailable = model.getDbController().getUnvailability(doctorName);
+                ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(doctorName);
                 for (int i = 0; i < availableSlots.size(); i++) {
                     for (int j = 0; j < unavailable.size(); j++) {
                         if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())) {
@@ -371,7 +376,7 @@ public class MainController {
                 }
                 availableSlots.trimToSize();
             } else{
-                ArrayList<Agenda> unavailable = model.getDbController().getUnvailability(-1);
+                ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(-1);
 
             }
 

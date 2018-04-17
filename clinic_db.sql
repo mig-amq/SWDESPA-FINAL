@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
 -- Host: localhost    Database: clinic_db
 -- ------------------------------------------------------
--- Server version	5.7.20-log
+-- Server version	5.7.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -62,7 +62,7 @@ CREATE TABLE `appointment` (
   KEY `fk_appointment_client1_idx` (`client_id`),
   CONSTRAINT `fk_appointment_client1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_appointment_doctor1` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,6 +71,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
+INSERT INTO `appointment` VALUES (1,'2018/04/17 07:30 am','2018/04/17 08:00 am',1,1,0,NULL),(2,'2018/04/18 07:30 am','2018/04/18 08:00 am',1,2,0,NULL),(3,'2018/04/19 07:30 am','2018/04/19 08:00 am',1,1,0,NULL),(4,'2018/04/20 07:30 am','2018/04/20 08:00 am',1,2,0,NULL),(5,'2018/04/21 07:30 am','2018/04/21 08:00 am',1,1,0,NULL),(6,'2018/04/22 07:30 am','2018/04/22 08:00 am',1,2,0,NULL),(7,'2018/04/23 07:30 am','2018/04/23 08:00 am',1,1,0,NULL),(8,'2018/04/17 05:30 pm','2018/04/17 06:00 pm',2,1,0,NULL),(9,'2018/04/18 06:00 pm','2018/04/18 06:30 pm',2,2,0,NULL),(10,'2018/04/18 06:30 pm','2018/04/18 07:00 pm',2,1,0,NULL);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +92,7 @@ CREATE TABLE `client` (
   PRIMARY KEY (`client_id`),
   KEY `fk_client_account1_idx` (`account_id`),
   CONSTRAINT `fk_client_account1` FOREIGN KEY (`account_id`) REFERENCES `account` (`account_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -196,4 +197,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-16 20:14:55
+-- Dump completed on 2018-04-17 20:11:18
