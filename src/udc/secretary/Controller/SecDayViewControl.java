@@ -18,6 +18,7 @@ public class SecDayViewControl extends AbstractControl {
     private Node SecDayViewNode;
     private TableView<DaySchedule> tbView;
     private ObservableList<Node> components;
+    private TableColumn<DaySchedule, String> tcDoctorColumn;
 
     public SecDayViewControl() {
         SecDayViewNode = loadSecDayView();
@@ -45,6 +46,10 @@ public class SecDayViewControl extends AbstractControl {
                 if(node.getId().equals("tbView")){
                     tbView = (TableView) node;
                     tbView.getSelectionModel().setCellSelectionEnabled(true);
+                    for (int j = 0; j < tbView.getColumns().size(); j++) {
+                        if (tbView.getColumns().get(j).getId().equals("colDoctors"))
+                            tcDoctorColumn = (TableColumn<DaySchedule, String>) tbView.getColumns().get(j);
+                    }
                 }
 
                 //add more here if you're adding more components to gui
@@ -77,6 +82,8 @@ public class SecDayViewControl extends AbstractControl {
             else
                 tbView.getItems().add(new DaySchedule(time, ""));
         }
+        setColumnCellFactory(tcDoctorColumn);
+
     }
 
     public Node getSecDayViewNode(){
