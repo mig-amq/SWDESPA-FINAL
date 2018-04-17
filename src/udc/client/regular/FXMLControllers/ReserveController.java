@@ -186,7 +186,7 @@ public class ReserveController extends AnchorPane {
                             Alert alert = new Alert (Alert.AlertType.ERROR);
                             alert.setTitle("Invalid Input");
                             alert.setHeaderText(null);
-                            alert.setContentText("Dr. " + doctorCmb.getValue() + "is not available at this time.");
+                            alert.setContentText("Dr. " + doctorCmb.getValue() + " is not available at this time.");
                             alert.showAndWait();
                             canAdd = false;
                             break;
@@ -220,7 +220,7 @@ public class ReserveController extends AnchorPane {
 
             if(u.getStartTime().toLocalDate().isEqual(candidate.toLocalDate())) {
                 LocalTime startTime = u.getStartTime().toLocalTime();
-                LocalTime endTime = u.getEndTime().toLocalTime();
+                LocalTime endTime = u.getEndTime().toLocalTime().minusMinutes(1);
 
                 if(isBetween(candidate.toLocalTime(), startTime, endTime)) {
                     return true;
