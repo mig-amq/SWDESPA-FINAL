@@ -45,7 +45,7 @@ public class MainController {
     private ArrayList<String> doctorList;
     private ArrayList<Agenda> agendas;
     private Calendar calendar;
-    private ArrayList<Agenda> Unavailability;
+    private ArrayList<Agenda> Unavailability; //implement later when bored
 
     public MainController(AnchorPane contentPane, AnchorPane pnlTool, Model model, Calendar calendar) throws Exception{
         doctorList = new ArrayList<>();
@@ -359,10 +359,8 @@ public class MainController {
 
     private boolean isEqualDate(Agenda agenda, LocalDate selected){
         String sDoctorName = (String) cmbBoxDoctors.getSelectionModel().getSelectedItem();
-//        System.out.println(sDoctorName == null);
         if(sDoctorName != null && !sDoctorName.equals("All"))
             sDoctorName = sDoctorName.substring(4);
-        System.out.println(sDoctorName);
         if(sDoctorName!= null && agenda instanceof Appointment) {
             if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Appointment)agenda).getDoctorName())) //mq
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
@@ -370,7 +368,6 @@ public class MainController {
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
             else if(sDoctorName.equals("All"))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-//            System.out.println("Doctor: " + sDoctorName + "\nAgenda Doctor: " + agenda.getsDoctorName().split(" | ")[0]);
 
         }
         return false;//

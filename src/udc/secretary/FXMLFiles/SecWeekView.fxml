@@ -11,7 +11,7 @@
          <children>
             <TableView id="tvWeekView" prefHeight="620.0" prefWidth="850.0">
               <columns>
-                <TableColumn fx:id="tcTime" editable="false" prefWidth="70.0" resizable="false" text="Time" />
+                  <TableColumn fx:id="tcTime" editable="false" prefWidth="70.0" resizable="false" text="Time" />
                   <TableColumn fx:id="tcMonday" prefWidth="150.0" resizable="false" text="Mon" />
                   <TableColumn fx:id="tcTuesday" prefWidth="150.0" resizable="false" text="Tue" />
                   <TableColumn fx:id="tcWednesday" prefWidth="150.0" resizable="false" text="Wed" />
