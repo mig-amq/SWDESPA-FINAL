@@ -7,6 +7,7 @@ import udc.client.regular.Controller.ClientSuperController;
 import udc.objects.time.concrete.Agenda;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -15,24 +16,23 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
     @FXML private ListView<?> dayList;
 
 
-    public void setList()
-    {
-        //        ArrayList<Agenda> today = new ArrayList<Agenda>();
-//
-//
-//        for (int i = 0; i < temp.size(); i++)
-//        {
-//            LocalDateTime timetemp = model.getDbController().getAppointments().get(i).getStartTime();
-//            LocalDateTime now = LocalDateTime.now();
-//
-//            if (timetemp.getDayOfYear() == now.getDayOfYear() && timetemp.getYear() == now.getYear())
-//            {
-//                today.add(model.getDbController().getAppointments().get(i));
-//            }
-//        }
-//
-//        items.add(info);
-//
+    public void setList() throws Exception {
+        ////////////////////puts the stuff today into one arraylist
+        ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
+        LocalDateTime now = LocalDateTime.now();
+        ArrayList<Agenda> today = new ArrayList<Agenda>();
+
+        for (int i = 0; i < temp.size(); i++)
+        {
+            LocalDateTime timetemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
+
+            if (timetemp.getDayOfYear() == now.getDayOfYear() && timetemp.getYear() == now.getYear())
+            {
+                today.add(model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i));
+            }
+        }
+
+        //    items.add();
     }
 
 

@@ -24,29 +24,28 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     Model model;
 
 
-    private void setList() {
+    private void setList() throws Exception {
         items.add("00:00" + "-" + "02:30" + " " + "Dr JDC");
         items.add("00:00" + "-" + "01:30" + " " + ":)");
-        //dayList.setItems(items);
-
-//        ArrayList<Agenda> today = new ArrayList<Agenda>();
-//
-//
-//        for (int i = 0; i < temp.size(); i++)
-//        {
-//            LocalDateTime timetemp = model.getDbController().getAppointments().get(i).getStartTime();
-//            LocalDateTime now = LocalDateTime.now();
-//
-//            if (timetemp.getDayOfYear() == now.getDayOfYear() && timetemp.getYear() == now.getYear())
-//            {
-//                today.add(model.getDbController().getAppointments().get(i));
-//            }
-//        }
-//
-//        items.add(info);
-//
+        dayList.setItems(items);
 
 
+        ////////////////////puts the stuff today into one arraylist
+        ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
+        LocalDateTime now = LocalDateTime.now();
+        ArrayList<Agenda> today = new ArrayList<Agenda>();
+
+        for (int i = 0; i < temp.size(); i++)
+        {
+            LocalDateTime timetemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
+
+            if (timetemp.getDayOfYear() == now.getDayOfYear() && timetemp.getYear() == now.getYear())
+            {
+                today.add(model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i));
+            }
+        }
+
+    //    items.add();
 
     }
 
@@ -76,6 +75,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     @Override
     public void insertFilterData(ArrayList<Agenda> data) {
         items = dayList.getItems();
-        setList();
+      //  setList();
     }
 }
