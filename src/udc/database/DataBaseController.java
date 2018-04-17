@@ -337,6 +337,8 @@ public class DataBaseController {
     public ArrayList<Agenda> getAppointments(int id, String type) throws Exception {
         SingleAppointmentBuilder builder;
         RecurringAppointmentBuilder rbuilder;
+        ArrayList<Agenda> temp0 = new ArrayList<>();
+        Agenda temp1;
 
         try {
             ArrayList<Agenda> tempList = new ArrayList<>();
@@ -372,14 +374,32 @@ public class DataBaseController {
                 if (rSet.getBoolean("recurring")) {
 //                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
 //                            strToTime(rSet.getString("time_start")),
-                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
+
+                    String[] temp2 = rSet.getString("except_dates").split(";");
+                    for (int i = 0; i < temp2.length; i++) {
+                        temp1 = new Agenda();
+
+                        String time1 = temp2[i].split(" - ")[0];
+                        String time2 = temp2[i].split(" - ")[1];
+
+                        temp1.setStartTime(strToTime(time1));
+                        temp1.setEndTime(strToTime(time2));
+                        temp1.setType(AgendaType.SINGLE);
+
+                        temp0.add(temp1);
+                    }
+
+                    tempList.get(tempList.size() - 1).setExceptions(temp0);
                 } else {
 //                    tempList.add(builder.build(rSet.getInt("appointment_id"),
 //                            strToTime(rSet.getString("time_start")),
-                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(builder.build(rSet.getInt("appointment_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
@@ -398,7 +418,8 @@ public class DataBaseController {
                 }
             }
         }
-        throw new Exception("Error: There are no appointments ( method @ getAppointments() dbcontrolller)");
+
+        return new ArrayList<>();
     }
 
     /**
@@ -437,7 +458,7 @@ public class DataBaseController {
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
 
-                    String[] temp2 = rSet.getString("ed").split(";");
+                    String[] temp2 = rSet.getString("except_dates").split(";");
                     for (int i = 0; i < temp2.length; i++) {
                         temp1 = new Agenda();
 
@@ -451,7 +472,7 @@ public class DataBaseController {
                         temp0.add(temp1);
                     }
 
-                    ((Unavailable) tempList.get(tempList.size() - 1)).setExceptions(temp0);
+                    tempList.get(tempList.size() - 1).setExceptions(temp0);
                 } else {
                     tempList.add(rbuilder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),

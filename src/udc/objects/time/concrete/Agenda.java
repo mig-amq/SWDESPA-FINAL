@@ -11,6 +11,11 @@ public class Agenda {
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
     protected AgendaType type;
+    protected ArrayList<Agenda> exceptions;
+
+    public Agenda () {
+        this.setExceptions(new ArrayList<>());
+    }
 
     /**
      * Checks if the {@link Agenda} instance clashes with an already existing Agenda in the parameter.
@@ -92,6 +97,10 @@ public class Agenda {
         return startTime;
     }
 
+    public ArrayList<Agenda> getExceptions() {
+        return exceptions;
+    }
+
     public void setType(AgendaType type) {
         this.type = type;
     }
@@ -106,5 +115,9 @@ public class Agenda {
 
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
+    }
+
+    public void setExceptions(ArrayList<Agenda> exceptions) {
+        this.exceptions = exceptions;
     }
 }
