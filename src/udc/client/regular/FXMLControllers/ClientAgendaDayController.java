@@ -33,10 +33,26 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         {
             LocalDateTime startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
             LocalDateTime endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
+        //    String doctor = model.getDbController().getAppointments(model.getAccount().getId(), "normal").;
+            String doctor = "Dr. bruh";
+            int startMin = startTemp.getMinute();
+            int endMin = endTemp.getMinute();
+            String sMin;
+            String eMin;
+
+            if (startMin == 0)
+                sMin = "00";
+            else
+                sMin = "30";
+
+            if (endMin == 0)
+                eMin = "00";
+            else
+                eMin = "30";
 
             if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())
             {
-                String s = startTemp.getHour() + ":" + startTemp.getMinute() + " - " +  endTemp.getHour() + ":" + endTemp.getMinute();
+                String s = startTemp.getHour() + ":" + sMin + " - " +  endTemp.getHour() + ":" + eMin + " " + doctor;
                 items.add(s);
             }
         }
