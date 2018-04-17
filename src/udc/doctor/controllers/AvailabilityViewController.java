@@ -63,7 +63,8 @@ public class AvailabilityViewController extends SuperController implements Initi
             @Override
             public void handle(ActionEvent event) {
                 /*** INSERT ACTIONS HERE ***/
-                String hour, min, hours, mins, type, typeTime, typeTime2,startString, endString;
+                System.out.println(getCalendar().getDate());
+                /*String hour, min, hours, mins, type, typeTime, typeTime2,startString, endString;
                 int startTime, endTime;
                 hour = cmbSHour.getSelectionModel().getSelectedItem().toString();
                 min = cmbSMin.getSelectionModel().getSelectedItem().toString();
@@ -131,7 +132,7 @@ public class AvailabilityViewController extends SuperController implements Initi
                     //shows dialogue box for invalid input time
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("There is already an appointment shceduled there");
-                }
+                }*/
             }
         });
     }
