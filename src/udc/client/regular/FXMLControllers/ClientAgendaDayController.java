@@ -17,44 +17,46 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
 
     @FXML
-    private ListView dayList;
+    private ListView<String> dayList;
 
     private ObservableList<String> items;
 
-    Model model;
-
-
-    private void setList() {
+    private void setList() throws Exception {
         items.add("00:00" + "-" + "02:30" + " " + "Dr JDC");
         items.add("00:00" + "-" + "01:30" + " " + ":)");
-        //dayList.setItems(items);
 
-//        ArrayList<Agenda> today = new ArrayList<Agenda>();
+//        LocalDateTime now = LocalDateTime.now();
 //
+//        ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 //
 //        for (int i = 0; i < temp.size(); i++)
 //        {
-//            LocalDateTime timetemp = model.getDbController().getAppointments().get(i).getStartTime();
-//            LocalDateTime now = LocalDateTime.now();
+//            LocalDateTime startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
+//            LocalDateTime endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
 //
-//            if (timetemp.getDayOfYear() == now.getDayOfYear() && timetemp.getYear() == now.getYear())
+//            if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())
 //            {
-//                today.add(model.getDbController().getAppointments().get(i));
+//                String s = startTemp.getHour() + ":" + startTemp.getMinute() + " - " +  endTemp.getHour() + ":" + endTemp.getMinute();
+//                items.add(s);
 //            }
 //        }
 //
-//        items.add(info);
 //
 
 
+        System.out.println(model);
 
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        insertFilterData();
-//        items = dayList.getItems();
-//        setList();
+//       insertFilterData();
+       items = dayList.getItems();
+        try {
+            setList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //        dayList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 //            @Override
 //            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -71,11 +73,13 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 //                }
 //            }
 //        });
+
+
     }
 
     @Override
     public void insertFilterData(ArrayList<Agenda> data) {
         items = dayList.getItems();
-        setList();
+      //  setList();
     }
 }

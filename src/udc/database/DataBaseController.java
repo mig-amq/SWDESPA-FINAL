@@ -211,6 +211,10 @@ public class DataBaseController {
         }
     }
 
+    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, String doctorName, String clientName) {
+        addAppointment(time_start, time_end, getDocID(doctorName), getClientID(clientName));
+    }
+
     /**
      * Inserts a new appointment to the appointment table.
      *
@@ -248,6 +252,10 @@ public class DataBaseController {
         }
     }
 
+    public void addUnavailability(String doctorName, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring) {
+        addUnavailability(getDocID(doctorName), time_start, time_end, recurring);
+    }
+
     /**
      * Inserts a new doctor unavailability date and time to the unavailability table.
      *
@@ -283,6 +291,10 @@ public class DataBaseController {
                 }
             }
         }
+    }
+
+    public void updateUnavailability(String doctorName, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring){
+        updateUnavailability(getDocID(doctorName), time_start, time_end, recurring);
     }
 
     /**
@@ -323,6 +335,62 @@ public class DataBaseController {
         }
     }
 
+    public int getClientID(String name) {
+        int i = -1;
+        String[] n = name.split(" ");
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement("SELECT client_id FROM clinic_db.client WHERE first_name LIKE '" + n[0] + "' AND last_name LIKE '" + n[1] + "'");
+            rSet = pStmt.executeQuery();
+
+            if(rSet.next()) {
+                System.out.println(rSet.getInt("client_id"));
+                i = rSet.getInt("client_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return i;
+    }
+
+    public int getDocID(String name) {
+        int i = -1;
+        String[] n = name.split(" ");
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement("SELECT doctor_id FROM clinic_db.doctor WHERE first_name LIKE '" + n[0] + "' AND last_name LIKE '" + n[1] + "'");
+            rSet = pStmt.executeQuery();
+
+            if(rSet.next()) {
+                System.out.println(rSet.getInt("doctor_id"));
+                i = rSet.getInt("doctor_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return i;
+    }
+
     /**
      * Returns an ArrayList of Appointment based on the parameters.
      * <p>
@@ -337,6 +405,8 @@ public class DataBaseController {
     public ArrayList<Agenda> getAppointments(int id, String type) throws Exception {
         SingleAppointmentBuilder builder;
         RecurringAppointmentBuilder rbuilder;
+        ArrayList<Agenda> temp0 = new ArrayList<>();
+        Agenda temp1;
 
         try {
             ArrayList<Agenda> tempList = new ArrayList<>();
@@ -360,6 +430,7 @@ public class DataBaseController {
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "'";
 
+            System.out.println(stmt);
             pStmt = connection.prepareStatement(stmt);
 
             rSet = pStmt.executeQuery();
@@ -372,14 +443,32 @@ public class DataBaseController {
                 if (rSet.getBoolean("recurring")) {
 //                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
 //                            strToTime(rSet.getString("time_start")),
-                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
+
+                    String[] temp2 = rSet.getString("except_dates").split(";");
+                    for (int i = 0; i < temp2.length; i++) {
+                        temp1 = new Agenda();
+
+                        String time1 = temp2[i].split(" - ")[0];
+                        String time2 = temp2[i].split(" - ")[1];
+
+                        temp1.setStartTime(strToTime(time1));
+                        temp1.setEndTime(strToTime(time2));
+                        temp1.setType(AgendaType.SINGLE);
+
+                        temp0.add(temp1);
+                    }
+
+                    tempList.get(tempList.size() - 1).setExceptions(temp0);
                 } else {
 //                    tempList.add(builder.build(rSet.getInt("appointment_id"),
 //                            strToTime(rSet.getString("time_start")),
-                    tempList.add(rbuilder.build(strToTime(rSet.getString("time_start")),
+                    tempList.add(builder.build(rSet.getInt("appointment_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
@@ -398,7 +487,13 @@ public class DataBaseController {
                 }
             }
         }
-        throw new Exception("Error: There are no appointments ( method @ getAppointments() dbcontrolller)");
+
+        return new ArrayList<>();
+    }
+
+    public ArrayList<Agenda> getUnvailability(String doctorName) throws Exception {
+
+        return getUnvailability(getDocID(doctorName));
     }
 
     /**
@@ -414,6 +509,8 @@ public class DataBaseController {
     public ArrayList<Agenda> getUnvailability(int doctor_id) throws Exception {
         SingleUnavailableBuilder builder = new SingleUnavailableBuilder(doctor_id);
         RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder(doctor_id);
+        ArrayList<Agenda> temp0 = new ArrayList<>();
+        Agenda temp1;
 
         try {
             ArrayList<Agenda> tempList = new ArrayList<>();
@@ -434,6 +531,22 @@ public class DataBaseController {
                     tempList.add(builder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
+
+                    String[] temp2 = rSet.getString("except_dates").split(";");
+                    for (int i = 0; i < temp2.length; i++) {
+                        temp1 = new Agenda();
+
+                        String time1 = temp2[i].split(" - ")[0];
+                        String time2 = temp2[i].split(" - ")[1];
+
+                        temp1.setStartTime(strToTime(time1));
+                        temp1.setEndTime(strToTime(time2));
+                        temp1.setType(AgendaType.SINGLE);
+
+                        temp0.add(temp1);
+                    }
+
+                    tempList.get(tempList.size() - 1).setExceptions(temp0);
                 } else {
                     tempList.add(rbuilder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),
@@ -489,7 +602,6 @@ public class DataBaseController {
                         sql = "SELECT * FROM client WHERE account_id = " + rSet.getInt("account_id");
                         break;
                 }
-            }
 
                 pStmt = connection.prepareStatement(sql);
                 ResultSet rSet2 = pStmt.executeQuery();
@@ -506,16 +618,18 @@ public class DataBaseController {
                             temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
                     }
 
-//                    if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
-//                        temp.setImageURI(rSet.getString("image_url"));
+                    if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
+                        temp.setImageURI(rSet.getString("image_url"));
                 }
 
                 rSet.close();
                 rSet2.close();
 
                 return temp;
+            }
+
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new Exception("Error: Cannot connect to the database");
         } finally {
             if (connection != null) {
                 try {
@@ -527,49 +641,6 @@ public class DataBaseController {
         }
 
         throw new Exception("Error: That account does not exist.");
-    }
-
-    public ArrayList<Agenda> getExceptions (int doctor_id) {
-        ArrayList<Agenda> temp0 = new ArrayList<>();
-        Agenda temp1;
-
-        try {
-            connection = ConnectionConfiguration.getConnection(model);
-            pStmt = connection.prepareStatement("SELECT U.except_dates AS ed FROM doctor D INNER JOIN unavailability U ON U.doctor_id = D.doctor_id WHERE U.doctor_id = " + doctor_id);
-
-            rSet = pStmt.executeQuery();
-
-            while (rSet.next()) {
-                if (rSet.getBoolean("recurring")) {
-                    String[] temp2 = rSet.getString("ed").split(";");
-                    for (int i = 0; i < temp2.length; i++) {
-                        temp1 = new Agenda();
-
-                        String time1 = temp2[i].split(" - ")[0];
-                        String time2 = temp2[i].split(" - ")[1];
-
-                        temp1.setStartTime(strToTime(time1));
-                        temp1.setEndTime(strToTime(time2));
-                        temp1.setType(AgendaType.SINGLE);
-
-                        temp0.add(temp1);
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return temp0;
     }
 
     public Model getModel() {

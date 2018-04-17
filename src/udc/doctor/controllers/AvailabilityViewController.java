@@ -58,19 +58,20 @@ public class AvailabilityViewController extends SuperController implements Initi
             @Override
             public void handle(ActionEvent event) {
                 /*** INSERT ACTIONS HERE ***/
-                String hour, min, hours, mins, type, startString, endString;
+                String hour, min, hours, mins, type,typeTime ,startString, endString;
                 int startTime, endTime;
                 hour = cmbSHour.getSelectionModel().getSelectedItem().toString();
                 min = cmbSMin.getSelectionModel().getSelectedItem().toString();
                 hours = cmbEHour.getSelectionModel().getSelectedItem().toString();
                 mins = cmbEMin.getSelectionModel().getSelectedItem().toString();
+                typeTime = timeType.getSelectionModel().getSelectedItem().toString();
                 type = cmbType.getSelectionModel().getSelectedItem().toString();
                 //System.out.println(hour+min);
                 //System.out.println(hours+mins);
                 startString = hour+":"+min+" "+type;
                 endString = hours+":"+mins+" "+type;
-                startTime = Integer.parseInt(hour+":"+min+" "+type);
-                endTime = Integer.parseInt(hours+":"+mins+" "+type);
+                startTime = Integer.parseInt(hour+":"+min+" "+timeType);
+                endTime = Integer.parseInt(hours+":"+mins+" "+timeType);
                 System.out.println(startTime < endTime);
                 if(startTime < endTime){
                     LocalDateTime date =
@@ -81,18 +82,19 @@ public class AvailabilityViewController extends SuperController implements Initi
                     if((date.getHour() < startTime/100) ||
                             (date.getMinute() == startTime %100 && date.getHour() < startTime/100)){
                         boolean isConflict = false;
-                        DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendPattern("hh:mm a").toFormatter();
+                        DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
                         LocalTime timeStart, timeEnd;
                         LocalDateTime start, end;
                         timeStart = LocalTime.parse(startString, dtf);
                         start = LocalDateTime.of(calendar.getSelected(), timeStart);
                         timeEnd = LocalTime.parse(endString, dtf);
                         end = LocalDateTime.of(calendar.getSelected(), timeEnd);
-
                         ArrayList<Agenda> appointments = model.getAccount().getAppointments();
                         for(int i = 0; i < appointments.size(); i++){
-                            if(appointments.get(i).getStartTime().isEqual(start) || appointments.get(i).getEndTime().isEqual(end)||
-                                    appointments.get(i).getStartTime().isEqual(end) || appointments.get(i).getEndTime().isEqual(start))
+                            if((appointments.get(i).getStartTime().isBefore(start) && appointments.get(i).getEndTime().isBefore(start)) ||
+                                    (appointments.get(i).getStartTime().isBefore(end) && appointments.get(i).getEndTime().isBefore(end)) ||
+                                    appointments.get(i).getStartTime().isEqual(start) || appointments.get(i).getEndTime().isEqual(start) ||
+                                    appointments.get(i).getStartTime().isEqual(end) || appointments.get(i).getEndTime().isEqual(end))
                                 isConflict = true;
                         }
 
@@ -114,12 +116,7 @@ public class AvailabilityViewController extends SuperController implements Initi
 
                         }
 
-                        //model.getList then compare times to check for conflict
-//                        if(model.getList.getStartTime != startTime && model.getList.getEndTime != endTime){
 
-//                      }else{//shows dialogue box for conflict of time
-//
-//                      }
                     }else{
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setContentText("Invalid time selected");

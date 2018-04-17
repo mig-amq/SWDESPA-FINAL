@@ -2,7 +2,10 @@ package udc.objects.time.concrete;
 
 import udc.objects.enums.UnavailabilityType;
 
+import java.util.ArrayList;
+
 public class Unavailable extends Agenda {
+
     private UnavailabilityType unavailabilityType;
     private String doctorName;
 
@@ -21,4 +24,5 @@ public class Unavailable extends Agenda {
     public String getDoctorName() {
         return doctorName;
     }
+
 }

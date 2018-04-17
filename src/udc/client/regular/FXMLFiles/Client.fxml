@@ -133,10 +133,11 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="273.0" prefWidth="529.0">
                      <children>
-                        <TableView layoutX="-1.0" layoutY="-1.0" prefHeight="274.0" prefWidth="534.0">
+                        <TableView fx:id="previous" layoutX="-1.0" layoutY="-1.0" prefHeight="274.0" prefWidth="534.0">
                            <columns>
-                              <TableColumn prefWidth="391.0" text="Doctor" />
-                              <TableColumn prefWidth="139.0" text="Date" />
+                              <TableColumn id="date" prefWidth="96.0" text="Date" />
+                              <TableColumn id="time" prefWidth="128.0" text="Time" />
+                              <TableColumn id="doctor" prefWidth="304.0" text="Doctor" />
                            </columns>
                         </TableView>
                      </children>
@@ -145,13 +146,13 @@
             </ScrollPane>
             <ScrollPane hbarPolicy="NEVER" layoutX="-2.0" layoutY="106.0" prefHeight="257.0" prefWidth="545.0" style="-fx-border-color: #f4f4f4;">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="279.0" prefWidth="528.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="256.0" prefWidth="528.0">
                      <children>
-                        <TableView prefHeight="282.0" prefWidth="529.0">
+                        <TableView fx:id="upcoming" prefHeight="257.0" prefWidth="529.0">
                            <columns>
-                              <TableColumn prefWidth="96.0" text="Date" />
-                              <TableColumn prefWidth="128.0" text="Time" />
-                              <TableColumn prefWidth="304.0" text="Doctor" />
+                              <TableColumn id="date" prefWidth="96.0" text="Date" />
+                              <TableColumn id="time" prefWidth="128.0" text="Time" />
+                              <TableColumn id="doctor" prefWidth="304.0" text="Doctor" />
                            </columns>
                         </TableView>
                      </children>

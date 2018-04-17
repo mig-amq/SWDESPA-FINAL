@@ -39,12 +39,11 @@ public class Model {
                 switch (this.account.getType()) {
                     case DOCTOR:
                         this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "DOCTOR"));
-                        ((Doctor) this.getAccount()).setExceptions(this.getDbController().getExceptions(this.account.getId()));
                         break;
                     case SECRETARY:
                         this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "SECRETARY"));
                         break;
-                    case CLIENT:
+                    default:
                         this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "CLIENT"));
                         break;
                 }

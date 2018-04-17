@@ -20,6 +20,7 @@ public class Main extends Application {
 
         Parent root = loader.load();
 //        Doctor root = new Doctor(600, 600);
+
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();

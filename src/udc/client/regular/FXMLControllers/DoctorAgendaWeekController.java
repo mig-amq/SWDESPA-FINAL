@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class DoctorAgendaWeekController extends ClientSuperController implements Initializable {
 
-    @FXML private ListView<?> weekList;
+    @FXML private ListView<String> weekList;
 
     private ObservableList<Agenda> mon;
     private ObservableList<Agenda> tues;
@@ -30,21 +30,22 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
 
     @Override
     public void insertFilterData(ArrayList<Agenda> data) {
-//        for (int i = 0; i < data.size(); i++) {
-//            if (data.get(i).getStartTime().getDayOfWeek().getValue() == 1)
-//                mon.add(data.get(i));
-//            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 2)
-//                tues.add(data.get(i));
-//            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 3)
-//                wed.add(data.get(i));
-//            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 4)
-//                thurs.add(data.get(i));
-//            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 5)
-//                fri.add(data.get(i));
-//            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 6)
-//                sat.add(data.get(i));
-//            else if(data.get(i).getStartTime().getDayOfWeek().getValue() == 7)
-//                sun.add(data.get(i));
-//        }
+        //checks which day it belongs to lol idk panno toh huhuhuhu
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getStartTime().getDayOfWeek().getValue() == 1)
+                mon.add(data.get(i));
+            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 2)
+                tues.add(data.get(i));
+            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 3)
+                wed.add(data.get(i));
+            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 4)
+                thurs.add(data.get(i));
+            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 5)
+                fri.add(data.get(i));
+            else if (data.get(i).getStartTime().getDayOfWeek().getValue() == 6)
+                sat.add(data.get(i));
+            else if(data.get(i).getStartTime().getDayOfWeek().getValue() == 7)
+                sun.add(data.get(i));
+        }
    }
 }
