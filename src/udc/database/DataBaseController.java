@@ -431,7 +431,6 @@ public class DataBaseController {
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "'";
 
-            System.out.println(stmt);
             pStmt = connection.prepareStatement(stmt);
 
             rSet = pStmt.executeQuery();
@@ -619,7 +618,7 @@ public class DataBaseController {
                                 ((Client) temp).setClientType(ClientType.REGULAR);
                             else
                                 ((Client) temp).setClientType(ClientType.WALKIN);
-                            
+
                             break;
                         default:
                             temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
