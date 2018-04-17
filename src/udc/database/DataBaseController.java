@@ -491,7 +491,7 @@ public class DataBaseController {
         return new ArrayList<>();
     }
 
-    public ArrayList<Agenda> getUnvailability(String doctorName) throws Exception {
+    public ArrayList<Unavailable> getUnvailability(String doctorName) throws Exception {
 
         return getUnvailability(getDocID(doctorName));
     }
@@ -506,14 +506,14 @@ public class DataBaseController {
      * @return an ArrayList of unavailable times of a specific Doctor
      * @throws Exception table is empty.
      */
-    public ArrayList<Agenda> getUnvailability(int doctor_id) throws Exception {
+    public ArrayList<Unavailable> getUnvailability(int doctor_id) throws Exception {
         SingleUnavailableBuilder builder = new SingleUnavailableBuilder(doctor_id);
         RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder(doctor_id);
         ArrayList<Agenda> temp0 = new ArrayList<>();
         Agenda temp1;
 
         try {
-            ArrayList<Agenda> tempList = new ArrayList<>();
+            ArrayList<Unavailable> tempList = new ArrayList<>();
 
             connection = ConnectionConfiguration.getConnection(model);
 
