@@ -227,7 +227,6 @@ public class ClientController extends AnchorPane {
             Stage child = new Stage(StageStyle.UNDECORATED);
             child.setScene(new Scene(reserve));
             child.show();
-
         });
 
         editButton.setOnAction(event -> {

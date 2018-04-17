@@ -4,29 +4,25 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import udc.Model;
 import udc.customfx.calendar.Calendar;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Available;
 import udc.objects.time.concrete.Unavailable;
-import udc.secretary.Controller.SecDayAgendaControl;
-import udc.secretary.Controller.SecDayViewControl;
-import udc.secretary.Controller.SecWeekControl;
-import udc.secretary.Controller.WalkInControl;
-import udc.secretary.Secretary;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class MainController {
     private AnchorPane contentPane, secViewPane;
@@ -45,7 +41,7 @@ public class MainController {
     private ArrayList<String> doctorList;
     private ArrayList<Agenda> agendas;
     private Calendar calendar;
-    private ArrayList<Agenda> Unavailability; //implement later when bored
+    private ArrayList<Unavailable> Unavailability; //implement later when bored
 
     public MainController(AnchorPane contentPane, AnchorPane pnlTool, Model model, Calendar calendar) throws Exception{
         doctorList = new ArrayList<>();
@@ -64,6 +60,7 @@ public class MainController {
         agendas =  model.getDbController().getAppointments(-1, "");
         secViewPane.getChildren().setAll(secDayView);
         setDisableButtons(true);
+
     }
 
     private void appendDoctorsToList(ArrayList<String> tempList){
@@ -77,7 +74,7 @@ public class MainController {
         secWeekControl = new SecWeekControl();
         secDayViewControl = new SecDayViewControl();
         secDayAgendaControl = new SecDayAgendaControl();
-        walkInControl = new WalkInControl();
+        //walkInControl = new WalkInControl();
     }
 
     private void initNodesChildren(){
@@ -85,6 +82,7 @@ public class MainController {
         secDayView = secDayViewControl.getSecDayViewNode(); //scrollpane
         secWeekView = secWeekControl.getNdSecWeekViewNode();//scrollpane
         secDayAgendaView = secDayAgendaControl.getNdSecDayAgendaViewNode();
+        //secWalkInView = walkInControl.getSecWalkInNode();
     }
 
     private void initData(AnchorPane pnlTool){
@@ -95,9 +93,12 @@ public class MainController {
             Unavailability = model.getDbController().getUnvailability(-1);
             agendas = model.getDbController().getAppointments(-1, "");
         }catch(Exception e){
-            Unavailability = null;
+            e.printStackTrace();
         }
-
+        for (int i = 0; i < Unavailability.size(); i++) {
+            if(Unavailability.get(i) instanceof Unavailable)
+                System.out.println(i + " " + ((Unavailable) Unavailability.get(i)).getDoctorName());
+        }
     }
 
     private void initMainPane(AnchorPane pnlTool, ArrayList<String> tempList){
@@ -208,8 +209,20 @@ public class MainController {
         });
 
         btnWalkIn.setOnAction(event ->{
-            secViewPane.getChildren().clear();
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/SecWalkInView.fxml"));
+            walkInControl = new WalkInControl(model);
+            loader.setController(walkInControl);
+            Parent root;
+            try {
+                root = (Parent) loader.load();
+                Stage stage = new Stage();
+                stage.setTitle("Pending Walk-Ins");
+                stage.setScene(new Scene(root, 587, 620));
+                stage.show();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -308,6 +321,7 @@ public class MainController {
     }
 
     public void calendarViewCondition(){
+        rdbtnWeekView.setDisable(false);
         if (rdbtnDayView.isSelected()){
             secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()));
             setColumnName((String) cmbBoxDoctors.getSelectionModel().getSelectedItem());
@@ -326,13 +340,15 @@ public class MainController {
         secDayViewControl.getTbView().getColumns().get(secDayViewControl.getTbView().getColumns().size()-1).setText(name);
     }
 
-    private void agendaViewCondition(){
+    public void agendaViewCondition(){
         secViewPane.getChildren().clear();
+        rdbtnWeekView.setDisable(true);
         if (rdbtnDayView.isSelected()){
             secDayAgendaControl.reset();
             secDayAgendaControl.setLabel(calendar.selectedProperty().get());
             if (rdbtnAvailable.isSelected()){
-
+                secDayAgendaControl.insertFilteredData(getAvailableSlots(calendar.selectedProperty().get(), cmbBoxDoctors.getSelectionModel().getSelectedItem().toString()));
+                secViewPane.getChildren().setAll(secDayAgendaView);
             } else{
                 secDayAgendaControl.insertFilteredData(findData(calendar.selectedProperty().get()));
                 secViewPane.getChildren().setAll(secDayAgendaView);
@@ -346,6 +362,51 @@ public class MainController {
         }
     }
 
-    // get doctor's unavailability
-    // from there, get the doctor's availability by instantiating an array list of agendas starting from opening time until the doctor's start time of unavailability
+    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctorName){
+        //TODO: fix doctor names and timeslots
+        ArrayList<Agenda> availableSlots = new ArrayList<Agenda>();
+        int hr = 7;
+        int min;
+        for (int i = 0; i < 30; i++){
+            if (i % 2 != 0){
+                hr++;
+                min = 0;
+            }
+            else
+                min = 30;
+
+            Available a = new Available();
+            a.setStartTime(LocalDateTime.of(selected, LocalTime.of(hr, min)));
+            if (!doctorName.equalsIgnoreCase("All"))
+                a.setDoctorName(doctorName.substring(4));
+            availableSlots.add(a);
+        }
+
+        try {
+            ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(doctorName);
+            for (int i = 0; i < availableSlots.size(); i++){
+                for (int j = 0; j < unavailable.size(); j++){
+                    if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())) {
+                        availableSlots.remove(i);
+                        break;
+                    }
+                }
+            }
+            availableSlots.trimToSize();
+
+            for (int i = 0; i < availableSlots.size(); i++){
+                for (int j = 0; j < agendas.size(); j++){
+                    if (availableSlots.get(i).getStartTime().equals(agendas.get(j).getStartTime())){
+                        availableSlots.remove(i);
+                        break;
+                    }
+                }
+            }
+            availableSlots.trimToSize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return availableSlots;
+    }
 }

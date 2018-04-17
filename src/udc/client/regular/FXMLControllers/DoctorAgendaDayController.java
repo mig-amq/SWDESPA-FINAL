@@ -18,21 +18,23 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
 
     public void setList() throws Exception {
         ////////////////////puts the stuff today into one arraylist
-        ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
-        LocalDateTime now = LocalDateTime.now();
-        ArrayList<Agenda> today = new ArrayList<Agenda>();
 
-        for (int i = 0; i < temp.size(); i++)
-        {
-            LocalDateTime timetemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-
-            if (timetemp.getDayOfYear() == now.getDayOfYear() && timetemp.getYear() == now.getYear())
-            {
-                today.add(model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i));
-            }
-        }
-
-        //    items.add();
+//        LocalDateTime now = LocalDateTime.now();
+//
+//        ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
+//
+//        for (int i = 0; i < temp.size(); i++)
+//        {
+//            LocalDateTime startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
+//            LocalDateTime endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
+//
+//            if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())
+//            {
+//                String s = startTemp.getHour() + ":" + startTemp.getMinute() + " - " +  endTemp.getHour() + ":" + endTemp.getMinute();
+//                items.add(s);
+//            }
+//        }
+//
     }
 
 
