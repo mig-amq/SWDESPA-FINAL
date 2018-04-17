@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class Unavailable extends Agenda {
 
-    private ArrayList<Agenda> exceptions;
     private UnavailabilityType unavailabilityType;
     private String doctorName;
 
@@ -26,11 +25,4 @@ public class Unavailable extends Agenda {
         return doctorName;
     }
 
-    public void setExceptions(ArrayList<Agenda> exceptions) {
-        this.exceptions = exceptions;
-    }
-
-    public ArrayList<Agenda> getExceptions() {
-        return exceptions;
-    }
 }
