@@ -527,7 +527,6 @@ public class DataBaseController {
             }
             rSet = pStmt.executeQuery();
 
-            System.out.println("getting unavailabilit");
             // Traversing result set and instantiating unavailability to temp list
             while (rSet.next()) {
                 if (rSet.getBoolean("recurring")) {
