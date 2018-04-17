@@ -164,25 +164,7 @@ public class MainController {
             setDisableButtons(false);
             secViewPane.getChildren().clear();
             secDayAgendaControl.reset();
-            if (rdbtnDayView.isSelected()){
-                if (rdbtnAvailable.isSelected()){
-                    secViewPane.getChildren().setAll(secDayAgendaView);
-                }
-                else{
-//                    try {
-//                        secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(cmbBoxDoctors.getSelectionModel().getSelectedIndex()));
-//                    } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                    secViewPane.getChildren().setAll(secDayAgendaView);
-                }
-            } else if (rdbtnWeekView.isSelected()) {
-                if (rdbtnAvailable.isSelected()) {
-
-                } else {
-
-                }
-            }
+            agendaViewCondition();
         });
 
         //filter then setAll
@@ -193,17 +175,7 @@ public class MainController {
                 secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()));
                 secViewPane.getChildren().setAll(secDayView);
             } else if (rdbtnAgendaView.isSelected()){
-                secDayAgendaControl.reset();
-                if (rdbtnAvailable.isSelected()){
-                    secViewPane.getChildren().setAll(secDayAgendaView);
-                } else{
-                    try {
-                        secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(cmbBoxDoctors.getSelectionModel().getSelectedIndex(), ""));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    secViewPane.getChildren().setAll(secDayAgendaView);
-                }
+                agendaViewCondition();
             }
         });
 
@@ -213,52 +185,17 @@ public class MainController {
                 secWeekControl.insertFilteredData(findWeekAgenda(), findStartingDay(calendar.getSelected()));
                 secViewPane.getChildren().setAll(secWeekView);
             } else if (rdbtnAgendaView.isSelected()){
-                secDayAgendaControl.reset();
-                if (rdbtnAvailable.isSelected()){
-                    secViewPane.getChildren().setAll(secDayAgendaView);
-                } else{
-                    try {
-                        secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(cmbBoxDoctors.getSelectionModel().getSelectedIndex(), ""));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    secViewPane.getChildren().setAll(secDayAgendaView);
-                }
+                agendaViewCondition();
             }
         });
 
         rdbtnAvailable.setOnAction(event -> {
-            secViewPane.getChildren().clear();
-            if (rdbtnAgendaView.isSelected()){
-                secDayAgendaControl.reset();
-                if (rdbtnDayView.isSelected()){
-                    try {
-                        secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(cmbBoxDoctors.getSelectionModel().getSelectedIndex(), ""));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    secViewPane.getChildren().setAll(secDayAgendaView);
-                } else if (rdbtnWeekView.isSelected()){
-
-                }
-            }
+            agendaViewCondition();
         });
+
         //don't forget to filter data before setall
         rdbtnTaken.setOnAction(event -> {
-            secViewPane.getChildren().clear();
-            if (rdbtnAgendaView.isSelected()){
-                secDayAgendaControl.reset();
-                if (rdbtnDayView.isSelected()){
-                    try {
-                        secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(cmbBoxDoctors.getSelectionModel().getSelectedIndex(), ""));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    secViewPane.getChildren().setAll(secDayAgendaView);
-                } else if (rdbtnWeekView.isSelected()){
-
-                }
-            }
+            agendaViewCondition();
         });
 
         cmbBoxDoctors.setOnAction(event -> {
@@ -266,25 +203,7 @@ public class MainController {
             if (rdbtnCalendarView.isSelected()) {
                 calendarViewCondition();
             } else if (rdbtnAgendaView.isSelected()){
-                secDayAgendaControl.reset();
-                if (rdbtnDayView.isSelected()){
-                    if (rdbtnAvailable.isSelected()){
-                        secViewPane.getChildren().setAll(secDayAgendaView);
-                    } else{
-                        try {
-                            secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(cmbBoxDoctors.getSelectionModel().getSelectedIndex(), ""));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        secViewPane.getChildren().setAll(secDayAgendaView);
-                    }
-                } else if (rdbtnWeekView.isSelected()) {
-                    if (rdbtnAvailable.isSelected()) {
-
-                    } else {
-
-                    }
-                }
+                agendaViewCondition();
             }
         });
 
@@ -316,12 +235,7 @@ public class MainController {
                 if (rdbtnAvailable.isSelected()){
 
                 } else{
-                    try {
-                        secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(cmbBoxDoctors.getSelectionModel().getSelectedIndex(), ""));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    secViewPane.getChildren().setAll(secDayAgendaView);
+
                 }
             } else if (rdbtnWeekView.isSelected()){
                 if (rdbtnAvailable.isSelected()){
@@ -409,7 +323,29 @@ public class MainController {
     }
 
     private void setColumnName(String name){
-        secDayViewControl.getTbView().getColumns().get(secDayViewControl.getTbView().getColumns().size() -1).setText(name);
+        secDayViewControl.getTbView().getColumns().get(secDayViewControl.getTbView().getColumns().size()-1).setText(name);
     }
 
+    private void agendaViewCondition(){
+        secViewPane.getChildren().clear();
+        if (rdbtnDayView.isSelected()){
+            secDayAgendaControl.reset();
+            secDayAgendaControl.setLabel(calendar.selectedProperty().get());
+            if (rdbtnAvailable.isSelected()){
+
+            } else{
+                secDayAgendaControl.insertFilteredData(findData(calendar.selectedProperty().get()));
+                secViewPane.getChildren().setAll(secDayAgendaView);
+            }
+        } else if (rdbtnWeekView.isSelected()){
+            if (rdbtnAvailable.isSelected()){
+
+            } else{
+
+            }
+        }
+    }
+
+    // get doctor's unavailability
+    // from there, get the doctor's availability by instantiating an array list of agendas starting from opening time until the doctor's start time of unavailability
 }
