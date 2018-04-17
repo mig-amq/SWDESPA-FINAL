@@ -299,7 +299,7 @@ public class DataBaseController {
      */
     public void updateUnavailability(int doctor_id, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring) {
         String stmt = "UPDATE clinic_db.unavailability " +
-                "SET time_start = ? time_end = ?, recurring = ? " +
+                "SET time_start = ?, time_end = ?, recurring = ? " +
                 "WHERE doctor_id = '" + doctor_id + "'";
         try {
             connection = ConnectionConfiguration.getConnection(model);
