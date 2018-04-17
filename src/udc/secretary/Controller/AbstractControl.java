@@ -4,6 +4,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Unavailable;
 
 import java.util.ArrayList;
 
@@ -59,14 +60,39 @@ public abstract class AbstractControl {
     }
 
     public int getDataIndexfromList(ArrayList<Agenda> data, String time){
-        //TODO: ADD END TIME
+        //TODO: ADD END TIME //done
         for (int i = 0; i < data.size(); i++) {
-            String agendaTime = convertIntHrorMintoString(data.get(i).getStartTime().getHour()) + convertIntHrorMintoString( data.get(i).getStartTime().getMinute());
-            String nTime = convertTimeFromTable(time); //converts time from table to military
-            if(nTime.equals(agendaTime))
-                return i;
+            if(data.get(i) instanceof Appointment) {
+                String agendaTime = convertIntHrorMintoString(data.get(i).getStartTime().getHour()) + convertIntHrorMintoString( data.get(i).getStartTime().getMinute());
+                String endTime = convertIntHrorMintoString(data.get(i).getEndTime().getHour()) + convertIntHrorMintoString(data.get(i).getEndTime().getMinute());
+                String nTime = convertTimeFromTable(time); //converts time from table to military
+                if (nTime.equals(agendaTime) || (Integer.parseInt(endTime) > Integer.parseInt(nTime) && Integer.parseInt(agendaTime)
+                < Integer.parseInt(nTime)))
+                    return i;
+            }
         }
         return -1;
+    }
+
+    public String getUnavailabilityFromList(ArrayList<Agenda> data, String time) {
+        String index = "";
+        int counter = 2; //increase counter for additional doctors
+        for (int i = 0; i < data.size() && counter != 0; i++) {
+            if (data.get(i) instanceof Unavailable) {
+                String agendaTime = convertIntHrorMintoString(data.get(i).getStartTime().getHour()) + convertIntHrorMintoString(data.get(i).getStartTime().getMinute());
+                String endTime = convertIntHrorMintoString(data.get(i).getEndTime().getHour()) + convertIntHrorMintoString(data.get(i).getEndTime().getMinute());
+                String nTime = convertTimeFromTable(time); //converts time from table to military
+                System.out.println("BOOOMASOMDOAMO");
+                if (nTime.equals(agendaTime) || (Integer.parseInt(endTime) > Integer.parseInt(nTime) && Integer.parseInt(agendaTime)
+                        < Integer.parseInt(nTime))) {
+
+                    index += i + " ";
+                    counter--;
+                }
+            }
+        }
+        System.out.println("Index1: " + index);
+        return index;
     }
 
     public void setColumnCellFactory(TableColumn<WeekSchedule, String> a, int b){
