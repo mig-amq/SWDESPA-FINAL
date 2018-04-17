@@ -121,6 +121,10 @@ public class ClientAgendaWeekController extends ClientSuperController implements
                 items.add(s);
             }
         }
+
+
+
+
     }
 
     @Override
