@@ -49,6 +49,10 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     public void initialize(URL location, ResourceBundle resources) {
 //       insertFilterData();
        items = dayList.getItems();
+   //         setList();
+
+            setModel(model);
+
 //        dayList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 //            @Override
 //            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {

@@ -133,8 +133,8 @@ public class WalkIn extends AnchorPane {
     }
 
     public void setComboBox() {
-        ObservableList<String> list = FXCollections.observableArrayList("07", "08" , "09", "10", "11", "12");
-        for (int i = 1; i < 10; i++)
+        ObservableList<String> list = FXCollections.observableArrayList();
+        for (int i = 1; i < 13; i++)
                 list.add(i + "");
 
         starthourCmb.setItems(list);
@@ -245,8 +245,7 @@ public class WalkIn extends AnchorPane {
                 }
                 sampm = startampmCmb.getValue();
                 eampm = endampmCmb.getValue();
-                System.out.println("start2: " + startHour);
-                System.out.println("end2: " + endHour);
+
             }
 
             if(nameField.getText() == null || stimeTemp == null || etimeTemp == null
@@ -289,7 +288,7 @@ public class WalkIn extends AnchorPane {
                 alert.showAndWait();
             }
 
-            else if ((endHour == 22 || endHour == 23) && eampm.equals("pm"))
+            else if (endHour == 23 && eampm.equals("pm"))
             {
                 Alert alert = new Alert (Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Input");
@@ -307,6 +306,25 @@ public class WalkIn extends AnchorPane {
                 alert.showAndWait();
 
             }
+
+//            else if(startHour == 22 && (startMin == 00 || startMin == 30))
+//            {
+//                Alert alert = new Alert (Alert.AlertType.ERROR);
+//                alert.setTitle("Invalid Input");
+//                alert.setHeaderText(null);
+//                alert.setContentText("Clinic closes at 10:00");
+//                alert.showAndWait();
+//            }
+
+            else if(endHour == 22 && endMin == 30)
+            {
+                Alert alert = new Alert (Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Clinic closes at 10:00");
+                alert.showAndWait();
+            }
+
 
             else if(startHour == endHour && startMin == endMin) {
                 Alert alert = new Alert (Alert.AlertType.ERROR);
@@ -440,8 +458,8 @@ public class WalkIn extends AnchorPane {
                 } else
                 {
                     String[] splited = w.getName().split(" ");
-                    model.getDbController().addWalkIn(splited[0], splited[1]);
-                    model.getDbController().addAppointment(start, end, w.getDoctor() , w.getName());
+           //         model.getDbController().addWalkIn(splited[0], splited[1]);
+           //         model.getDbController().addAppointment(start, end, w.getDoctor() , w.getName());
 
                     WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
                     Stage child = new Stage(StageStyle.UNDECORATED);

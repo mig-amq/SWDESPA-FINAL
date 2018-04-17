@@ -63,7 +63,8 @@ public class AvailabilityViewController extends SuperController implements Initi
             @Override
             public void handle(ActionEvent event) {
                 /*** INSERT ACTIONS HERE ***/
-                String hour, min, hours, mins, type, typeTime, typeTime2,startString, endString;
+                System.out.println(getCalendar().getDate());
+                /*String hour, min, hours, mins, type, typeTime, typeTime2,startString, endString;
                 int startTime, endTime;
                 hour = cmbSHour.getSelectionModel().getSelectedItem().toString();
                 min = cmbSMin.getSelectionModel().getSelectedItem().toString();
@@ -82,45 +83,16 @@ public class AvailabilityViewController extends SuperController implements Initi
                 if(startTime < endTime){
                     LocalDateTime date =
                             LocalDateTime.ofInstant(Instant.ofEpochMilli(System.currentTimeMillis()), ZoneId.systemDefault());
+                    DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
+                    LocalTime timeStart, timeEnd;
+                    LocalDateTime start, end;
+                    start = LocalDateTime.of(calendar.getSelected(), timeStart);
+                    end = LocalDateTime.of(calendar.getSelected(), timeEnd);
+                    timeStart = LocalTime.parse(startString, dtf);
+                    timeEnd = LocalTime.parse(endString, dtf);
                     // ADJUST THESE
-                    ArrayList<Agenda> appointments = model.getAccount().getAppointments();
-                    if((date.getHour() < startTime/100) ||
-                            (date.getMinute() == startTime %100 && date.getHour() < startTime/100)){
-                        boolean isConflict = false;
-                        DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
-                        LocalTime timeStart, timeEnd;
-                        LocalDateTime start, end;
-                        timeStart = LocalTime.parse(startString, dtf);
-                        System.out.println(calendar.getSelected().getMonthValue());
-                        start = LocalDateTime.of(calendar.getSelected(), timeStart);
-                        timeEnd = LocalTime.parse(endString, dtf);
-                        end = LocalDateTime.of(calendar.getSelected(), timeEnd);
-//                        ArrayList<Agenda> appointments = model.getAccount().getAppointments();
-                        for(int i = 0; i < appointments.size(); i++){
-                            if((appointments.get(i).getStartTime().isBefore(start) && appointments.get(i).getEndTime().isBefore(start)) ||
-                                    (appointments.get(i).getStartTime().isBefore(end) && appointments.get(i).getEndTime().isBefore(end)) ||
-                                    appointments.get(i).getStartTime().isEqual(start) || appointments.get(i).getEndTime().isEqual(start) ||
-                                    appointments.get(i).getStartTime().isEqual(end) || appointments.get(i).getEndTime().isEqual(end))
-                                isConflict = true;
-                        }
+                    if(){
 
-                        if(isConflict){
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setContentText("There is already an appointment shceduled at that time");
-                        }else{
-                            if(type.equals("Single")){
-                                shceduler = new Scheduler(start, end);
-                                shceduler.setBuiilder(new SingleUnavailableBuilder(model.getAccount().getId()));
-                                shceduler.buildUnavailability();
-                            }
-
-                            else if(type.equals("Recurring")){
-                                shceduler = new Scheduler(start, end);
-                                shceduler.setBuiilder(new RecurringUnavailableBuilder(model.getAccount().getId()));
-                                shceduler.buildUnavailability();
-                            }
-
-                        }
 
 
                     }else{
@@ -131,7 +103,7 @@ public class AvailabilityViewController extends SuperController implements Initi
                     //shows dialogue box for invalid input time
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("There is already an appointment shceduled there");
-                }
+                }*/
             }
         });
     }
@@ -139,6 +111,5 @@ public class AvailabilityViewController extends SuperController implements Initi
     @Override
     public void update(LocalDateTime ldt) {
         //model.getAccount.setUnavailability(list of unavailable times);
-        model.getState();
     }
 }
