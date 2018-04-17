@@ -9,6 +9,7 @@ import udc.client.regular.Controller.ClientSuperController;
 import udc.objects.time.concrete.Agenda;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -112,5 +113,10 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     public void insertFilterData(ArrayList<Agenda> data) {
         items = dayList.getItems();
       //  setList();
+    }
+
+    @Override
+    public void insertFilterData(LocalDate selected) {
+
     }
 }

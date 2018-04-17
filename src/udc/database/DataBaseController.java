@@ -198,7 +198,7 @@ public class DataBaseController {
                         strToTime(rset0.getString("time_start")),
                         strToTime(rset0.getString("time_end"))));
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -213,6 +213,31 @@ public class DataBaseController {
 
 
         return appointments;
+    }
+
+    public boolean deleteAppointment(Appointment a) {
+        String sql = "DELETE FROM appointment WHERE appointment_id = " + a.getId();
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+
+            pStmt = connection.prepareStatement(sql);
+
+            if (pStmt.executeUpdate() == 1)
+                return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

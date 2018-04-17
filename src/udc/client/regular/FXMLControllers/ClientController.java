@@ -251,12 +251,13 @@ public class ClientController extends AnchorPane {
             clientSuperController.setCalendar(client.getCalendar());
             clientSuperController.insertFilterData(client.getCalendar().selectedProperty().get());
 
+
    //         System.out.println(model.getAccount().getId());
 
         } catch(Exception e) {}
     }
 
-    private ArrayList<Agenda> findData(LocalDate selected) {
+    /*private ArrayList<Agenda> findData(LocalDate selected) {
         ArrayList<Agenda> arrayList = new ArrayList<>();
         for (int i = 0; i < agendas.size(); i++) {
             Agenda agenda = agendas.get(i);
@@ -264,5 +265,5 @@ public class ClientController extends AnchorPane {
                 arrayList.add(agenda);
         }
         return arrayList;
-    }
+    }*/
 }

@@ -8,6 +8,7 @@ import udc.client.regular.Controller.ClientSuperController;
 import udc.objects.time.concrete.Agenda;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -24,6 +25,11 @@ public class DoctorCalDayController extends ClientSuperController implements Ini
 
     @Override
     public void insertFilterData(ArrayList<Agenda> data) {
+
+    }
+
+    @Override
+    public void insertFilterData(LocalDate selected) {
 
     }
 

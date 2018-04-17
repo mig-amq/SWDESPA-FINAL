@@ -12,6 +12,7 @@ import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -42,6 +43,11 @@ public class ClientCalDayController extends ClientSuperController implements Ini
 //            else
 //                dayTable.getItems().add(new DaySchedule(time, ""));
         }
+    }
+
+    @Override
+    public void insertFilterData(LocalDate selected) {
+
     }
 
     @Override
