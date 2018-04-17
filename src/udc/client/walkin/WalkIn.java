@@ -21,10 +21,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import udc.Model;
 import udc.database.DataBaseController;
 
@@ -148,6 +151,33 @@ public class WalkIn extends AnchorPane {
      //   list = FXCollections.observableArrayList("Dr. Mitch", "Dr. Shad", "Dr. Migs");
         doctorCmb.setItems(list);
 
+        datePicker.setValue(LocalDate.now());
+        datePicker.setShowWeekNumbers(true);
+
+        Callback<DatePicker, DateCell> dayCellFactory= this.getDayCellFactory();
+        datePicker.setDayCellFactory(dayCellFactory);
+
+    }
+
+    private Callback<DatePicker, DateCell> getDayCellFactory() {
+        final Callback<DatePicker, DateCell> dayCellFactory = new Callback<>() {
+
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item.isBefore(LocalDate.now())) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #ffffff;");
+                        }
+                    }
+                };
+            }
+        };
+        return dayCellFactory;
     }
 
     public void popUp() {
@@ -385,6 +415,7 @@ public class WalkIn extends AnchorPane {
                 etemp = date.getYear() + "/" + smonth + "/" + sday
                         + " " + ehour + ":" + emin + " " + eampm;
 
+
                 start = sToTime(stemp);
                 end = sToTime(etemp);
 
@@ -394,6 +425,8 @@ public class WalkIn extends AnchorPane {
                 w.setEnd(end);
                 w.setDoctor(doctorCmb.getValue());
                 w.setContact(contactField.getText());
+
+                System.out.println(w.start);
 
 
 //                if (now.isBefore(w.getStart()) || now.isEqual(w.getStart()))
@@ -408,10 +441,8 @@ public class WalkIn extends AnchorPane {
 //                else
 //                {
                     String[] splited = w.getName().split(" ");
-                    model.getDbController().addWalkIn(splited[0], splited[1]);
-                //    model.getDbController().addAppointment(start, end, , model.getAccount().getId());
-
-                System.out.println(model.getAccount().getId());
+               //     model.getDbController().addWalkIn(splited[0], splited[1]);
+               //     model.getDbController().addAppointment(start, end, w.getDoctor() , w.getName());
 
                     WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
                     Stage child = new Stage(StageStyle.UNDECORATED);
@@ -439,8 +470,18 @@ public class WalkIn extends AnchorPane {
 
     public LocalDateTime sToTime(String time)
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a");
-        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a");
+//        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+//        String text = dateTime.format(formatter);
+//        LocalDate parsedDate = LocalDate.parse(text, formatter);
+
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a");
+//
+//        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
+//
+//        dateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a").format(localDate);
+
+        LocalDateTime dateTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"));
         return dateTime;
     }
 
