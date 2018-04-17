@@ -266,8 +266,7 @@ public class DoctorController extends SuperController implements Initializable{
                     if(rdBtnWeekView.isSelected()){
                         Node node = null;
                         try {
-                            node = FXMLLoader.load(getClass().getResource("../fxml/AgendaViewW.fxml"));
-                            FXMLLoader loader = new FXMLLoader();
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/AgendaViewW.fxml"));
                             node = loader.load();
                             loader.<AgendaViewWController>getController().setModel(model);
                             loader.<AgendaViewWController>getController().setCalendar(calendar);

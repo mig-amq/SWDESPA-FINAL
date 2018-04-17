@@ -21,12 +21,16 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import udc.Model;
 import udc.database.DataBaseController;
+import udc.objects.time.concrete.Agenda;
 
 import javax.swing.*;
 
@@ -148,6 +152,33 @@ public class WalkIn extends AnchorPane {
      //   list = FXCollections.observableArrayList("Dr. Mitch", "Dr. Shad", "Dr. Migs");
         doctorCmb.setItems(list);
 
+        datePicker.setValue(LocalDate.now());
+        datePicker.setShowWeekNumbers(true);
+
+        Callback<DatePicker, DateCell> dayCellFactory= this.getDayCellFactory();
+        datePicker.setDayCellFactory(dayCellFactory);
+
+    }
+
+    private Callback<DatePicker, DateCell> getDayCellFactory() {
+        final Callback<DatePicker, DateCell> dayCellFactory = new Callback<>() {
+
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item.isBefore(LocalDate.now())) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #ffffff;");
+                        }
+                    }
+                };
+            }
+        };
+        return dayCellFactory;
     }
 
     public void popUp() {
@@ -267,6 +298,15 @@ public class WalkIn extends AnchorPane {
                 alert.showAndWait();
             }
 
+            else if(startHour == 7 && startMin == 00)
+            {
+                Alert alert = new Alert (Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Clinic opens at 7:30 am");
+                alert.showAndWait();
+
+            }
 
             else if(startHour == endHour && startMin == endMin) {
                 Alert alert = new Alert (Alert.AlertType.ERROR);
@@ -376,8 +416,9 @@ public class WalkIn extends AnchorPane {
                 etemp = date.getYear() + "/" + smonth + "/" + sday
                         + " " + ehour + ":" + emin + " " + eampm;
 
-                start = sToTime(stemp);
-                end = sToTime(etemp);
+
+                start = Agenda.strToTime(stemp.toUpperCase());
+                end = Agenda.strToTime(etemp.toUpperCase());
 
                 w.setName(nameField.getText());
                 w.setDate(datePicker.getValue());
@@ -386,21 +427,21 @@ public class WalkIn extends AnchorPane {
                 w.setDoctor(doctorCmb.getValue());
                 w.setContact(contactField.getText());
 
+                System.out.println(w.start);
 
-//                if (now.isBefore(w.getStart()) || now.isEqual(w.getStart()))
-//                {
-//                    Alert alert = new Alert (Alert.AlertType.ERROR);
-//                    alert.setTitle("Invalid Input");
-//                    alert.setHeaderText(null);
-//                    alert.setContentText("That Time has already passed");
-//                    alert.showAndWait();
-//                }
 
-//                else
-//                {
+                if (now.isAfter(w.getStart()) || now.isEqual(w.getStart()))
+                {
+                    Alert alert = new Alert (Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Input");
+                    alert.setHeaderText(null);
+                    alert.setContentText("That Time has already passed");
+                    alert.showAndWait();
+                } else
+                {
                     String[] splited = w.getName().split(" ");
                     model.getDbController().addWalkIn(splited[0], splited[1]);
-                    //    model.getDbController().addAppointment(start, end, 0, 0);
+                    model.getDbController().addAppointment(start, end, w.getDoctor() , w.getName());
 
                     WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
                     Stage child = new Stage(StageStyle.UNDECORATED);
@@ -409,7 +450,7 @@ public class WalkIn extends AnchorPane {
 
                     Stage stage = (Stage) getScene().getWindow();
                     stage.close();
-  //              }
+                }
             }
         });
     }
@@ -424,13 +465,6 @@ public class WalkIn extends AnchorPane {
             Stage stage = (Stage) close.getScene().getWindow();
             stage.toBack();
         });
-    }
-
-    public LocalDateTime sToTime(String time)
-    {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a");
-        LocalDateTime dateTime = LocalDateTime.parse(time, formatter);
-        return dateTime;
     }
 
     
