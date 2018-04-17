@@ -9,6 +9,7 @@ import udc.doctor.objects.DaySchedule;
 import udc.doctor.objects.WeekSchedule;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Unavailable;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ import java.util.ResourceBundle;
 
 
 public class AppointmentsTableDController extends SuperController implements Initializable {
-    private ArrayList<Agenda> unavilable;
+    private ArrayList<Unavailable> unavilable;
     private ArrayList<Agenda> appointments;
 
     @FXML

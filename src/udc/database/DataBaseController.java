@@ -11,6 +11,7 @@ import udc.objects.time.builders.RecurringUnavailableBuilder;
 import udc.objects.time.builders.SingleAppointmentBuilder;
 import udc.objects.time.builders.SingleUnavailableBuilder;
 import udc.objects.time.concrete.Agenda;
+import udc.objects.time.concrete.Unavailable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -432,7 +433,6 @@ public class DataBaseController {
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "'";
 
-            System.out.println(stmt);
             pStmt = connection.prepareStatement(stmt);
 
             rSet = pStmt.executeQuery();
@@ -493,7 +493,7 @@ public class DataBaseController {
         return new ArrayList<>();
     }
 
-    public ArrayList<Agenda> getUnvailability(String doctorName) throws Exception {
+    public ArrayList<Unavailable> getUnvailability(String doctorName) throws Exception {
 
         return getUnvailability(getDocID(doctorName));
     }
@@ -508,14 +508,14 @@ public class DataBaseController {
      * @return an ArrayList of unavailable times of a specific Doctor
      * @throws Exception table is empty.
      */
-    public ArrayList<Agenda> getUnvailability(int doctor_id) throws Exception {
+    public ArrayList<Unavailable> getUnvailability(int doctor_id) throws Exception {
         SingleUnavailableBuilder builder = new SingleUnavailableBuilder(doctor_id);
         RecurringUnavailableBuilder rbuilder = new RecurringUnavailableBuilder(doctor_id);
         ArrayList<Agenda> temp0 = new ArrayList<>();
         Agenda temp1;
 
         try {
-            ArrayList<Agenda> tempList = new ArrayList<>();
+            ArrayList<Unavailable> tempList = new ArrayList<>();
 
             connection = ConnectionConfiguration.getConnection(model);
 
@@ -527,6 +527,7 @@ public class DataBaseController {
             }
             rSet = pStmt.executeQuery();
 
+            System.out.println("getting unavailabilit");
             // Traversing result set and instantiating unavailability to temp list
             while (rSet.next()) {
                 if (rSet.getBoolean("recurring")) {

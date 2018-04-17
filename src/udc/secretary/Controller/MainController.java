@@ -16,6 +16,7 @@ import udc.customfx.calendar.Calendar;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Available;
+import udc.objects.time.concrete.Unavailable;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -40,7 +41,7 @@ public class MainController {
     private ArrayList<String> doctorList;
     private ArrayList<Agenda> agendas;
     private Calendar calendar;
-    private ArrayList<Agenda> Unavailability; //implement later when bored
+    private ArrayList<Unavailable> Unavailability; //implement later when bored
 
     public MainController(AnchorPane contentPane, AnchorPane pnlTool, Model model, Calendar calendar) throws Exception{
         doctorList = new ArrayList<>();
@@ -378,7 +379,7 @@ public class MainController {
         }
 
         try {
-            ArrayList<Agenda> unavailable = model.getDbController().getUnvailability(doctorName);
+            ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(doctorName);
             for (int i = 0; i < availableSlots.size(); i++){
                 for (int j = 0; j < unavailable.size(); j++){
                     if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())) {
