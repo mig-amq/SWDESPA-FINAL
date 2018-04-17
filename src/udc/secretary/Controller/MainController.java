@@ -4,29 +4,22 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import udc.Model;
 import udc.customfx.calendar.Calendar;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
-import udc.objects.time.concrete.Unavailable;
-import udc.secretary.Controller.SecDayAgendaControl;
-import udc.secretary.Controller.SecDayViewControl;
-import udc.secretary.Controller.SecWeekControl;
-import udc.secretary.Controller.WalkInControl;
-import udc.secretary.Secretary;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class MainController {
     private AnchorPane contentPane, secViewPane;
@@ -77,7 +70,7 @@ public class MainController {
         secWeekControl = new SecWeekControl();
         secDayViewControl = new SecDayViewControl();
         secDayAgendaControl = new SecDayAgendaControl();
-        walkInControl = new WalkInControl();
+        //walkInControl = new WalkInControl();
     }
 
     private void initNodesChildren(){
@@ -85,6 +78,7 @@ public class MainController {
         secDayView = secDayViewControl.getSecDayViewNode(); //scrollpane
         secWeekView = secWeekControl.getNdSecWeekViewNode();//scrollpane
         secDayAgendaView = secDayAgendaControl.getNdSecDayAgendaViewNode();
+        //secWalkInView = walkInControl.getSecWalkInNode();
     }
 
     private void initData(AnchorPane pnlTool){
@@ -208,8 +202,20 @@ public class MainController {
         });
 
         btnWalkIn.setOnAction(event ->{
-            secViewPane.getChildren().clear();
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/SecWalkInView.fxml"));
+            walkInControl = new WalkInControl(model);
+            loader.setController(walkInControl);
+            Parent root;
+            try {
+                root = (Parent) loader.load();
+                Stage stage = new Stage();
+                stage.setTitle("Pending Walk-Ins");
+                stage.setScene(new Scene(root, 587, 620));
+                stage.show();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -326,7 +332,7 @@ public class MainController {
         secDayViewControl.getTbView().getColumns().get(secDayViewControl.getTbView().getColumns().size()-1).setText(name);
     }
 
-    private void agendaViewCondition(){
+    public void agendaViewCondition(){
         secViewPane.getChildren().clear();
         if (rdbtnDayView.isSelected()){
             secDayAgendaControl.reset();
