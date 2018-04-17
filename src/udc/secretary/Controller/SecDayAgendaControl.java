@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import udc.Model;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Available;
@@ -29,7 +30,9 @@ public class SecDayAgendaControl extends AbstractControl {
         initComponents();
         agendaList.setItems(FXCollections.observableArrayList(""));
         btnRemove.setOnAction(event -> {
-
+            String[] contents = agendaList.getSelectionModel().getSelectedItem().toString().split(" ");
+            Integer.parseInt(contents[0].trim());
+            //remove in database, then call model.setState()
         });
     }
 

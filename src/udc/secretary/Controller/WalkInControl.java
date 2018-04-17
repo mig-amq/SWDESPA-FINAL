@@ -2,6 +2,7 @@ package udc.secretary.Controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,6 +72,15 @@ public class WalkInControl implements Initializable {
 
     public WalkInControl(Model model){
         this.model = model;
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+    }
+
+    public void resetList(){
+        listWalkIn.setItems(FXCollections.observableArrayList(""));
+    }
+
+    public void setListItems(){
+        
     }
 
     @Override

@@ -54,9 +54,6 @@ public class MainController {
         initData(pnlTool);
         initNodesChildren();
         addAction();
-        calendar.setOnMouseClicked(event -> {
-
-        });
         agendas =  model.getDbController().getAppointments(-1, "");
         secViewPane.getChildren().setAll(secDayView);
         setDisableButtons(true);
@@ -375,21 +372,39 @@ public class MainController {
                     }
                 }
                 availableSlots.trimToSize();
+
+                ArrayList<Agenda> appointments = findData(selected);
+                for (int i = 0; i < availableSlots.size(); i++){
+                    for (int j = 0; j < appointments.size(); j++){
+                        if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())
+                                && doctorName.substring(4).equals(((Appointment) appointments.get(j)).getDoctorName())){
+                            availableSlots.remove(i);
+                            break;
+                        }
+                    }
+                }
+                availableSlots.trimToSize();
             } else{
                 ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(-1);
 
+                for (int i = 0; i < availableSlots.size(); i++)
+                    for (int j = 0; j < unavailable.size(); j++)
+                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())){
+                            availableSlots.remove(i);
+                            break;
+                        }
+                availableSlots.trimToSize();
+
+                ArrayList<Agenda> appointments = findData(selected);
+                for (int i = 0; i < availableSlots.size(); i++)
+                    for (int j = 0; j < appointments.size(); j++)
+                        if (availableSlots.get(i).getStartTime().equals(appointments.get(j).getStartTime())){
+                            availableSlots.remove(i);
+                            break;
+                        }
             }
 
-            ArrayList<Agenda> appointments = findData(selected);
-            for (int i = 0; i < availableSlots.size(); i++){
-                for (int j = 0; j < appointments.size(); j++){
-                    if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())){
-                        availableSlots.remove(i);
-                        break;
-                    }
-                }
-            }
-            availableSlots.trimToSize();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
