@@ -180,6 +180,41 @@ public class DataBaseController {
         }
     }
 
+    public ArrayList<Agenda> getWalkinAppointments () {
+        SingleAppointmentBuilder sap;
+        ArrayList<Agenda> appointments = new ArrayList<>();
+        String sql = "SELECT A.appointment_id AS id, A.time_start AS time_start, A.time_end AS time_end, A.recurring AS recurring, CONCAT(C.first_name, \" \", C.last_name) AS client, CONCAT(D.first_name, \" \", D.last_name) AS doctor \n" +
+                "FROM appointment A INNER JOIN client C ON A.client_id = C.client_id INNER JOIN doctor D ON A.doctor_id = D.doctor_id WHERE C.type LIKE \"WALKIN\";";
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+
+            pStmt = connection.prepareStatement(sql);
+            ResultSet rset0 = pStmt.executeQuery();
+
+            while (rset0.next()) {
+                sap = new SingleAppointmentBuilder(rset0.getString("doctor"), rset0.getString("client"));
+                appointments.add(sap.build(rset0.getInt("id"),
+                        strToTime(rset0.getString("time_start")),
+                        strToTime(rset0.getString("time_end"))));
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        return appointments;
+    }
+
     /**
      * This function inserts a walk-in client to the database.
      *

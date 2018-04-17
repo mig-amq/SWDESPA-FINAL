@@ -237,6 +237,7 @@ public class Controller implements Initializable{
                     }
                 }
 
+                System.out.println(model.getAccount().getId());
                 model.setThread(new ClientThread(model));
                 model.getThread().start();
 
