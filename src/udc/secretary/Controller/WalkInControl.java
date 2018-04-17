@@ -80,7 +80,7 @@ public class WalkInControl implements Initializable {
     }
 
     public void setListItems(){
-        
+
     }
 
     @Override

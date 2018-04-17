@@ -365,7 +365,7 @@ public class DataBaseController {
 
     public int getDocID(String name) {
         int i = -1;
-        String[] n = name.split(" ");
+        String[] n = name.split(" | ");
 
         try {
             connection = ConnectionConfiguration.getConnection(model);

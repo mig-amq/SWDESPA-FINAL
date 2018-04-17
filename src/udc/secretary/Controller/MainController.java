@@ -54,7 +54,6 @@ public class MainController {
         initData(pnlTool);
         initNodesChildren();
         addAction();
-        agendas =  model.getDbController().getAppointments(-1, "");
         secViewPane.getChildren().setAll(secDayView);
         setDisableButtons(true);
 
@@ -87,14 +86,15 @@ public class MainController {
         ArrayList<String> tempList = model.getDbController().loadDoctors();
         initMainPane(pnlTool, tempList);
         try {
-            Unavailability = model.getDbController().getUnvailability(-1);
             agendas = model.getDbController().getAppointments(-1, "");
+            Unavailability = model.getDbController().getUnvailability(-1);
+            for (int i = 0; i < Unavailability.size(); i++) {
+                Unavailable a = Unavailability.get(i);
+                Unavailability.get(i).setDoctorName(doctorList.get(a.getId()).substring(4));
+            }
+            insertUnavailabilitytoAgendas();
         }catch(Exception e){
             e.printStackTrace();
-        }
-        for (int i = 0; i < Unavailability.size(); i++) {
-            if(Unavailability.get(i) instanceof Unavailable)
-                System.out.println(i + " " + ((Unavailable) Unavailability.get(i)).getDoctorName());
         }
     }
 
@@ -223,8 +223,16 @@ public class MainController {
         });
     }
 
+    private void insertUnavailabilitytoAgendas(){
+        for (int i = 0; i < Unavailability.size() ; i++)
+            agendas.add(Unavailability.get(i));
+    }
+
     public void updateData() throws Exception {
         agendas = model.getDbController().getAppointments(-1, "");
+        Unavailability = model.getDbController().getUnvailability(-1);
+        insertUnavailabilitytoAgendas();
+
         if (rdbtnCalendarView.isSelected()) {
             calendarViewCondition();
         } else if (rdbtnAgendaView.isSelected()){
@@ -248,6 +256,7 @@ public class MainController {
         return localDateTime.getYear() + "/" + localDateTime.getMonth() + "/" + localDateTime.getDayOfMonth();
     }
 
+
     private String dateToString(LocalDate localDateTime) {
         return localDateTime.getYear() + "/" + localDateTime.getMonth() + "/" + localDateTime.getDayOfMonth();
     }
@@ -260,6 +269,7 @@ public class MainController {
         String sDoctorName = (String) cmbBoxDoctors.getSelectionModel().getSelectedItem();
         if(sDoctorName != null && !sDoctorName.equals("All"))
             sDoctorName = sDoctorName.substring(4);
+
         if(sDoctorName!= null && agenda instanceof Appointment) {
             if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Appointment)agenda).getDoctorName())) //mq
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
@@ -267,7 +277,13 @@ public class MainController {
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
             else if(sDoctorName.equals("All"))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-
+        }else if(sDoctorName != null && agenda instanceof Unavailable){
+            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable)agenda).getDoctorName())) //mq
+                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+            else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
+                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+            else if(sDoctorName.equals("All"))
+                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
         }
         return false;//
     }
@@ -411,4 +427,5 @@ public class MainController {
 
         return availableSlots;
     }
+
 }

@@ -14,6 +14,7 @@ import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Unavailable;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -207,9 +208,20 @@ public class SecWeekControl extends AbstractControl {
     public String gtDataForDay(ArrayList<ArrayList<Agenda>> data, String time, LocalDate stDate) {
         int DayofWeek = stDate.getDayOfWeek().getValue() - 1;
         int index;
-        if (!data.get(DayofWeek).isEmpty() && (index = getDataIndexfromList(data.get(DayofWeek), time)) > -1){
-            Agenda agenda = data.get(DayofWeek).get(index);
-            return "Dr. " + ((Appointment)agenda).getDoctorName() + "\nClient: " + ((Appointment)agenda).getClientName();
+        if(!data.get(DayofWeek).isEmpty()) {
+            String index1 = getUnavailabilityFromList(data.get(DayofWeek), time);
+            if ((index = getDataIndexfromList(data.get(DayofWeek), time)) >= 0) {
+                Appointment agenda = (Appointment) data.get(DayofWeek).get(index);
+                return "Dr. " + agenda.getDoctorName() + "\nClient: " + agenda.getClientName();
+            } else if (!index1.equals("")) {
+                String[] a = index1.split(" | ");
+                if (a.length == 2) {
+                   return "(Unavailable)";
+                } else if (a.length == 1) {
+                    Unavailable agenda = (Unavailable) data.get(DayofWeek).get(Integer.parseInt(a[a.length - 1]));
+                    return "Dr. " + agenda.getDoctorName() + " - " + "Unavailable";
+                }
+            }
         }
         return "";
     }
