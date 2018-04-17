@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class DoctorAgendaDayController extends ClientSuperController implements Initializable {
 
-    @FXML private ListView<?> dayList;
+    @FXML private ListView<String> dayList;
 
 
     public void setList() throws Exception {

@@ -58,7 +58,10 @@ public class Secretary extends PaneledView {
             mainController = new MainController(contentPane, pnlTool, model, calendar);
             calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
-                mainController.calendarViewCondition();
+                if (mainController.isCalendarRdBtnSelected())
+                    mainController.calendarViewCondition();
+                else
+                    mainController.agendaViewCondition();
                 this.getTitle().setText("Secretary - " + date);
             });
         }catch (Exception e){

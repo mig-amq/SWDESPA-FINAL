@@ -9,8 +9,6 @@ public abstract class SuperController {
     protected Model model;
     protected  Calendar calendar;
 
-    protected Calendar calPane;
-
     public void setModel(Model model) {
         this.model = model;
     }

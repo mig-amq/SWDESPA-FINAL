@@ -92,13 +92,6 @@ public class Doctor extends PaneledView {
 
         try {
             AnchorPane buttonPanel = new AnchorPane();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Doctor.fxml"));
-            this.contentPane.getChildren().add(loader.load());
-
-            dc = loader.getController();
-            dc.setModel(this.getModel());
-            dc.setCalendar(this.calendar);
-
             JFXButton test = new JFXButton("Test Server");
             test.setLayoutX(this.drawerPane.getDrawerWidth() / 2 - 75);
             test.setLayoutY(60);
@@ -148,6 +141,13 @@ public class Doctor extends PaneledView {
                 String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
                 this.getTitle().setText("Doctor - " + date);
             });
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Doctor.fxml"));
+            this.contentPane.getChildren().add(loader.load());
+
+            dc = loader.getController();
+            dc.setModel(this.getModel());
+            dc.setCalendar(this.calendar);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -70,7 +70,7 @@ public class WalkInControl implements Initializable {
 //    }
 
     public WalkInControl(Model model){
-        //this.model = model;
+        this.model = model;
     }
 
     @Override
