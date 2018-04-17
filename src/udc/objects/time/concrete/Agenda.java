@@ -17,6 +17,15 @@ public class Agenda {
         this.setExceptions(new ArrayList<>());
     }
 
+    public boolean isException (LocalDateTime ldt) {
+        for (Agenda a : this.getExceptions())
+            if (a.getStartTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"))
+                    .equals(ldt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"))))
+                return true;
+
+        return false;
+    }
+
     /**
      * Checks if the {@link Agenda} instance clashes with an already existing Agenda in the parameter.
      * @param agendas the list of agendas to check

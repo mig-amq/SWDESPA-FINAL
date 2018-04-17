@@ -20,12 +20,14 @@ import udc.Model;
 import udc.client.Client;
 import udc.client.regular.AppointmentRow;
 import udc.client.regular.Controller.ClientSuperController;
+import udc.objects.enums.AgendaType;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ClientController extends AnchorPane {
 
@@ -73,14 +75,26 @@ public class ClientController extends AnchorPane {
         upcoming.getItems().clear();
         previous.getItems().clear();
 
-        System.out.println(model.getAccount().getAppointments().size());
         for (Agenda a : model.getAccount().getAppointments()) {
             AppointmentRow arow = new AppointmentRow((Appointment) a);
 
             if (a.getStartTime().isAfter(LocalDateTime.now()) || a.getStartTime().isEqual(LocalDateTime.now())) {
                 upcoming.getItems().add(arow);
             } else {
-                previous.getItems().add(arow);
+
+                if (a.getType() == AgendaType.RECURRING) {
+                    if (a.getStartTime().getDayOfMonth() >= LocalDateTime.now().getDayOfMonth() &&
+                            a.getStartTime().getHour() >= LocalDateTime.now().getHour() &&
+                            a.getStartTime().getMinute() >= LocalDateTime.now().getMinute()) {
+                        if (!a.isException(a.getStartTime().withDayOfMonth(LocalDateTime.now().getDayOfMonth()))) {
+                            arow.setDate(a.getStartTime()
+                                    .withMonth( LocalDateTime.now().getDayOfMonth())
+                                    .format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+                            upcoming.getItems().add(arow);
+                        }
+                    }
+                } else
+                    previous.getItems().add(arow);
             }
         }
     }

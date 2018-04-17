@@ -626,8 +626,7 @@ public class DataBaseController {
                 rSet2.close();
 
                 return temp;
-            } else
-                throw new Exception("Error: That account does not exist.");
+            }
 
         } catch (Exception e) {
             throw new Exception("Error: Cannot connect to the database");
@@ -640,6 +639,8 @@ public class DataBaseController {
                 }
             }
         }
+
+        throw new Exception("Error: That account does not exist.");
     }
 
     public Model getModel() {
