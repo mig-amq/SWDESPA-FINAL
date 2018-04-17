@@ -15,10 +15,12 @@ import udc.Model;
 import udc.customfx.calendar.Calendar;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Available;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class MainController {
@@ -314,6 +316,7 @@ public class MainController {
     }
 
     public void calendarViewCondition(){
+        rdbtnWeekView.setDisable(false);
         if (rdbtnDayView.isSelected()){
             secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()));
             setColumnName((String) cmbBoxDoctors.getSelectionModel().getSelectedItem());
@@ -334,11 +337,13 @@ public class MainController {
 
     public void agendaViewCondition(){
         secViewPane.getChildren().clear();
+        rdbtnWeekView.setDisable(true);
         if (rdbtnDayView.isSelected()){
             secDayAgendaControl.reset();
             secDayAgendaControl.setLabel(calendar.selectedProperty().get());
             if (rdbtnAvailable.isSelected()){
-
+                secDayAgendaControl.insertFilteredData(getAvailableSlots(calendar.selectedProperty().get(), cmbBoxDoctors.getSelectionModel().getSelectedItem().toString()));
+                secViewPane.getChildren().setAll(secDayAgendaView);
             } else{
                 secDayAgendaControl.insertFilteredData(findData(calendar.selectedProperty().get()));
                 secViewPane.getChildren().setAll(secDayAgendaView);
@@ -352,6 +357,51 @@ public class MainController {
         }
     }
 
-    // get doctor's unavailability
-    // from there, get the doctor's availability by instantiating an array list of agendas starting from opening time until the doctor's start time of unavailability
+    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctorName){
+        //TODO: fix doctor names and timeslots
+        ArrayList<Agenda> availableSlots = new ArrayList<Agenda>();
+        int hr = 7;
+        int min;
+        for (int i = 0; i < 30; i++){
+            if (i % 2 != 0){
+                hr++;
+                min = 0;
+            }
+            else
+                min = 30;
+
+            Available a = new Available();
+            a.setStartTime(LocalDateTime.of(selected, LocalTime.of(hr, min)));
+            if (!doctorName.equalsIgnoreCase("All"))
+                a.setDoctorName(doctorName.substring(4));
+            availableSlots.add(a);
+        }
+
+        try {
+            ArrayList<Agenda> unavailable = model.getDbController().getUnvailability(doctorName);
+            for (int i = 0; i < availableSlots.size(); i++){
+                for (int j = 0; j < unavailable.size(); j++){
+                    if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())) {
+                        availableSlots.remove(i);
+                        break;
+                    }
+                }
+            }
+            availableSlots.trimToSize();
+
+            for (int i = 0; i < availableSlots.size(); i++){
+                for (int j = 0; j < agendas.size(); j++){
+                    if (availableSlots.get(i).getStartTime().equals(agendas.get(j).getStartTime())){
+                        availableSlots.remove(i);
+                        break;
+                    }
+                }
+            }
+            availableSlots.trimToSize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return availableSlots;
+    }
 }

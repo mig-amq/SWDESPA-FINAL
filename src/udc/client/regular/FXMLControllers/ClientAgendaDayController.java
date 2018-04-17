@@ -41,9 +41,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 //            }
 //        }
 //
-//
-
-
         System.out.println(model);
 
     }
