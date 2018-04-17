@@ -58,19 +58,20 @@ public class AvailabilityViewController extends SuperController implements Initi
             @Override
             public void handle(ActionEvent event) {
                 /*** INSERT ACTIONS HERE ***/
-                String hour, min, hours, mins, type, startString, endString;
+                String hour, min, hours, mins, type,typeTime ,startString, endString;
                 int startTime, endTime;
                 hour = cmbSHour.getSelectionModel().getSelectedItem().toString();
                 min = cmbSMin.getSelectionModel().getSelectedItem().toString();
                 hours = cmbEHour.getSelectionModel().getSelectedItem().toString();
                 mins = cmbEMin.getSelectionModel().getSelectedItem().toString();
+                typeTime = timeType.getSelectionModel().getSelectedItem().toString();
                 type = cmbType.getSelectionModel().getSelectedItem().toString();
                 //System.out.println(hour+min);
                 //System.out.println(hours+mins);
                 startString = hour+":"+min+" "+type;
                 endString = hours+":"+mins+" "+type;
-                startTime = Integer.parseInt(hour+":"+min+" "+type);
-                endTime = Integer.parseInt(hours+":"+mins+" "+type);
+                startTime = Integer.parseInt(hour+":"+min+" "+timeType);
+                endTime = Integer.parseInt(hours+":"+mins+" "+timeType);
                 System.out.println(startTime < endTime);
                 if(startTime < endTime){
                     LocalDateTime date =
