@@ -11,8 +11,6 @@ import udc.objects.time.builders.RecurringUnavailableBuilder;
 import udc.objects.time.builders.SingleAppointmentBuilder;
 import udc.objects.time.builders.SingleUnavailableBuilder;
 import udc.objects.time.concrete.Agenda;
-import udc.objects.time.concrete.Appointment;
-import udc.objects.time.concrete.Unavailable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
