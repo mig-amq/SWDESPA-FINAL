@@ -41,8 +41,6 @@ public class SecWeekControl extends AbstractControl {
         initComponents();
         instantiateColumns();
         initPropertyValues();
-        System.out.println(tvWeekView == null);
-
 //        tvWeekView.getColumns().get(0).setCellFactory(cellFactory);
 //        insertFilteredData();
 //        tvWeekView.getItems().clear();
@@ -194,11 +192,6 @@ public class SecWeekControl extends AbstractControl {
         }
     }
 
-    public ArrayList<Appointment> sortTime(ArrayList<Appointment>  data){
-        //sort time here
-        return data;
-    }
-
     //Purposely set as public so other modules can use this to be placed
     // in their respective constructor for weekly
     // to extract agenda for each day
@@ -221,43 +214,41 @@ public class SecWeekControl extends AbstractControl {
         return "";
     }
 
-    private void setColumnCellFactory(TableColumn<WeekSchedule, String> a, int b){
-        a.setCellFactory(column -> {
-            return new TableCell<>() {
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    System.out.println(getIndex() + " " + item);
-                    if (empty || item == null) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-                        if (item.contains("Dr. Miguel Quiambao")) {
-                            setStyle("-fx-background-color: #42f498");
-                            setText("");
-//                            if(getTableView().getItems().get(getIndex()). != null && !getColumn(b).getCellData(getIndex() - 1).equals(item) ) //spanning cells needs fixing
-                            setText(item);
-                        }else if(item.contains("Dr. Mitchell Ong")){
-                            setStyle("-fx-background-color: #6aa2fc");
-                            setText("");
-//                            if(getColumn(b).getCellData(getIndex() - 1) != null && !getColumn(b).getCellData(getIndex() - 1).equals(item) ) //spanning cells needs fixing
-                                setText(item);
-                        } else{
-                          setStyle("-fx-background-color: #e5e2cc");
-                          setStyle("-fx-border-color: #c6c5ba");
-                            setText(null);
-                            setGraphic(null);
-                        }
-                    }
-                }
-
-            };
-        });
-
+    /* IF SOMEONE CAN FIX THE isSameAppointment() THEN IT WOULD BE GREAT, IT'S JUST FOR CELL SPANNING
+       I HAVE A CODE FOR CELL SPANNING THAT ONLY WORKS FOR TWO APPOINTMENT SLOTS.
+    private String getCellData(WeekSchedule item, int day){ //1 = monday... 7 = sunday
+        if(day == 1)
+            return item.getsMon();
+        else if (day == 2)
+            return item.getsTue();
+        else if(day == 3)
+            return item.getsWed();
+        else if(day == 4)
+            return item.getsThu();
+        else if(day == 5)
+            return  item.getsFri();
+        else if(day == 6)
+            return  item.getsSat();
+        else if(day == 7)
+            return item.getsSun();
+        return null;
     }
 
-    private TableColumn<WeekSchedule, String> getColumn(int index){
-        return DayListColumns.get(index);
-    }
+
+    private boolean isSameAppointment(TableView<WeekSchedule> a, String item,int CurrentRow, int day,TableCell tableCell){
+        for (int i = CurrentRow; i >= 0; i--) {
+            String data = getCellData(a.getItems().get(i), day);
+            if(tableCell.getBackground() == DayListColumns.get(day).getCellFactory().call(DayListColumns.get(day)).getBackground())
+                if(data != null && data.equals(item))
+                    return true;
+            else return false;
+        }
+        return false;
+    }*/
+
+//    private TableColumn<WeekSchedule, String> getColumn(int index){
+//        return DayListColumns.get(index);
+//    }
 
 
 }

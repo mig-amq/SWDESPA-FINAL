@@ -621,8 +621,10 @@ public class DataBaseController {
                             temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
                     }
 
-              //      if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
-                //        temp.setImageURI(rSet.getString("image_url"));
+
+//                    if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
+//                        temp.setImageURI(rSet.getString("image_url"));
+
                 }
 
                 rSet.close();

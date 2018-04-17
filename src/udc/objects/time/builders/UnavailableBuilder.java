@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class UnavailableBuilder implements AgendaBuilder {
     private int id;
     private Unavailable unavailable;
-    private ArrayList<Unavailable> unavailablility; //for splitting purposes
+    private ArrayList<Agenda> unavailablility; //for splitting purposes
 
     public UnavailableBuilder (int id) {
         this.id = id;

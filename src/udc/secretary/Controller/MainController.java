@@ -60,6 +60,7 @@ public class MainController {
         agendas =  model.getDbController().getAppointments(-1, "");
         secViewPane.getChildren().setAll(secDayView);
         setDisableButtons(true);
+
     }
 
     private void appendDoctorsToList(ArrayList<String> tempList){
@@ -92,9 +93,12 @@ public class MainController {
             Unavailability = model.getDbController().getUnvailability(-1);
             agendas = model.getDbController().getAppointments(-1, "");
         }catch(Exception e){
-            Unavailability = null;
+            e.printStackTrace();
         }
-
+        for (int i = 0; i < Unavailability.size(); i++) {
+            if(Unavailability.get(i) instanceof Unavailable)
+                System.out.println(i + " " + ((Unavailable) Unavailability.get(i)).getDoctorName());
+        }
     }
 
     private void initMainPane(AnchorPane pnlTool, ArrayList<String> tempList){
