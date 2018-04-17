@@ -16,7 +16,7 @@
             <content>
                 <AnchorPane fx:id="agendaPane" minHeight="0.0" minWidth="0.0" prefHeight="571.0" prefWidth="574.0">
                <children>
-                  <ListView fx:id="listview" layoutX="3.0" prefHeight="554.0" prefWidth="551.0" />
+                  <ListView fx:id="lv" layoutX="3.0" prefHeight="554.0" prefWidth="551.0" />
                </children></AnchorPane>
             </content>
         </ScrollPane>

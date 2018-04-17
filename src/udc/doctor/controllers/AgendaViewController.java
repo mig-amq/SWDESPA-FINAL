@@ -2,8 +2,11 @@ package udc.doctor.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 
-import javax.swing.text.html.ListView;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,7 +15,16 @@ import java.util.ResourceBundle;
 public class AgendaViewController extends SuperController implements Initializable {
 
     @FXML
-    private ListView listview;
+    private AnchorPane agendaPane;
+
+    @FXML
+    private ScrollPane agendaScrollPane;
+
+    @FXML
+    private Label lblSlots;
+
+    @FXML
+    private ListView lv;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

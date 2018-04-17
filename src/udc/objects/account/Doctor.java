@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class Doctor extends Account {
     private ArrayList<Unavailable> unavailables;
-    private ArrayList<Agenda> exceptions;
 
     public Doctor(String firstName, String lastName, int id) {
         super(id, firstName, lastName);
@@ -51,13 +50,5 @@ public class Doctor extends Account {
 
     public ArrayList<Unavailable> getUnavailables() {
         return unavailables;
-    }
-
-    public void setExceptions(ArrayList<Agenda> exceptions) {
-        this.exceptions = exceptions;
-    }
-
-    public ArrayList<Agenda> getExceptions() {
-        return exceptions;
     }
 }
