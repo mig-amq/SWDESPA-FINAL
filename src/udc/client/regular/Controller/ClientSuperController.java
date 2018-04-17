@@ -17,6 +17,7 @@ public abstract class ClientSuperController implements Initializable {
 
     public void setModel(Model model) {
         this.model = model;
+        System.out.println(model);
     }
     public void setCalendar(Calendar calendar) { this.calendar = calendar; }
     public boolean isOdd(int i){

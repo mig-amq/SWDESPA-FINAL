@@ -191,6 +191,9 @@ public class ClientController extends AnchorPane {
             clientSuperController = loader.<ClientAgendaDayController>getController();
             clientSuperController.setModel(model);
             clientSuperController.setCalendar(client.getCalendar());
+
+   //         System.out.println(model.getAccount().getId());
+
         } catch(Exception e) {}
     }
 }

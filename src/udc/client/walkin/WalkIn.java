@@ -267,6 +267,15 @@ public class WalkIn extends AnchorPane {
                 alert.showAndWait();
             }
 
+            else if(startHour == 7 && startMin == 00)
+            {
+                Alert alert = new Alert (Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText(null);
+                alert.setContentText("Clinic opens at 7:30 am");
+                alert.showAndWait();
+
+            }
 
             else if(startHour == endHour && startMin == endMin) {
                 Alert alert = new Alert (Alert.AlertType.ERROR);
@@ -400,7 +409,9 @@ public class WalkIn extends AnchorPane {
 //                {
                     String[] splited = w.getName().split(" ");
                     model.getDbController().addWalkIn(splited[0], splited[1]);
-                    //    model.getDbController().addAppointment(start, end, 0, 0);
+                //    model.getDbController().addAppointment(start, end, , model.getAccount().getId());
+
+                System.out.println(model.getAccount().getId());
 
                     WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
                     Stage child = new Stage(StageStyle.UNDECORATED);
