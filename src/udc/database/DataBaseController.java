@@ -211,6 +211,10 @@ public class DataBaseController {
         }
     }
 
+    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, String doctorName, String clientName) {
+        addAppointment(time_start, time_end, getDocID(doctorName), getClientID(clientName));
+    }
+
     /**
      * Inserts a new appointment to the appointment table.
      *
@@ -246,6 +250,10 @@ public class DataBaseController {
                 }
             }
         }
+    }
+
+    public void addUnavailability(String doctorName, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring) {
+        addUnavailability(getDocID(doctorName), time_start, time_end, recurring);
     }
 
     /**
@@ -285,6 +293,10 @@ public class DataBaseController {
         }
     }
 
+    public void updateUnavailability(String doctorName, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring){
+        updateUnavailability(getDocID(doctorName), time_start, time_end, recurring);
+    }
+
     /**
      * Updates a specific unavailability of a specific doctor.
      *
@@ -321,6 +333,62 @@ public class DataBaseController {
                 }
             }
         }
+    }
+
+    public int getClientID(String name) {
+        int i = -1;
+        String[] n = name.split(" ");
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement("SELECT client_id FROM clinic_db.client WHERE first_name LIKE '" + n[0] + "' AND last_name LIKE '" + n[1] + "'");
+            rSet = pStmt.executeQuery();
+
+            if(rSet.next()) {
+                System.out.println(rSet.getInt("client_id"));
+                i = rSet.getInt("client_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return i;
+    }
+
+    public int getDocID(String name) {
+        int i = -1;
+        String[] n = name.split(" ");
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement("SELECT doctor_id FROM clinic_db.doctor WHERE first_name LIKE '" + n[0] + "' AND last_name LIKE '" + n[1] + "'");
+            rSet = pStmt.executeQuery();
+
+            if(rSet.next()) {
+                System.out.println(rSet.getInt("doctor_id"));
+                i = rSet.getInt("doctor_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return i;
     }
 
     /**
@@ -420,6 +488,11 @@ public class DataBaseController {
         }
 
         return new ArrayList<>();
+    }
+
+    public ArrayList<Agenda> getUnvailability(String doctorName) throws Exception {
+
+        return getUnvailability(getDocID(doctorName));
     }
 
     /**
