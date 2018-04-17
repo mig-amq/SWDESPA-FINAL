@@ -43,7 +43,7 @@ public class ConnectionConfiguration {
             Class.forName(driverName);
             connection = DriverManager.getConnection(url, user, password);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
 
         return connection;

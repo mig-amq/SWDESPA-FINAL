@@ -429,11 +429,11 @@ public class DataBaseController {
             // Traversing result set and instantiating unavailability to temp list
             while (rSet.next()) {
                 if (rSet.getBoolean("recurring")) {
-                    tempList.add(builder.build(rSet.getInt("appointment_id"),
+                    tempList.add(builder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
                 } else {
-                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
+                    tempList.add(rbuilder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
                 }
@@ -487,7 +487,6 @@ public class DataBaseController {
                         sql = "SELECT * FROM client WHERE account_id = " + rSet.getInt("account_id");
                         break;
                 }
-            }
 
                 pStmt = connection.prepareStatement(sql);
                 ResultSet rSet2 = pStmt.executeQuery();
@@ -504,16 +503,19 @@ public class DataBaseController {
                             temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));
                     }
 
-//                    if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
-//                        temp.setImageURI(rSet.getString("image_url"));
+                    if (!rSet.getString("image_url").trim().replaceAll("\\s+", "").isEmpty())
+                        temp.setImageURI(rSet.getString("image_url"));
                 }
 
                 rSet.close();
                 rSet2.close();
 
                 return temp;
+            } else
+                throw new Exception("Error: That account does not exist.");
+
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new Exception("Error: Cannot connect to the database");
         } finally {
             if (connection != null) {
                 try {
@@ -523,8 +525,6 @@ public class DataBaseController {
                 }
             }
         }
-
-        throw new Exception("Error: That account does not exist.");
     }
 
     public ArrayList<Agenda> getExceptions (int doctor_id) {

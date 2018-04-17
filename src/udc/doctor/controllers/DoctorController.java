@@ -287,14 +287,15 @@ public class DoctorController extends SuperController implements Initializable{
                 rdBtnWeekView.setSelected(false);
                 Node node = null;
                 try {
-                    FXMLLoader loader = new FXMLLoader();
-                    node = loader.load(getClass().getResource("../doctor/AvailabilityView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/AvailabilityView.fxml"));
+                    node = loader.load();
                     loader.<AvailabilityViewController>getController().setModel(model);
                     loader.<AvailabilityViewController>getController().setCalendar(calendar);
+
+                    viewPane.getChildren().add(node);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                viewPane.getChildren().add(node);
             }
         });
     }
