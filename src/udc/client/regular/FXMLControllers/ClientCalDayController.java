@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import udc.Model;
 import udc.client.regular.Controller.ClientSuperController;
 import udc.client.regular.Controller.DaySchedule;
 import udc.objects.time.concrete.Agenda;
@@ -46,5 +47,13 @@ public class ClientCalDayController extends ClientSuperController implements Ini
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setCellTable();
+        setModel(model);
+
+
+    }
+
+    @Override
+    public void setModel (Model model) {
+        super.setModel(model);
     }
 }
