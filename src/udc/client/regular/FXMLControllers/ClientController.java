@@ -8,18 +8,28 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import udc.Model;
 import udc.client.Client;
+import udc.client.regular.AppointmentRow;
 import udc.client.regular.Controller.ClientSuperController;
+import udc.objects.time.concrete.Agenda;
+import udc.objects.time.concrete.Appointment;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ClientController extends AnchorPane {
 
+    @FXML private TableView<AppointmentRow> upcoming, previous;
     @FXML private AnchorPane mainPane, homePane, bookPane, managePane;
     @FXML private AnchorPane bookTablePane, manageTablePane;
     @FXML private JFXButton home, book, manage;
@@ -44,6 +54,35 @@ public class ClientController extends AnchorPane {
         setToggleGroup();
         setComboBox();
         initializeButtons();
+        loadHome();
+
+        upcoming.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("date"));
+        upcoming.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("time"));
+        upcoming.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("doctor"));
+
+        previous.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("date"));
+        previous.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("time"));
+        previous.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("doctor"));
+    }
+
+    private void update () {
+        loadHome();
+    }
+
+    private void loadHome () {
+        upcoming.getItems().clear();
+        previous.getItems().clear();
+
+        System.out.println(model.getAccount().getAppointments().size());
+        for (Agenda a : model.getAccount().getAppointments()) {
+            AppointmentRow arow = new AppointmentRow((Appointment) a);
+
+            if (a.getStartTime().isAfter(LocalDateTime.now()) || a.getStartTime().isEqual(LocalDateTime.now())) {
+                upcoming.getItems().add(arow);
+            } else {
+                previous.getItems().add(arow);
+            }
+        }
     }
 
     private void setToggleGroup() {

@@ -362,6 +362,7 @@ public class DataBaseController {
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "'";
 
+            System.out.println(stmt);
             pStmt = connection.prepareStatement(stmt);
 
             rSet = pStmt.executeQuery();

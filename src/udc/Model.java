@@ -43,7 +43,7 @@ public class Model {
                     case SECRETARY:
                         this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "SECRETARY"));
                         break;
-                    case CLIENT:
+                    default:
                         this.getAccount().setAppointments(this.getDbController().getAppointments(this.account.getId(), "CLIENT"));
                         break;
                 }
