@@ -61,7 +61,6 @@ public abstract class AbstractControl {
         for (int i = 0; i < data.size(); i++) {
             String agendaTime = convertIntHrorMintoString(data.get(i).getStartTime().getHour()) + convertIntHrorMintoString( data.get(i).getStartTime().getMinute());
             String nTime = convertTimeFromTable(time); //converts time from table to military
-            System.out.println(nTime + " " + agendaTime);
             if(nTime.equals(agendaTime))
                 return i;
         }
