@@ -35,6 +35,11 @@ public class ClientCalWeekController extends ClientSuperController implements In
 
     }
 
+    @Override
+    public void update() {
+
+    }
+
     private void setCellTable() {
         time.setCellValueFactory(new PropertyValueFactory<>("time"));
         mon.setCellValueFactory(new PropertyValueFactory<>("mon"));

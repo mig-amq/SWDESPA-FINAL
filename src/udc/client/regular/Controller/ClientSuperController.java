@@ -55,4 +55,5 @@ public abstract class ClientSuperController implements Initializable {
         return time;
     }
 
+    public abstract void update();
 }

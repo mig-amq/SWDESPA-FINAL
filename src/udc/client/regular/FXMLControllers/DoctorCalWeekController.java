@@ -32,4 +32,9 @@ public class DoctorCalWeekController extends ClientSuperController implements In
     public void insertFilterData(ArrayList<Agenda> data) {
 
     }
+
+    @Override
+    public void update() {
+
+    }
 }

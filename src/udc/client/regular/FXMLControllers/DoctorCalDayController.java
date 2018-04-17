@@ -26,4 +26,9 @@ public class DoctorCalDayController extends ClientSuperController implements Ini
     public void insertFilterData(ArrayList<Agenda> data) {
 
     }
+
+    @Override
+    public void update() {
+
+    }
 }

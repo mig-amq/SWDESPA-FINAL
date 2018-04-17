@@ -45,6 +45,11 @@ public class ClientCalDayController extends ClientSuperController implements Ini
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         setCellTable();
         setModel(model);

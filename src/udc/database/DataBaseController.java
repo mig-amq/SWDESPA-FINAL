@@ -6,6 +6,7 @@ import udc.objects.account.Client;
 import udc.objects.account.Doctor;
 import udc.objects.account.Secretary;
 import udc.objects.enums.AgendaType;
+import udc.objects.enums.ClientType;
 import udc.objects.time.builders.RecurringAppointmentBuilder;
 import udc.objects.time.builders.RecurringUnavailableBuilder;
 import udc.objects.time.builders.SingleAppointmentBuilder;
@@ -430,7 +431,6 @@ public class DataBaseController {
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "'";
 
-            System.out.println(stmt);
             pStmt = connection.prepareStatement(stmt);
 
             rSet = pStmt.executeQuery();
@@ -613,6 +613,12 @@ public class DataBaseController {
                             break;
                         case "client":
                             temp = new Client(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("client_id"));
+
+                            if (rSet2.getString("type").equals("normal"))
+                                ((Client) temp).setClientType(ClientType.REGULAR);
+                            else
+                                ((Client) temp).setClientType(ClientType.WALKIN);
+
                             break;
                         default:
                             temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));

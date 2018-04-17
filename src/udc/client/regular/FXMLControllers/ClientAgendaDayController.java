@@ -104,6 +104,11 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void insertFilterData(ArrayList<Agenda> data) {
         items = dayList.getItems();
       //  setList();
