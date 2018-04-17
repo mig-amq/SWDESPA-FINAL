@@ -12,6 +12,9 @@ import udc.objects.time.concrete.Appointment;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -21,11 +24,10 @@ public class AppointmentsTableDController extends SuperController implements Ini
     private ArrayList<Agenda> appointments;
 
     @FXML
-    private TableView<DaySchedule> tbView;
+    private TableColumn colDoctors;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initPropertValues();
 
     }
 
@@ -56,26 +58,103 @@ public class AppointmentsTableDController extends SuperController implements Ini
         return time;
     }
 
-    private void initPropertValues(){
-        String[] cells = new String[]{"sTime", "sClientDoctor"};
-        for (int i = 0; i < tbView.getColumns().size(); i++) {
-            TableColumn col = tbView.getColumns().get(i);
-            col.setCellValueFactory(new PropertyValueFactory<udc.secretary.Controller.WeekSchedule, String>(cells[i]));
-        }
-    }
 
-    public void insertFilteredData(ArrayList<Agenda> data){//ArrayList<Appointment> data
+
+    public void insertFilteredData(){//ArrayList<Appointment> data
 //        data = sortTime(data);
         //TODO: ADD UNAVAILABILITY DISPLAY, PLACE IT INSIDE findData method()
         appointments = model.getAccount().getAppointments();//is this where the unavailable shceds are??
-//        unavilable = model.getAccount().getUnavailable();
-        //if(time form appointments is the same as the in the column)
-        //then print unavailable and change color
+        int month, day, year, thisDay, thisMonth, thisYear;
+        try {
+            unavilable = model.getDbController().getUnvailability(model.getAccount().getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for(int i = 0; i < appointments.size(); i++){
+            day = appointments.get(i).getStartTime().getDayOfMonth();
+            month = appointments.get(i).getStartTime().getMonthValue();
+            year = appointments.get(i).getStartTime().getYear();
+            thisDay = calendar.getSelected().getDayOfMonth();
+            thisMonth = calendar.getSelected().getMonthValue();
+            thisYear = calendar.getSelected().getYear();
+            if(appointments.get(i).getType().equals("Recurring")){
+                DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
+                LocalTime time, tempStart, tempEnd;
+                int startInt, endInt;
+                double startDif, endDif;
+                time = LocalTime.parse("7:30 AM", dtf);
+                tempStart = appointments.get(i).getStartTime().toLocalTime();
+                tempEnd = appointments.get(i).getEndTime().toLocalTime();
+                startDif = add(time, tempStart);
+                endDif = add(time, tempEnd);
+                startInt = (int) startDif * 2;
+                endInt = (int) endDif * 2;
+                for(int a = startInt; a < endInt; a++){
+                    colDoctors.getColumns().set(a, "Appointment");
+                }
 
+            } else if(appointments.get(i).getType().equals("Single")){
+                if(day == thisDay && month == thisMonth && year == thisYear){
+                    DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
+                    LocalTime time, tempStart, tempEnd;
+                    int startInt, endInt;
+                    double startDif, endDif;
+                    time = LocalTime.parse("7:30 AM", dtf);
+                    tempStart = appointments.get(i).getStartTime().toLocalTime();
+                    tempEnd = appointments.get(i).getEndTime().toLocalTime();
+                    startDif = add(time, tempStart);
+                    endDif = add(time, tempEnd);
+                    startInt = (int) startDif * 2;
+                    endInt = (int) endDif * 2;
+                    for(int a = startInt; a < endInt; a++){
+                        colDoctors.getColumns().set(a, "Appointment");
+                    }
+                }
+            }
+        }
+
+//        for(int i = 0; i < unavilable.size(); i++){
+//            day = unavilable.get(i).getStartTime().getDayOfMonth();
+//            month = unavilable.get(i).getStartTime().getMonthValue();
+//            year = unavilable.get(i).getStartTime().getYear();
+//            thisDay = calendar.getSelected().getDayOfMonth();
+//            thisMonth = calendar.getSelected().getMonthValue();
+//            thisYear = calendar.getSelected().getYear();
+//            if(unavilable.get(i).getType().equals("Recurring")){
+//
+//            } else if(unavilable.get(i).getType().equals("Single")){
+//                if(day == thisDay && month == thisMonth && year == thisYear){
+//
+//                }
+//            }
+//        }
+
+    }
+
+    public double add(LocalTime timeStart, LocalTime timeEnd) {
+        int x, y, a, b;
+        double difference;
+
+        x = timeStart.getHour();
+        y = timeStart.getMinute();
+        a = timeEnd.getHour();
+        b = timeEnd.getMinute();
+        if(b-y < 0) {
+            difference = a-x;
+            difference-=0.5;
+        } else if(b-y > 0) {
+            difference = a-x;
+            difference+=0.5;
+        } else {
+            difference = a-x;
+        }
+        System.out.println(difference);
+        return difference;
     }
 
     @Override
     public void update(LocalDateTime ldt) {
         //call function to display unavailability here?
+        insertFilteredData();
     }
 }

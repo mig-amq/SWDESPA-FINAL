@@ -81,18 +81,19 @@ public class AvailabilityViewController extends SuperController implements Initi
                     if((date.getHour() < startTime/100) ||
                             (date.getMinute() == startTime %100 && date.getHour() < startTime/100)){
                         boolean isConflict = false;
-                        DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendPattern("hh:mm a").toFormatter();
+                        DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
                         LocalTime timeStart, timeEnd;
                         LocalDateTime start, end;
                         timeStart = LocalTime.parse(startString, dtf);
                         start = LocalDateTime.of(calendar.getSelected(), timeStart);
                         timeEnd = LocalTime.parse(endString, dtf);
                         end = LocalDateTime.of(calendar.getSelected(), timeEnd);
-
                         ArrayList<Agenda> appointments = model.getAccount().getAppointments();
                         for(int i = 0; i < appointments.size(); i++){
-                            if(appointments.get(i).getStartTime().isEqual(start) || appointments.get(i).getEndTime().isEqual(end)||
-                                    appointments.get(i).getStartTime().isEqual(end) || appointments.get(i).getEndTime().isEqual(start))
+                            if((appointments.get(i).getStartTime().isBefore(start) && appointments.get(i).getEndTime().isBefore(start)) ||
+                                    (appointments.get(i).getStartTime().isBefore(end) && appointments.get(i).getEndTime().isBefore(end)) ||
+                                    appointments.get(i).getStartTime().isEqual(start) || appointments.get(i).getEndTime().isEqual(start) ||
+                                    appointments.get(i).getStartTime().isEqual(end) || appointments.get(i).getEndTime().isEqual(end))
                                 isConflict = true;
                         }
 
@@ -114,12 +115,7 @@ public class AvailabilityViewController extends SuperController implements Initi
 
                         }
 
-                        //model.getList then compare times to check for conflict
-//                        if(model.getList.getStartTime != startTime && model.getList.getEndTime != endTime){
 
-//                      }else{//shows dialogue box for conflict of time
-//
-//                      }
                     }else{
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setContentText("Invalid time selected");
