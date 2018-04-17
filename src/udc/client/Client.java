@@ -158,7 +158,9 @@ public class Client extends PaneledView {
 
     @Override
     public void update() {
-
+        if (clientController != null) {
+            clientController.update();
+        }
     }
 
     @Override

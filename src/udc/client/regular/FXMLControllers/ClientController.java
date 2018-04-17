@@ -67,8 +67,9 @@ public class ClientController extends AnchorPane {
         previous.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("doctor"));
     }
 
-    private void update () {
+    public void update () {
         loadHome();
+        clientSuperController.update();
     }
 
     private void loadHome () {
