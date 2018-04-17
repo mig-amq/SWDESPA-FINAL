@@ -27,7 +27,7 @@
       <JFXDrawer fx:id="drawer" defaultDrawerSize="175.0" layoutY="30.0" prefHeight="473.0" prefWidth="400.0" scaleZ="10.0" translateZ="10.0" />
       <AnchorPane fx:id="mainPanel" layoutY="30.0" prefHeight="473.0" prefWidth="400.0">
          <children>
-            <JFXButton fx:id="reserve" defaultButton="true" layoutX="123.0" layoutY="300.0" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #1f8e69; -fx-cursor: hand;" text="Reserve" textFill="WHITE">
+            <JFXButton fx:id="reserve" defaultButton="true" layoutX="123.0" layoutY="289.0" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #155e3b; -fx-cursor: hand;" text="Reserve" textFill="WHITE">
                <ripplerFill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -40,6 +40,9 @@
                      </stops>
                   </LinearGradient>
                </ripplerFill>
+               <font>
+                  <Font size="19.0" />
+               </font>
             </JFXButton>
             <TextFlow layoutX="57.0" layoutY="335.0" prefHeight="35.0" prefWidth="287.0" textAlignment="CENTER">
                <children>
@@ -55,14 +58,14 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <JFXDatePicker fx:id="datePicker" defaultColor="#ab2626" layoutX="113.0" layoutY="88.0" prefHeight="28.0" prefWidth="253.0" />
+            <JFXDatePicker fx:id="datePicker" defaultColor="#155e3b" layoutX="113.0" layoutY="88.0" prefHeight="28.0" prefWidth="253.0" />
             <Label layoutX="34.0" layoutY="140.0" prefHeight="32.0" prefWidth="68.0" text="Time:">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <JFXComboBox fx:id="startHour" focusColor="#ab2626" layoutX="113.0" layoutY="143.0" prefHeight="28.0" prefWidth="89.0" promptText="07" />
-            <Label layoutX="224.0" layoutY="137.0" text=":">
+            <JFXComboBox fx:id="startHour" focusColor="#ab2626" layoutX="113.0" layoutY="143.0" prefHeight="28.0" prefWidth="57.0" />
+            <Label layoutX="178.0" layoutY="140.0" text=":">
                <font>
                   <Font size="22.0" />
                </font>
@@ -78,14 +81,16 @@
                </font>
             </Label>
             <JFXComboBox fx:id="doctorCmb" focusColor="#ab2626" layoutX="113.0" layoutY="41.0" prefHeight="28.0" prefWidth="235.0" promptText="Select Doctor" />
-            <JFXComboBox fx:id="startMin" focusColor="#ab2626" layoutX="241.0" layoutY="143.0" prefHeight="28.0" prefWidth="89.0" promptText="00" />
-            <JFXComboBox fx:id="endHour" focusColor="#ab2626" layoutX="113.0" layoutY="230.0" prefHeight="28.0" prefWidth="89.0" promptText="22" />
-            <Label layoutX="224.0" layoutY="228.0" text=":">
+            <JFXComboBox fx:id="startMin" focusColor="#ab2626" layoutX="191.0" layoutY="142.0" prefHeight="28.0" prefWidth="57.0" />
+            <JFXComboBox fx:id="endHour" focusColor="#ab2626" layoutX="113.0" layoutY="228.0" prefHeight="28.0" prefWidth="57.0" />
+            <Label layoutX="178.0" layoutY="231.0" text=":">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <JFXComboBox fx:id="endMin" focusColor="#ab2626" layoutX="241.0" layoutY="230.0" prefHeight="28.0" prefWidth="89.0" promptText="00" />
+            <JFXComboBox fx:id="endMin" focusColor="#ab2626" layoutX="189.0" layoutY="228.0" prefHeight="28.0" prefWidth="57.0" />
+            <JFXComboBox fx:id="startM" focusColor="#ab2626" layoutX="262.0" layoutY="142.0" prefHeight="28.0" prefWidth="80.0" />
+            <JFXComboBox fx:id="endM" focusColor="#ab2626" layoutX="262.0" layoutY="228.0" prefHeight="28.0" prefWidth="80.0" />
          </children>
       </AnchorPane>
    </children>
