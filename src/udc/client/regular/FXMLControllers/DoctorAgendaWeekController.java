@@ -272,13 +272,7 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
     }
 
     @Override
-    public void insertFilterData(ArrayList<Agenda> data) {
-        items = weekList.getItems();
-        //  setList();
-    }
-
-    @Override
     public void insertFilterData(LocalDate selected) {
-        
+        items = weekList.getItems();
     }
 }
