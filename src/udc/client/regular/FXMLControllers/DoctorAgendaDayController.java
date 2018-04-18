@@ -32,8 +32,6 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
     private ObservableList<String> items;
 
     private void setList() throws Exception {
-        //  items.add("00:00" + "-" + "02:30" + " " + "Dr JDC");
-        // items.add("00:00" + "-" + "01:30" + " " + ":)");
 
         ObservableList<String> finaltemp = null;
         dayList.getItems().clear();
@@ -49,22 +47,6 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
 
         items.add("TAKEN SLOTS");
 
-//        int hourTime = 7;
-//        int minTime = 30;
-//
-//        while (hourTime < 23 && minTime != 30)
-//        {
-//            String sHour;
-//            String sMin;
-//            if (hourTime < 10)
-//                sHour = "0" + hourTime;
-//            else
-//                sHour = Integer.toString(hourTime);
-//
-//            if (minTime < 10)
-//                sMin = "0" + minTime;
-//            else
-//                sMin = Integer.toString(hourTime);
 
             for (int i = 0; i < temp.size(); i++) {
                 LocalDateTime startTemp = temp.get(i).getStartTime();
@@ -81,20 +63,6 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
                     }
                 }
             }
-
-//            finaltemp.add(sHour + ":" + sMin);
-//
-//            if(minTime == 0)
-//            {
-//                minTime = 30;
-//            }
-//
-//            else
-//            {
-//                minTime = 0;
-//                hourTime++;
-//            }
-//        }
 
     }
 
