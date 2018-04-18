@@ -133,7 +133,8 @@ public class ReserveController extends AnchorPane {
 
                 LocalDateTime startTime = Agenda.strToTime(startTemp);
                 LocalDateTime endTime = Agenda.strToTime(endTemp);
-
+                System.out.println("startTime"+startTime);
+                System.out.println("endTime"+endTime);
                 //SAME TIME
                 if(startTime.isEqual(endTime)) {
                     Alert alert = new Alert (Alert.AlertType.ERROR);
@@ -177,8 +178,9 @@ public class ReserveController extends AnchorPane {
                 }
                 else {
                     boolean canAdd = true;
+                    LocalDateTime tempTime = startTime;
 
-                    while(startTime.isBefore(endTime) || startTime.equals(endTime)) {
+                    while(tempTime.isBefore(endTime) || tempTime.equals(endTime)) {
                         if(isOverLap(startTime)) {
                             Alert alert = new Alert (Alert.AlertType.ERROR);
                             alert.setTitle("Invalid Input");
@@ -188,19 +190,16 @@ public class ReserveController extends AnchorPane {
                             canAdd = false;
                             break;
                         }
-                        if(startTime.equals(endTime)) break;
-                        startTime = startTime.plusMinutes(30);
+                        if(tempTime.equals(endTime)) break;
+                        tempTime = tempTime.plusMinutes(30);
                     }
                     if(canAdd) {
                         Account account = model.getAccount();
                         System.out.println("account id:"+account.getId());
                         String client = account.getFirstName() + " " + account.getLastName();
 
-                        //Add parameter for recurring??
                         model.getDbController().addAppointment(startTime, endTime, doctorCmb.getValue(), client);
-                        model.getDbController().addUnavailability(doctorCmb.getValue(), startTime, endTime, false);
-
-                        //UPDATE VIEWS
+                        model.setState();
 
                         Stage stage = (Stage) close.getScene().getWindow();
                         stage.close();
