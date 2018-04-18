@@ -30,7 +30,7 @@ public class ServerResponseThread extends Thread {
                             for (ServerResponseThread sthread : this.serverThread.getServerResponseThreads()) {
                                 PrintWriter writer = new PrintWriter(sthread.getSocket().getOutputStream());
 
-                                writer.println("UPDATED");
+                                writer.println("UPDATE");
                                 writer.flush();
                             }
                             break;
