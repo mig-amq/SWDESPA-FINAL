@@ -118,13 +118,11 @@ public class SecDayAgendaControl extends AbstractControl {
         }
 
         if (data instanceof Appointment){
-            string.add(data.getId() + " " +  data.getStartTime().getMonthValue() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear()
-                    + ": " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+            string.add(data.getId() + " " + ": " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
                     + ", Dr." + ((Appointment) data).getDoctorName() + ", " + ((Appointment) data).getClientName());
         }
         else if (data instanceof Unavailable){
-            string.add(data.getStartTime().getMonthValue() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear()
-                    + ": " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+            string.add(hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
                     + ", Dr." + ((Unavailable) data).getDoctorName() + ", Unavailable");
         } else if (data instanceof Available){
             string.add(hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Available) data).getDoctorName() + ", Open");
