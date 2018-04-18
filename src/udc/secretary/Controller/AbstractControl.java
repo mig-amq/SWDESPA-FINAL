@@ -82,7 +82,6 @@ public abstract class AbstractControl {
                 String agendaTime = convertIntHrorMintoString(data.get(i).getStartTime().getHour()) + convertIntHrorMintoString(data.get(i).getStartTime().getMinute());
                 String endTime = convertIntHrorMintoString(data.get(i).getEndTime().getHour()) + convertIntHrorMintoString(data.get(i).getEndTime().getMinute());
                 String nTime = convertTimeFromTable(time); //converts time from table to military
-                System.out.println("BOOOMASOMDOAMO");
                 if (nTime.equals(agendaTime) || (Integer.parseInt(endTime) > Integer.parseInt(nTime) && Integer.parseInt(agendaTime)
                         < Integer.parseInt(nTime))) {
 
@@ -104,40 +103,44 @@ public abstract class AbstractControl {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        if (item.contains("Dr. Miguel Quiambao") && !item.contains("Unavailable")) {
-                            setStyle("-fx-background-color: #42f498");
-//                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
-//                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
-//                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
-                            setText(item);
-                        }else if(item.contains("Dr. Mitchell Ong") && !item.contains("Unavailable")){
-                            setStyle("-fx-background-color: #6aa2fc");
-//                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
-//                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
-//                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
-                            //See SecWeekControl for Code Continuation
-                            setText(item);
-                        } else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
-                            setText("");
-                            setStyle("-fx-background-color: #f26f29");
-                        } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Unavailable")){
-                            setText("");
-                            setStyle("-fx-background-color: #f2534b");
-                        }else if(item.equalsIgnoreCase("(Unavailable)")){ //both
-                            setText("");
-                            setStyle("-fx-background-color: #3a231a");
-                        }  else{
-                            setStyle("-fx-background-color: #e5e2cc");
-                            setStyle("-fx-border-color: #c6c5ba");
-                            setText(null);
-                            setGraphic(null);
-                        }
+                        applyCellFactoryCondition(item, this);
                     }
                 }
 
             };
         });
     }
+
+     private void applyCellFactoryCondition(String item, TableCell a){
+         if (item.contains("Dr. Miguel Quiambao") && !item.contains("Unavailable")) {
+             a.setStyle("-fx-background-color: #42f498");
+//                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
+//                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
+//                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
+             a.setText(item);
+         }else if(item.contains("Dr. Mitchell Ong") && !item.contains("Unavailable")){
+             a.setStyle("-fx-background-color: #6aa2fc");
+//                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
+//                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
+//                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
+             //See SecWeekControl for Code Continuation
+             a.setText(item);
+         } else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
+             a.setText("");
+             a.setStyle("-fx-background-color: #d83c66");
+         } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Unavailable")){
+             a.setText("");
+             a.setStyle("-fx-background-color: #d35e43");
+         }else if(item.equalsIgnoreCase("(Unavailable)")){ //both
+             a.setText("");
+             a.setStyle("-fx-background-color: #f44242");
+         }  else{
+             a.setStyle("-fx-background-color: #e5e2cc");
+             a.setStyle("-fx-border-color: #c6c5ba");
+             a.setText(null);
+             a.setGraphic(null);
+         }
+     }
 
     public void setColumnCellFactory(TableColumn<DaySchedule, String> a){
         a.setCellFactory(column -> {
@@ -148,27 +151,7 @@ public abstract class AbstractControl {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        if (item.contains("Dr. Miguel Quiambao") && !item.contains("Unavailable")) {
-                            setStyle("-fx-background-color: #42f498");
-                            setText(item);
-                        }else if(item.contains("Dr. Mitchell Ong") && !item.contains("Unavailable")){
-                            setStyle("-fx-background-color: #6aa2fc");
-                            setText(item);
-                        } else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
-                            setText("");
-                            setStyle("-fx-background-color: #f26f29");
-                        } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Unavailable")){
-                            setText("");
-                            setStyle("-fx-background-color: #f2534b");
-                        } else if(item.equals("(Unavailable)")){ //both
-                            setText("");
-                            setStyle("-fx-background-color: #3a231a");
-                        } else{
-                            setStyle("-fx-background-color: #e5e2cc");
-                            setStyle("-fx-border-color: #c6c5ba");
-                            setText(null);
-                            setGraphic(null);
-                        }
+                        applyCellFactoryCondition(item, this);
                     }
                 }
 

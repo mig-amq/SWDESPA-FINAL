@@ -40,9 +40,7 @@ public class ClientThread extends Thread {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                 if (in.ready()) { // check if server sent a message
-                    String str = in.readLine();
-                    System.out.println(str);
-                    if(str.equals("UPDATE")) {
+                    if(in.readLine().equals("UPDATE")) {
                         System.out.println("update");
                         this.model.getState();
                     }

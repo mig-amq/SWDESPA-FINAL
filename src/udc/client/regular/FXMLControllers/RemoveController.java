@@ -135,13 +135,24 @@ public class RemoveController extends AnchorPane {
                     if (agenda.getStartTime().isEqual(startTime) &&
                             agenda.getEndTime().isEqual(endTime)) {
                         System.out.println("REMOVED!!");
+                        System.out.println("aapt id:"+myAppts.get(i).getId());
+                        model.getDbController().deleteAppointment((Appointment) agenda);
+                        model.setState();
                         found = true;
                         break;
                     }
-
                 }
+
                 if(!found) {
-                    System.out.println("REMOVE FAILED");
+                    Alert alert = new Alert (Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Input");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Appointment does not exist.");
+                    alert.showAndWait();
+                }
+                else {
+                    Stage stage = (Stage) close.getScene().getWindow();
+                    stage.close();
                 }
             }
         });
