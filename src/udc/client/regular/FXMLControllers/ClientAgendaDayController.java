@@ -85,11 +85,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     }
 
     @Override
-    public void insertFilterData(ArrayList<Agenda> data) {
-        items = dayList.getItems();
-    }
-
-    @Override
     public void insertFilterData(LocalDate selected) {
 
     }

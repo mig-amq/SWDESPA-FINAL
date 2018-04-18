@@ -30,11 +30,6 @@ public class DoctorCalWeekController extends ClientSuperController implements In
     }
 
     @Override
-    public void insertFilterData(ArrayList<Agenda> data) {
-
-    }
-
-    @Override
     public void insertFilterData(LocalDate selected) {
 
     }
