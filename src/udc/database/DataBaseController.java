@@ -289,7 +289,7 @@ public class DataBaseController {
      * @param clientID   — ID of the client
      */
     public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, int doctorID, int clientID) {
-        String stmt = "INSERT INTO clinic_db.appointment (time_start, time_end, doctor_id, client_id) VALUES (?, ?, ?, ?)";
+        String stmt = "INSERT INTO clinic_db.appointment (time_start, time_end, doctor_id, client_id, recurring) VALUES (?, ?, ?, ?, ?)";
         try {
             connection = ConnectionConfiguration.getConnection(model);
             pStmt = connection.prepareStatement(stmt);
@@ -297,6 +297,7 @@ public class DataBaseController {
             pStmt.setString(2, timeToStr(time_end));
             pStmt.setInt(3, doctorID);
             pStmt.setInt(4, clientID);
+            pStmt.setBoolean(5, false);
 
             if (pStmt.executeUpdate() == 1)
                 System.out.println("New appointment successfully added to database.");
