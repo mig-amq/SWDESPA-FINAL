@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import udc.Model;
 import udc.client.regular.Controller.ClientSuperController;
@@ -27,21 +28,28 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
     private ObservableList<String> items;
 
+    @FXML
+    private ComboBox<String> mDayCmbBox;
 
     private void setList() throws Exception {
       //  items.add("00:00" + "-" + "02:30" + " " + "Dr JDC");
        // items.add("00:00" + "-" + "01:30" + " " + ":)");
 
-        LocalDateTime now = calendar.getDate().atStartOfDay();
-        System.out.println(model.getDbController().getAppointments(model.getAccount().getId(), "normal"));
+        LocalDateTime now;
+
+        if( calendar == null)
+            now = LocalDateTime.now();
+        else
+            now =  calendar.getDate().atStartOfDay();
+        
 
 
             ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 
             for (int i = 0; i < temp.size(); i++) {
-                LocalDateTime startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-                LocalDateTime endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
-                String doctor = ((Appointment) model.getDbController().getAppointments(-1, "").get(i)).getDoctorName();
+                LocalDateTime startTemp = temp.get(i).getStartTime();
+                LocalDateTime endTemp = temp.get(i).getEndTime();
+                String doctor = ((Appointment) temp.get(i)).getDoctorName();
                 int startMin = startTemp.getMinute();
                 int endMin = endTemp.getMinute();
                 String sMin;
@@ -58,8 +66,11 @@ public class ClientAgendaDayController extends ClientSuperController implements 
                 else
                     eMin = "30";
 
-                if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear()) {
-                    String s = startTemp.getHour() + ":" + sMin + " - " + endTemp.getHour() + ":" + eMin + " " + eampm + " Dr. " + doctor;
+
+                if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())
+                {
+                    String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                            endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                     items.add(s);
                 }
             }
@@ -68,9 +79,18 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
 @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //items.add("Appointments");
        items = dayList.getItems();
             setModel(model);
             setCalendar(calendar);
+     //       setCmb();
+    }
+
+    public void setCmb()
+    {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
+        mDayCmbBox.setItems(list);
     }
 
     @Override
@@ -89,6 +109,8 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         super.setCalendar(calendar);
 
     }
+
+
 
     @Override
     public void update() {

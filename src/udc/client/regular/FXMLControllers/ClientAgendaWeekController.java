@@ -1,8 +1,10 @@
 package udc.client.regular.FXMLControllers;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import udc.Model;
 import udc.client.regular.Controller.ClientSuperController;
@@ -20,6 +22,9 @@ import java.util.ResourceBundle;
 public class ClientAgendaWeekController extends ClientSuperController implements Initializable {
     @FXML private ListView<String> weekList;
 
+    @FXML
+    private ComboBox<String> mWeekCmbBox;
+
     private ObservableList<String> items;
 
 //    private ObservableList<Agenda> mon;
@@ -33,6 +38,12 @@ public class ClientAgendaWeekController extends ClientSuperController implements
     private void setList() throws Exception {
         //  items.add("00:00" + "-" + "02:30" + " " + "Dr JDC");
         //  items.add("00:00" + "-" + "01:30" + " " + ":)");
+
+        LocalDateTime now;
+        if( calendar == null)
+            now = LocalDateTime.now();
+        else
+            now =  calendar.getDate().atStartOfDay();
 
         String s;
 
@@ -48,11 +59,11 @@ public class ClientAgendaWeekController extends ClientSuperController implements
 
         for (int i = 0; i < temp.size(); i++)
         {
-            startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-            endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
+            startTemp = temp.get(i).getStartTime();
+            endTemp = temp.get(i).getEndTime();
             startMin = startTemp.getMinute();
             endMin = endTemp.getMinute();
-            doctor = ((Appointment) model.getDbController().getAppointments(-1, "").get(i)).getDoctorName();
+            doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
 
@@ -67,19 +78,20 @@ public class ClientAgendaWeekController extends ClientSuperController implements
                 eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 1) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + "  " + temp.get(i).getStartTime().getHour() + ":" + sMin + "-" +
-                        temp.get(i).getEndTime().getHour() + ":" + eMin + " " + eampm + " Dr. " + doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                         items.add(s);
+
             }
         }
 
         for (int i = 0; i < temp.size(); i++)
         {
-            startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-            endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
+            startTemp = temp.get(i).getStartTime();
+            endTemp = temp.get(i).getEndTime();
             startMin = startTemp.getMinute();
             endMin = endTemp.getMinute();
-            doctor = ((Appointment) model.getDbController().getAppointments(-1, "").get(i)).getDoctorName();
+            doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
 
@@ -94,19 +106,19 @@ public class ClientAgendaWeekController extends ClientSuperController implements
                 eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 2) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + "  " + temp.get(i).getStartTime().getHour() + ":" + sMin + "-" +
-                        temp.get(i).getEndTime().getHour() + ":" + eMin + " " + eampm + " Dr. " + doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
             }
         }
 
         for (int i = 0; i < temp.size(); i++)
         {
-            startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-            endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
+            startTemp = temp.get(i).getStartTime();
+            endTemp = temp.get(i).getEndTime();
             startMin = startTemp.getMinute();
             endMin = endTemp.getMinute();
-            doctor = ((Appointment) model.getDbController().getAppointments(-1, "").get(i)).getDoctorName();
+            doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
 
@@ -121,19 +133,19 @@ public class ClientAgendaWeekController extends ClientSuperController implements
                 eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 3) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + "  " + temp.get(i).getStartTime().getHour() + ":" + sMin + "-" +
-                        temp.get(i).getEndTime().getHour() + ":" + eMin + " " + eampm + " Dr. " + doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
             }
         }
 
         for (int i = 0; i < temp.size(); i++)
         {
-            startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-            endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
+            startTemp = temp.get(i).getStartTime();
+            endTemp = temp.get(i).getEndTime();
             startMin = startTemp.getMinute();
             endMin = endTemp.getMinute();
-            doctor = ((Appointment) model.getDbController().getAppointments(-1, "").get(i)).getDoctorName();
+            doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
 
@@ -148,19 +160,19 @@ public class ClientAgendaWeekController extends ClientSuperController implements
                 eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 4) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + "  " + temp.get(i).getStartTime().getHour() + ":" + sMin + "-" +
-                        temp.get(i).getEndTime().getHour() + ":" + eMin + " " + eampm + " Dr." + doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
             }
         }
 
         for (int i = 0; i < temp.size(); i++)
         {
-            startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-            endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
+            startTemp = temp.get(i).getStartTime();
+            endTemp = temp.get(i).getEndTime();
             startMin = startTemp.getMinute();
             endMin = endTemp.getMinute();
-            doctor = ((Appointment) model.getDbController().getAppointments(-1, "").get(i)).getDoctorName();
+            doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
 
@@ -176,19 +188,19 @@ public class ClientAgendaWeekController extends ClientSuperController implements
                 eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 5) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + "  " + temp.get(i).getStartTime().getHour() + ":" + sMin + "-" +
-                        temp.get(i).getEndTime().getHour() + ":" + eMin + " " + eampm + " Dr. " + doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
             }
         }
 
         for (int i = 0; i < temp.size(); i++)
         {
-            startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-            endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
+            startTemp = temp.get(i).getStartTime();
+            endTemp = temp.get(i).getEndTime();
             startMin = startTemp.getMinute();
             endMin = endTemp.getMinute();
-            doctor = ((Appointment) model.getDbController().getAppointments(-1, "").get(i)).getDoctorName();
+            doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
 
@@ -204,19 +216,19 @@ public class ClientAgendaWeekController extends ClientSuperController implements
                 eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 6) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + "  " + temp.get(i).getStartTime().getHour() + ":" + sMin + "-" +
-                        temp.get(i).getEndTime().getHour() + ":" + eMin + " " + eampm + " Dr. " + doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
             }
         }
 
         for (int i = 0; i < temp.size(); i++)
         {
-            startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-            endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
+            startTemp = temp.get(i).getStartTime();
+            endTemp = temp.get(i).getEndTime();
             startMin = startTemp.getMinute();
             endMin = endTemp.getMinute();
-            doctor = ((Appointment) model.getDbController().getAppointments(-1, "").get(i)).getDoctorName();
+            doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
 
@@ -231,13 +243,12 @@ public class ClientAgendaWeekController extends ClientSuperController implements
                 eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 7) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + "  " + temp.get(i).getStartTime().getHour() + ":" + sMin + "-" +
-                        temp.get(i).getEndTime().getHour() + ":" + eMin +  " " + eampm + " Dr. " + doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
             }
         }
     }
-
 
 
 
@@ -246,7 +257,17 @@ public class ClientAgendaWeekController extends ClientSuperController implements
         items = weekList.getItems();
 
         setModel(model);
+      //  setCmb();
+
     }
+
+    public void setCmb()
+    {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
+        mWeekCmbBox.setItems(list);
+    }
+
 
     @Override
     public void setModel (Model model) {
