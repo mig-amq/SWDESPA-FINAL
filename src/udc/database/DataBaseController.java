@@ -523,19 +523,12 @@ public class DataBaseController {
                     "    clinic_db.client AS C ON C.client_id = A.client_id\n";
 
             if (type.equalsIgnoreCase("DOCTOR")) {
-<<<<<<< HEAD
+
                 stmt += "WHERE D.doctor_id = '" + id + "' AND approved = 1";
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "' AND approved = 1";
             else
                 stmt += "WHERE approved = 1";
-=======
-                stmt += "WHERE D.doctor_id = '" + id + "' AND accepted = 1";
-            } else if (type.equalsIgnoreCase("CLIENT"))
-                stmt += "WHERE C.client_id = '" + id + "' AND accepted = 1";
-            else
-                stmt += "WHERE accepted = 1";
->>>>>>> 3c676fdbd2e491c460df0a42886e943eca312a6c
 
             pStmt = connection.prepareStatement(stmt);
 
