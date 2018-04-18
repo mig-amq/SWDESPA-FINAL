@@ -45,6 +45,10 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
         ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 
+        ArrayList<String> sTemp = null;
+
+      //  dayList.getItems().clear();
+
         if( calendar == null)
             now = LocalDateTime.now();
         else
@@ -59,8 +63,23 @@ public class ClientAgendaDayController extends ClientSuperController implements 
                 {
                     String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                             endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+//                    if(mDayCmbBox.getValue().equals("Miguel Quiambao"))
+//                    {
+//                        items.add(s);
+//                    }
+//                    else if(mDayCmbBox.getValue().equals("Mitchell Ong"))
+//                    {
+//                        items.add(s);
+//                    }
+//
+//                    else if(mDayCmbBox.getValue().equals("All"))
+//                    {
+//                        items.add(s);
+//                    }
+
                     items.add(s);
                 }
+
             }
     }
 
@@ -94,6 +113,16 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         }
 
         setCmb();
+
+//        mDayCmbBox.setOnAction(event -> {
+//            try {
+//                setList();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        });
+
+
     }
 
     @Override
@@ -101,8 +130,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         super.setCalendar(calendar);
 
     }
-
-
 
     @Override
     public void update() {
@@ -117,4 +144,5 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     public void insertFilterData(LocalDate selected) {
 
     }
+
 }

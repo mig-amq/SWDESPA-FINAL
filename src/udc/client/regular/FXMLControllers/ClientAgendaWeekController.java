@@ -49,6 +49,8 @@ public class ClientAgendaWeekController extends ClientSuperController implements
 
         ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 
+     //   dayList.getItems().clear();
+
         LocalDateTime startTemp;
         LocalDateTime endTemp;
         int startMin;
@@ -64,18 +66,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             startMin = startTemp.getMinute();
             endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
-            String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
-
-
-            if (startMin == 0)
-                sMin = "00";
-            else
-                sMin = "30";
-
-            if (endMin == 0)
-                eMin = "00";
-            else
-                eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 1) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
@@ -94,17 +84,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
-
-            if (startMin == 0)
-                sMin = "00";
-            else
-                sMin = "30";
-
-            if (endMin == 0)
-                eMin = "00";
-            else
-                eMin = "30";
-
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 2) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
@@ -119,18 +98,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             startMin = startTemp.getMinute();
             endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
-            String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
-
-
-            if (startMin == 0)
-                sMin = "00";
-            else
-                sMin = "30";
-
-            if (endMin == 0)
-                eMin = "00";
-            else
-                eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 3) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
@@ -148,17 +115,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
-
-            if (startMin == 0)
-                sMin = "00";
-            else
-                sMin = "30";
-
-            if (endMin == 0)
-                eMin = "00";
-            else
-                eMin = "30";
-
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 4) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
@@ -174,18 +130,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
-
-
-
-            if (startMin == 0)
-                sMin = "00";
-            else
-                sMin = "30";
-
-            if (endMin == 0)
-                eMin = "00";
-            else
-                eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 5) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
@@ -203,18 +147,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
-
-
-            if (startMin == 0)
-                sMin = "00";
-            else
-                sMin = "30";
-
-            if (endMin == 0)
-                eMin = "00";
-            else
-                eMin = "30";
-
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 6) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
@@ -230,17 +162,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
-
-
-            if (startMin == 0)
-                sMin = "00";
-            else
-                sMin = "30";
-
-            if (endMin == 0)
-                eMin = "00";
-            else
-                eMin = "30";
 
             if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 7) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
