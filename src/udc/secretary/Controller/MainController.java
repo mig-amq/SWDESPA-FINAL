@@ -331,6 +331,7 @@ public class MainController {
     public void agendaViewCondition(){
         secViewPane.getChildren().clear();
         rdbtnWeekView.setDisable(true);
+        rdbtnDayView.setSelected(true);
         if (rdbtnDayView.isSelected()){
             secDayAgendaControl.reset();
             secDayAgendaControl.setLabel(calendar.selectedProperty().get());
