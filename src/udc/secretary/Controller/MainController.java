@@ -392,22 +392,24 @@ public class MainController {
                     for (int j = 0; j < unavailable.size(); j++) {
                         if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())
                                 || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(unavailable.get(j).getStartTime().toLocalTime())
-                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))) {
+                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))){
                             availableSlots.remove(i);
-                            break;
+
                         }
                     }
                 }
                 availableSlots.trimToSize();
 
-                ArrayList<Agenda> appointments = findData(selected);
+                ArrayList<Agenda> appointments = findData(selected); //returns data for the day selected
                 for (int i = 0; i < availableSlots.size(); i++){
                     for (int j = 0; j < appointments.size(); j++){
-                        if ((availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())
-                                || availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime()))
+                        if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())
+                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime()) //start time of the available slot is after the start time of the appointment and before the end time of the appointment iremove mo
+                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(appointments.get(j).getEndTime().toLocalTime()))
+                                && !(appointments.get(j) instanceof Unavailable)
                                 && doctorName.substring(4).equals(((Appointment) appointments.get(j)).getDoctorName())){
                             availableSlots.remove(i);
-                            break;
+
                         }
                     }
                 }
@@ -423,7 +425,6 @@ public class MainController {
                                 || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(unavailable.get(j).getStartTime().toLocalTime())
                                 && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))){
                             availableSlots.remove(i);
-                            break;
                         }
                 availableSlots.trimToSize();
 
@@ -434,7 +435,6 @@ public class MainController {
                                 || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime())
                                 && availableSlots.get(i).getStartTime().toLocalTime().isBefore(appointments.get(j).getEndTime().toLocalTime()))){
                             availableSlots.remove(i);
-                            break;
                         }
                 availableSlots.trimToSize();
             }
