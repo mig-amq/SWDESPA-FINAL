@@ -18,6 +18,7 @@ public class ClientThread extends Thread {
         this.setSocket(new Socket(model.getServerAddress(), model.getServerPort()));
         this.setHasMessage(false);
         this.setStarted(true);
+        this.model = model;
         System.out.println("added thread");
     }
 
