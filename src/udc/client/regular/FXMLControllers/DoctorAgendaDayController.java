@@ -36,12 +36,13 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
         // items.add("00:00" + "-" + "01:30" + " " + ":)");
 
         ObservableList<String> finaltemp = null;
+        dayList.getItems().clear();
 
         LocalDateTime now;
         if( calendar == null)
             now = LocalDateTime.now();
         else
-            now =  calendar.getDate().atStartOfDay();
+            now =  calendar.getSelected().atStartOfDay();
 
 
         ArrayList<Agenda> temp = model.getDbController().getAppointments(-1, "");
@@ -72,7 +73,7 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
                 String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
                 {
-                    if (startTemp.getDayOfMonth() == now.getDayOfMonth() && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())
+                    if ((bDayCmbBox.getValue() == null || bDayCmbBox.getValue().equals(doctor) && (startTemp.getDayOfMonth() == now.getDayOfMonth() && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())))
                     {
                         String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                                 endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;

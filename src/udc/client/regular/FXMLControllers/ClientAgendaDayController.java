@@ -44,7 +44,7 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         String eMin;
 
         ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
-
+        dayList.getItems().clear();
         ArrayList<String> sTemp = null;
 
       //  dayList.getItems().clear();
@@ -52,14 +52,14 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         if( calendar == null)
             now = LocalDateTime.now();
         else
-            now =  calendar.getDate().atStartOfDay();
+            now =  calendar.getSelected().atStartOfDay();
 
             for (int i = 0; i < temp.size(); i++) {
                 startTemp = temp.get(i).getStartTime();
                 endTemp = temp.get(i).getEndTime();
                 doctor = ((Appointment) temp.get(i)).getDoctorName();
 
-                if (startTemp.getDayOfMonth() == now.getDayOfMonth() && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())
+                if ((mDayCmbBox.getValue() == null || mDayCmbBox.getValue().equals(doctor) && (startTemp.getDayOfMonth() == now.getDayOfMonth() && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())))
                 {
                     String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                             endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
@@ -100,6 +100,10 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         ObservableList<String> list = FXCollections.observableArrayList();
         list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
         mDayCmbBox.setItems(list);
+
+        mDayCmbBox.valueProperty().addListener((observable -> {
+            update();
+        }));
     }
 
     @Override
