@@ -1,5 +1,6 @@
 package udc.client.regular.FXMLControllers;
 
+import com.jfoenix.controls.JFXComboBox;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -17,7 +18,7 @@ public class DoctorCalDayController extends ClientSuperController implements Ini
     @FXML private TableView<?> dayTable;
     @FXML private TableColumn<?, ?> time;
     @FXML private TableColumn<?, ?> doctor;
-
+    @FXML private JFXComboBox<String> bDoctorCmbBox;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
