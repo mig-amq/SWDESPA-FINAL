@@ -352,17 +352,15 @@ public class MainController {
                 secDayAgendaControl.insertFilteredData(findData(calendar.selectedProperty().get()));
                 secViewPane.getChildren().setAll(secDayAgendaView);
             }
-        } else if (rdbtnWeekView.isSelected()){
-            if (rdbtnAvailable.isSelected()){
-
-            } else{
-
-            }
         }
     }
 
     public boolean isCalendarRdBtnSelected(){
         return rdbtnCalendarView.isSelected();
+    }
+
+    public boolean isAgendaRdBtnSelected(){
+        return rdbtnAgendaView.isSelected();
     }
 
     private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctorName){
