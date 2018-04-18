@@ -38,16 +38,11 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         LocalDateTime startTemp;
         LocalDateTime endTemp;
         String doctor;
-        int startMin;
-        int endMin;
-        String sMin;
-        String eMin;
 
         ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
         dayList.getItems().clear();
         ArrayList<String> sTemp = null;
 
-      //  dayList.getItems().clear();
 
         if( calendar == null)
             now = LocalDateTime.now();
@@ -62,21 +57,7 @@ public class ClientAgendaDayController extends ClientSuperController implements 
                 if ((mDayCmbBox.getValue() == null || mDayCmbBox.getValue().equals(doctor) && (startTemp.getDayOfMonth() == now.getDayOfMonth() && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())))
                 {
                     String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                            endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
-//                    if(mDayCmbBox.getValue().equals("Miguel Quiambao"))
-//                    {
-//                        items.add(s);
-//                    }
-//                    else if(mDayCmbBox.getValue().equals("Mitchell Ong"))
-//                    {
-//                        items.add(s);
-//                    }
-//
-//                    else if(mDayCmbBox.getValue().equals("All"))
-//                    {
-//                        items.add(s);
-//                    }
-
+                     endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                     items.add(s);
                 }
 
@@ -86,8 +67,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
 @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        //items.add("Appointments");
 
        items = dayList.getItems();
 
@@ -117,15 +96,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         }
 
         setCmb();
-
-//        mDayCmbBox.setOnAction(event -> {
-//            try {
-//                setList();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        });
-
 
     }
 
