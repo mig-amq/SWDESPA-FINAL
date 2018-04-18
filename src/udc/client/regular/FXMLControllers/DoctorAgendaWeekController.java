@@ -261,8 +261,6 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
         items = weekList.getItems();
         //         setList();
 
-        setModel(model);
-    //    setCmb();
     }
 
     public void setCmb()
@@ -281,6 +279,8 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        setCmb();
     }
 
     @Override

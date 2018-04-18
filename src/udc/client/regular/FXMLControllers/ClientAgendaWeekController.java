@@ -256,8 +256,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
     public void initialize(URL location, ResourceBundle resources) {
         items = weekList.getItems();
 
-        setModel(model);
-      //  setCmb();
 
     }
 
@@ -278,6 +276,8 @@ public class ClientAgendaWeekController extends ClientSuperController implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        setCmb();
     }
 
     @Override

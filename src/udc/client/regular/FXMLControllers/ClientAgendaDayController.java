@@ -81,9 +81,9 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     public void initialize(URL location, ResourceBundle resources) {
         //items.add("Appointments");
        items = dayList.getItems();
-            setModel(model);
+
             setCalendar(calendar);
-     //       setCmb();
+
     }
 
     public void setCmb()
@@ -102,6 +102,8 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        setCmb();
     }
 
     @Override

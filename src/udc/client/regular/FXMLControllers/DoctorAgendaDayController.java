@@ -114,9 +114,9 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         items = dayList.getItems();
-        setModel(model);
+
         setCalendar(calendar);
-      //  setCmb();
+
 
     }
     public void setCmb()
@@ -135,6 +135,8 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        setCmb();
     }
 
 
