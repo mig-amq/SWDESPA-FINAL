@@ -29,7 +29,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
        // items.add("00:00" + "-" + "01:30" + " " + ":)");
 
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(model.getDbController().getAppointments(model.getAccount().getId(), "normal"));
 
             ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 

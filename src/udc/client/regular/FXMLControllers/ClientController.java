@@ -39,7 +39,6 @@ public class ClientController extends AnchorPane {
     @FXML private JFXButton bookButton, removeButton;
     @FXML private JFXRadioButton bAgendaView, bCalendarView, bDayView, bWeekView;
     @FXML private JFXRadioButton mAgendaView, mCalendarView, mDayView, mWeekView;
-    @FXML private JFXComboBox<String> bDoctorCmbBox, mDoctorCmbBox;
     @FXML private ToggleGroup viewTypeGroup, filterViewGroup;
 
     @FXML private Client client;
@@ -55,7 +54,6 @@ public class ClientController extends AnchorPane {
         this.client = client;
         this.model = model;
         setToggleGroup();
-        setComboBox();
         initializeButtons();
         loadHome();
 
@@ -70,7 +68,9 @@ public class ClientController extends AnchorPane {
 
     public void update () {
         loadHome();
-        clientSuperController.update();
+
+        if (clientSuperController != null)
+            clientSuperController.update();
     }
 
     private void loadHome () {
@@ -124,13 +124,6 @@ public class ClientController extends AnchorPane {
         mDayView.setToggleGroup(filterViewGroup);
         mWeekView.setToggleGroup(filterViewGroup);
         mWeekView.setToggleGroup(filterViewGroup);
-    }
-
-    public void setComboBox() {
-        ObservableList<String> list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
-        list.add(0, "All");
-        bDoctorCmbBox.setItems(list);
-        mDoctorCmbBox.setItems(list);
     }
 
     private void initializeButtons() {
@@ -254,8 +247,11 @@ public class ClientController extends AnchorPane {
 
    //         System.out.println(model.getAccount().getId());
 
-        } catch(Exception e) {}
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     /*private ArrayList<Agenda> findData(LocalDate selected) {
         ArrayList<Agenda> arrayList = new ArrayList<>();
