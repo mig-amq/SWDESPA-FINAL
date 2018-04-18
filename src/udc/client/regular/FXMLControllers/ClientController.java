@@ -69,8 +69,13 @@ public class ClientController extends AnchorPane {
     public void update () {
         loadHome();
 
-        if (clientSuperController != null)
-            clientSuperController.update();
+        if (clientSuperController != null) {
+            try {
+                clientSuperController.update();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void loadHome () {
@@ -251,15 +256,4 @@ public class ClientController extends AnchorPane {
             e.printStackTrace();
         }
     }
-
-
-    /*private ArrayList<Agenda> findData(LocalDate selected) {
-        ArrayList<Agenda> arrayList = new ArrayList<>();
-        for (int i = 0; i < agendas.size(); i++) {
-            Agenda agenda = agendas.get(i);
-            if(isEqualDate(agenda, selected))
-                arrayList.add(agenda);
-        }
-        return arrayList;
-    }*/
 }
