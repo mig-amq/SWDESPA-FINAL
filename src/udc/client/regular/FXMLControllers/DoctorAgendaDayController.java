@@ -7,6 +7,7 @@ import javafx.scene.control.ListView;
 import udc.Model;
 import udc.client.regular.Controller.ClientSuperController;
 import udc.objects.time.concrete.Agenda;
+import udc.objects.time.concrete.Appointment;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -26,40 +27,41 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
         // items.add("00:00" + "-" + "01:30" + " " + ":)");
 
         LocalDateTime now = LocalDateTime.now();
-        if (model.getDbController().getAppointments(model.getAccount().getId(), "normal") != null) {
-            ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
+            ArrayList<Agenda> temp = model.getDbController().getAppointments(-1, "");
 
-            for (int i = 0; i < temp.size(); i++) {
-                LocalDateTime startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
-                LocalDateTime endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
-                //    String doctor = model.getDbController().getAppointments(model.getAccount().getId(), "normal").;
-                String doctor = "Dr. bruh";
-                int startMin = startTemp.getMinute();
-                int endMin = endTemp.getMinute();
-                String sMin;
-                String eMin;
+        items.add("TAKEN SLOTS");
 
-                if (startMin == 0)
-                    sMin = "00";
-                else
-                    sMin = "30";
+        int hourTime = 7;
+        int minTime = 30;
 
-                if (endMin == 0)
-                    eMin = "00";
-                else
-                    eMin = "30";
 
-                if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear()) {
-                    String s = startTemp.getHour() + ":" + sMin + " - " + endTemp.getHour() + ":" + eMin + " " + doctor;
-                    items.add(s);
+                for (int i = 0; i < temp.size(); i++) {
+                    LocalDateTime startTemp = model.getDbController().getAppointments(-1, "").get(i).getStartTime();
+                    LocalDateTime endTemp = model.getDbController().getAppointments(-1, "").get(i).getEndTime();
+                    String doctor = ((Appointment) model.getDbController().getAppointments(-1, "").get(i)).getDoctorName();
+
+                    {
+                        int startMin = startTemp.getMinute();
+                        int endMin = endTemp.getMinute();
+                        String sMin;
+                        String eMin;
+                        if (startMin == 0)
+                            sMin = "00";
+                        else
+                            sMin = "30";
+
+                        if (endMin == 0)
+                            eMin = "00";
+                        else
+                            eMin = "30";
+
+                        if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear()) {
+                            String s = startTemp.getHour() + ":" + sMin + " - " + endTemp.getHour() + ":" + eMin + " " + "Dr. " + doctor;
+                            items.add(s);
+                        }
+                    }
                 }
-            }
-        }
 
-        else
-            items.add("No Appointments");
-        //
-        System.out.println(model);
 
     }
 
