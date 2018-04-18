@@ -459,8 +459,8 @@ public class WalkIn extends AnchorPane {
                 {
                     String[] splited = w.getName().split(" ");
                     model.getDbController().addWalkIn(splited[0], splited[1]);
-                //    model.getDbController().addAppointment(start, end, w.getDoctor() , w.getName(), false, false);
-
+                    model.getDbController().addAppointment(start, end, w.getDoctor() , w.getName(), false, false);
+                    model.setState();
                     WalkInPopUpController popUp = new WalkInPopUpController(nameField.getText(), stemp, etemp, doctorCmb.getValue(), w.getContact());
                     Stage child = new Stage(StageStyle.UNDECORATED);
                     child.setScene(new Scene(popUp));
