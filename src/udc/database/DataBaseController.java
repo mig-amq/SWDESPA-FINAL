@@ -511,7 +511,7 @@ public class DataBaseController {
             connection = ConnectionConfiguration.getConnection(model);
 
             String stmt = "SELECT \n" +
-                    "    time_start, recurring, appointment_id, approved\n" +
+                    "    time_start, recurring, appointment_id, approved,\n" +
                     "    time_end,\n" +
                     "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
                     "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
@@ -527,7 +527,7 @@ public class DataBaseController {
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "' AND approved = 1";
             else
-                stmt += "WHERE approved ='" + 1;
+                stmt += "WHERE approved =" + 1;
 
             pStmt = connection.prepareStatement(stmt);
 

@@ -381,7 +381,9 @@ public class MainController {
                 ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(doctorName);
                 for (int i = 0; i < availableSlots.size(); i++) {
                     for (int j = 0; j < unavailable.size(); j++) {
-                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())) {
+                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())
+                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(unavailable.get(j).getStartTime().toLocalTime())
+                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))) {
                             availableSlots.remove(i);
                             break;
                         }
