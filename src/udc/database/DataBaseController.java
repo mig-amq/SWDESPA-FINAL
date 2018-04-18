@@ -276,6 +276,7 @@ public class DataBaseController {
         addAppointment(time_start, time_end, getDocID(doctorName), getClientID(clientName));
     }
 
+
     /**
      * Inserts a new appointment to the appointment table.
      *
