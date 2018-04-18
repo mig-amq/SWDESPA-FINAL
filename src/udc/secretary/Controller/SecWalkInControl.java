@@ -59,7 +59,7 @@ public class SecWalkInControl {
 
     private void initActions(){
         btnApprove.setOnAction(event -> {
-            if (listWalkIn.getItems() != null) {
+            if (listWalkIn.getItems().size() != 0) {
                 String[] sub = listWalkIn.getSelectionModel().getSelectedItem().toString().split(" ");
                 Appointment a = new Appointment();
                 a.setId(Integer.parseInt(sub[0].trim()));
@@ -70,7 +70,7 @@ public class SecWalkInControl {
         });
 
         btnDeny.setOnAction(event ->{
-            if (listWalkIn.getItems() != null) {
+            if (listWalkIn.getItems().size() != 0) {
                 String[] sub = listWalkIn.getSelectionModel().getSelectedItem().toString().split(" ");
                 Appointment a = new Appointment();
                 a.setId(Integer.parseInt(sub[0].trim()));
