@@ -19,6 +19,10 @@ public class ClientThread extends Thread {
         this.setHasMessage(false);
         this.setStarted(true);
         this.model = model;
+<<<<<<< HEAD
+        System.out.println("added thread");
+=======
+>>>>>>> 53277246c2b0fbe5375b23c513f2d2cea516147f
     }
 
     public void update() {
