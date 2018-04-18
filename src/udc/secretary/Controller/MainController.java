@@ -17,6 +17,7 @@ import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Available;
 import udc.objects.time.concrete.Unavailable;
+import udc.secretary.FXMLControllers.WalkInControl;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -32,7 +33,7 @@ public class MainController {
     private SecWeekControl secWeekControl;
     private SecDayViewControl secDayViewControl;
     private SecDayAgendaControl secDayAgendaControl;
-    private WalkInControl walkInControl;
+    private SecWalkInControl walkInControl;
     private JFXRadioButton rdbtnCalendarView, rdbtnAgendaView,
             rdbtnDayView, rdbtnWeekView, rdbtnAvailable, rdbtnTaken;
     private JFXComboBox cmbBoxDoctors;
@@ -56,7 +57,6 @@ public class MainController {
         addAction();
         secViewPane.getChildren().setAll(secDayView);
         setDisableButtons(true);
-
     }
 
     private void appendDoctorsToList(ArrayList<String> tempList){
@@ -69,8 +69,7 @@ public class MainController {
     private void initContainerComponents(){
         secWeekControl = new SecWeekControl();
         secDayViewControl = new SecDayViewControl();
-        secDayAgendaControl = new SecDayAgendaControl();
-        //walkInControl = new WalkInControl();
+        secDayAgendaControl = new SecDayAgendaControl(model);
     }
 
     private void initNodesChildren(){
@@ -78,7 +77,6 @@ public class MainController {
         secDayView = secDayViewControl.getSecDayViewNode(); //scrollpane
         secWeekView = secWeekControl.getNdSecWeekViewNode();//scrollpane
         secDayAgendaView = secDayAgendaControl.getNdSecDayAgendaViewNode();
-        //secWalkInView = walkInControl.getSecWalkInNode();
     }
 
     private void initData(AnchorPane pnlTool){
@@ -207,17 +205,18 @@ public class MainController {
 
         btnWalkIn.setOnAction(event ->{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/SecWalkInView.fxml"));
-            walkInControl = new WalkInControl(model);
+            walkInControl = new SecWalkInControl(model);
             loader.setController(walkInControl);
+            loader.setRoot(walkInControl.getSecWalkInNode());
             Parent root;
             try {
-                root = (Parent) loader.load();
+                root = (Parent) walkInControl.getSecWalkInNode();
                 Stage stage = new Stage();
                 stage.setTitle("Pending Walk-Ins");
                 stage.setScene(new Scene(root, 587, 620));
                 stage.show();
             }
-            catch (IOException e) {
+            catch (Exception e) {
                 e.printStackTrace();
             }
         });

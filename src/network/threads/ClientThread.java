@@ -19,7 +19,10 @@ public class ClientThread extends Thread {
         this.setHasMessage(false);
         this.setStarted(true);
         this.model = model;
+<<<<<<< HEAD
         System.out.println("added thread");
+=======
+>>>>>>> 53277246c2b0fbe5375b23c513f2d2cea516147f
     }
 
     public void update() {
@@ -41,7 +44,10 @@ public class ClientThread extends Thread {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                 if (in.ready()) { // check if server sent a message
-                    if(in.readLine().equals("UPDATE")) {
+                    String str = in.readLine();
+                    System.out.println(str);
+                    if(str.equals("UPDATE")) {
+                        System.out.println("update");
                         this.model.getState();
                     }
                 }
@@ -53,15 +59,15 @@ public class ClientThread extends Thread {
                     }
                 }
 
-                if (this.hasMessage) {
-                    if (!message.isEmpty()) {
-                        out = new PrintWriter(socket.getOutputStream());
+                if (!message.isEmpty()) {
+                    out = new PrintWriter(socket.getOutputStream());
 
-                        out.println(message);
-                        out.flush();
+                    System.out.println("sending");
+                    out.println(message);
+                    out.flush();
+                    System.out.println("sent");
 
-                        message = "";
-                    }
+                    message = "";
                 }
             } catch (IOException e) {
                 e.printStackTrace();
