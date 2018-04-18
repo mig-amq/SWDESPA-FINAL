@@ -12,6 +12,7 @@ import udc.objects.time.concrete.Appointment;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -28,9 +29,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
        // items.add("00:00" + "-" + "01:30" + " " + ":)");
 
         LocalDateTime now = LocalDateTime.now();
-
-
-
         System.out.println(model.getDbController().getAppointments(model.getAccount().getId(), "normal"));
 
             ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
@@ -43,6 +41,8 @@ public class ClientAgendaDayController extends ClientSuperController implements 
                 int endMin = endTemp.getMinute();
                 String sMin;
                 String eMin;
+                String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
+
 
                 if (startMin == 0)
                     sMin = "00";
@@ -55,7 +55,7 @@ public class ClientAgendaDayController extends ClientSuperController implements 
                     eMin = "30";
 
                 if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear()) {
-                    String s = startTemp.getHour() + ":" + sMin + " - " + endTemp.getHour() + ":" + eMin + " " + "Dr. " + doctor;
+                    String s = startTemp.getHour() + ":" + sMin + " - " + endTemp.getHour() + ":" + eMin + " " + eampm + " Dr. " + doctor;
                     items.add(s);
                 }
             }
@@ -63,30 +63,8 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
 @Override
     public void initialize(URL location, ResourceBundle resources) {
-//       insertFilterData();
        items = dayList.getItems();
-   //         setList();
-
             setModel(model);
-
-//        dayList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                System.out.println("oldValue = " + oldValue + " to newValue = " + newValue);
-//                switch(newValue) {
-//                    case "Monday":
-//                    case "Tuesday":
-//                    case "Wednesday":
-//                    case "Thursday":
-//                    case "Friday":
-//                    case "Saturday":
-//                    case "Sunday":
-//                    default:
-//                }
-//            }
-//        });
-
-
     }
 
     @Override
@@ -108,7 +86,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     @Override
     public void insertFilterData(ArrayList<Agenda> data) {
         items = dayList.getItems();
-      //  setList();
     }
 
     @Override
