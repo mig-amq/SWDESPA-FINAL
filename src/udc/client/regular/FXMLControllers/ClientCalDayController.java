@@ -10,7 +10,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import udc.Model;
 import udc.client.regular.Controller.ClientSuperController;
 import udc.client.regular.Controller.DaySchedule;
@@ -27,7 +26,6 @@ import java.util.ResourceBundle;
 
 public class ClientCalDayController extends ClientSuperController implements Initializable {
 
-    @FXML private AnchorPane cCalDay;
     @FXML private TableView<DaySchedule> dayTable;
     @FXML private TableColumn<DaySchedule, String> time;
     @FXML private TableColumn<DaySchedule, String> doctor;
@@ -49,10 +47,12 @@ public class ClientCalDayController extends ClientSuperController implements Ini
         time.setCellValueFactory(new PropertyValueFactory<>("time"));
         doctor.setCellValueFactory(new PropertyValueFactory<>("doctor"));
     }
+
     @Override
     public void setCalendar(Calendar calendar) {
         this.calendar = calendar;
     }
+
     @Override
     public void insertFilterData(LocalDate selected) throws Exception {
         ArrayList<Agenda> data = findData(selected);
@@ -253,9 +253,43 @@ public class ClientCalDayController extends ClientSuperController implements Ini
                         < Integer.parseInt(nTime))) {
                     return i;
                 }
-
             }
         }
         return -1;
     }
+
+//    public ArrayList<Agenda> findData(LocalDate selected) throws Exception {
+//        ArrayList<Agenda> agendas =  model.getDbController().getAppointments(-1, "");
+//        ArrayList<Agenda> arrayList = new ArrayList<>();
+//
+//        for (int i = 0; i < agendas.size(); i++) {
+//            Agenda agenda = agendas.get(i);
+//            if(isEqualDate(agenda, selected))
+//                arrayList.add(agenda);
+//        }
+//        return arrayList;
+//    }
+
+//    private boolean isEqualDate(Agenda agenda, LocalDate selected){
+//        String sDoctorName = (String) cmbBoxDoctors.getSelectionModel().getSelectedItem();
+//        if(sDoctorName != null && !sDoctorName.equals("All"))
+//            sDoctorName = sDoctorName.substring(4);
+//
+//        if(sDoctorName!= null && agenda instanceof Appointment) {
+//            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Appointment)agenda).getDoctorName())) //mq
+//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+//            else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Appointment) agenda).getDoctorName()))
+//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+//            else if(sDoctorName.equals("All"))
+//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+//        }else if(sDoctorName != null && agenda instanceof Unavailable){
+//            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable)agenda).getDoctorName())) //mq
+//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+//            else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
+//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+//            else if(sDoctorName.equals("All"))
+//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+//        }
+//        return false;//
+//    }
 }

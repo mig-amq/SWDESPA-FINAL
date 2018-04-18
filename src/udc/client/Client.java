@@ -153,6 +153,8 @@ public class Client extends PaneledView {
                 String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
                 update();
                 this.getTitle().setText("Client - " + date);
+
+                this.clientController.update();
             });
         } catch (Exception e) {}
     }

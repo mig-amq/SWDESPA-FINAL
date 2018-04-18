@@ -4,7 +4,6 @@ import javafx.fxml.Initializable;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class AgendaViewWController extends SuperController implements Initializable {
@@ -14,7 +13,7 @@ public class AgendaViewWController extends SuperController implements Initializa
     }
 
     @Override
-    public void update(LocalDateTime ldt) {
+    public void update(LocalDate ldt) {
 
     }
 
