@@ -59,22 +59,26 @@ public class SecWalkInControl {
 
     private void initActions(){
         btnApprove.setOnAction(event -> {
-            String[] sub = listWalkIn.getSelectionModel().getSelectedItem().toString().split(" ");
-            Appointment a = new Appointment();
-            a.setId(Integer.parseInt(sub[0].trim()));
-            model.getDbController().acceptWalkin(a);
-            observableList.remove(listWalkIn.getSelectionModel().getSelectedIndex());
-            listWalkIn.setItems(observableList);
+            if (listWalkIn.getItems().size() != 0) {
+                String[] sub = listWalkIn.getSelectionModel().getSelectedItem().toString().split(" ");
+                Appointment a = new Appointment();
+                a.setId(Integer.parseInt(sub[0].trim()));
+                model.getDbController().acceptWalkin(a);
+                observableList.remove(listWalkIn.getSelectionModel().getSelectedIndex());
+                listWalkIn.setItems(observableList);
+            }
         });
 
         btnDeny.setOnAction(event ->{
-            String[] sub = listWalkIn.getSelectionModel().getSelectedItem().toString().split(" ");
-            Appointment a = new Appointment();
-            a.setId(Integer.parseInt(sub[0].trim()));
-            model.getDbController().deleteAppointment(a);
-            model.setState();
-            observableList.remove(listWalkIn.getSelectionModel().getSelectedIndex());
-            listWalkIn.setItems(observableList);
+            if (listWalkIn.getItems().size() != 0) {
+                String[] sub = listWalkIn.getSelectionModel().getSelectedItem().toString().split(" ");
+                Appointment a = new Appointment();
+                a.setId(Integer.parseInt(sub[0].trim()));
+                model.getDbController().deleteAppointment(a);
+                model.setState();
+                observableList.remove(listWalkIn.getSelectionModel().getSelectedIndex());
+                listWalkIn.setItems(observableList);
+            }
         });
     }
 

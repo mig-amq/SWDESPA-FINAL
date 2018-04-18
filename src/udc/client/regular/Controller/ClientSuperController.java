@@ -12,8 +12,8 @@ public abstract class ClientSuperController implements Initializable {
     protected Model model;
     protected Calendar calendar;
 
-    public abstract void update();
-    public abstract void insertFilterData(LocalDate selected);
+    public abstract void update() throws Exception;
+    public abstract void insertFilterData(LocalDate selected) throws Exception;
     public void setModel(Model model) { this.model = model; }
     public void setCalendar(Calendar calendar) { this.calendar = calendar; }
     public boolean isOdd(int i){
