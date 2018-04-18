@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataSource name="clinic_db@192.168.0.187">
+<dataSource name="@localhost">
   <database-model serializer="dbm" rdbms="MYSQL" format-version="4.7">
     <root id="1">
       <DefaultCasing>lower/lower</DefaultCasing>
@@ -1020,11 +1020,11 @@
       <DataType>varchar(999)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="235" name="accepted">
+    <column id="253" parent="235" name="approved">
       <Position>8</Position>
       <DataType>tinyint(4)|0s</DataType>
       <NotNull>1</NotNull>
-      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+      <DefaultExpression>&apos;1&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <index id="254" parent="235" name="fk_appointment_doctor1_idx">

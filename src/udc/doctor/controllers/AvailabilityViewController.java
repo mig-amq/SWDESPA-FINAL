@@ -7,14 +7,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import udc.Model;
 import udc.objects.time.builders.*;
 import udc.objects.time.concrete.Agenda;
+import udc.objects.time.concrete.Appointment;
 
 import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
@@ -57,14 +56,12 @@ public class AvailabilityViewController extends SuperController implements Initi
 
 
     public void setBtnActions(){
-
-
         btnSetUnavailable.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 /*** INSERT ACTIONS HERE ***/
-                System.out.println(getCalendar().getDate());
-                /*String hour, min, hours, mins, type, typeTime, typeTime2,startString, endString;
+//                System.out.println(getCalendar().getDate());
+                String hour, min, hours, mins, type, typeTime, typeTime2,startString, endString;
                 int startTime, endTime;
                 hour = cmbSHour.getSelectionModel().getSelectedItem().toString();
                 min = cmbSMin.getSelectionModel().getSelectedItem().toString();
@@ -86,30 +83,63 @@ public class AvailabilityViewController extends SuperController implements Initi
                     DateTimeFormatter dtf = new DateTimeFormatterBuilder().appendPattern("h:mm a").toFormatter();
                     LocalTime timeStart, timeEnd;
                     LocalDateTime start, end;
-                    start = LocalDateTime.of(calendar.getSelected(), timeStart);
-                    end = LocalDateTime.of(calendar.getSelected(), timeEnd);
                     timeStart = LocalTime.parse(startString, dtf);
                     timeEnd = LocalTime.parse(endString, dtf);
+                    start = LocalDateTime.of(calendar.getSelected(), timeStart);
+                    end = LocalDateTime.of(calendar.getSelected(), timeEnd);
+                    System.out.println(date.isBefore(start));
                     // ADJUST THESE
-                    if(){
+                    if(date.isBefore(start)){
+                        boolean isConflict = false;
+                        ArrayList<Agenda> appointments = model.getAccount().getAppointments();
+                        for(int i = 0; i < appointments.size(); i++){
+                            if((((Appointment) appointments.get(i)).getDoctorName().equals(model.getAccount().getFirstName() + " " + model.getAccount().getLastName()) &&
+                                Agenda.clashes(model.getAccount().getAppointments(), start, end)))
+                                isConflict = true;
+                        }
 
+                        if(isConflict){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setContentText("There is already an appointment shceduled at that time");
+                            alert.showAndWait();
+                        }else{
+                            if(type.equals("Single")){
+                                System.out.println("success");
+                                model.getDbController().addUnavailability(model.getAccount().getId(),
+                                        start, end, false);
+                                model.setState();
+                            }
 
+                            else if(type.equals("Recurring")){
+                                model.getDbController().addUnavailability(model.getAccount().getId(),
+                                        start, end, true);
+                                model.setState();
+                            }
+
+                        }
 
                     }else{
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setContentText("Invalid time selected");
+                        alert.showAndWait();
                     }
                 }else {
                     //shows dialogue box for invalid input time
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("There is already an appointment shceduled there");
-                }*/
+                    alert.showAndWait();
+                }
             }
         });
     }
-
     @Override
-    public void update(LocalDateTime ldt) {
+    public void setModel(Model model){
+        this.model = model;
+        update(calendar.getSelected());
+    }
+    @Override
+    public void update(LocalDate ldt) {
         //model.getAccount.setUnavailability(list of unavailable times);
+        model.setState();
     }
 }

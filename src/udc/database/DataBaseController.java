@@ -761,4 +761,28 @@ public class DataBaseController {
     private String timeToStr(LocalDateTime time) {
         return time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"));
     }
+
+    public boolean deleteUnavailability (int did, Unavailable agenda) {
+        String stmt = "DELETE FROM unavailability WHERE doctor_id = " + did +
+                " AND time_start = \"" + timeToStr(agenda.getStartTime()) + "\"";
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement(stmt);
+
+            if (pStmt.executeUpdate() == 1)
+                return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
+    }
 }

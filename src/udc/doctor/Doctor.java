@@ -51,6 +51,9 @@ public class Doctor extends PaneledView {
     public Doctor(Model model) throws IOException {
         super(800, 650);
         this.setModel(model);
+
+        dc.setModel(this.getModel());
+        dc.setCalendar(this.calendar);
     }
 
     @Override
@@ -140,14 +143,16 @@ public class Doctor extends PaneledView {
             this.calendar.selectedProperty().addListener((observable, oldValue, newValue) -> {
                 String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
                 this.getTitle().setText("Doctor - " + date);
+
+                if (dc != null) {
+                    dc.update(this.calendar.getDate());
+                }
             });
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Doctor.fxml"));
             this.contentPane.getChildren().add(loader.load());
 
             dc = loader.getController();
-            dc.setModel(this.getModel());
-            dc.setCalendar(this.calendar);
         } catch (IOException e) {
             e.printStackTrace();
         }
