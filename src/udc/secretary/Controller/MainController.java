@@ -228,9 +228,17 @@ public class MainController {
             agendas.add(Unavailability.get(i));
     }
 
+    private void matchDoctorNametoID() {
+        for (int i = 0; i < Unavailability.size(); i++) {
+            Unavailable a = Unavailability.get(i);
+            Unavailability.get(i).setDoctorName(doctorList.get(a.getId()).substring(4));
+        }
+    }
+
     public void updateData() throws Exception {
         agendas = model.getDbController().getAppointments(-1, "");
         Unavailability = model.getDbController().getUnvailability(-1);
+       matchDoctorNametoID();
         insertUnavailabilitytoAgendas();
 
         if (rdbtnCalendarView.isSelected()) {
@@ -331,6 +339,7 @@ public class MainController {
     public void agendaViewCondition(){
         secViewPane.getChildren().clear();
         rdbtnWeekView.setDisable(true);
+        rdbtnDayView.setSelected(true);
         if (rdbtnDayView.isSelected()){
             secDayAgendaControl.reset();
             secDayAgendaControl.setLabel(calendar.selectedProperty().get());
@@ -343,17 +352,15 @@ public class MainController {
                 secDayAgendaControl.insertFilteredData(findData(calendar.selectedProperty().get()));
                 secViewPane.getChildren().setAll(secDayAgendaView);
             }
-        } else if (rdbtnWeekView.isSelected()){
-            if (rdbtnAvailable.isSelected()){
-
-            } else{
-
-            }
         }
     }
 
     public boolean isCalendarRdBtnSelected(){
         return rdbtnCalendarView.isSelected();
+    }
+
+    public boolean isAgendaRdBtnSelected(){
+        return rdbtnAgendaView.isSelected();
     }
 
     private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctorName){
@@ -378,27 +385,29 @@ public class MainController {
 
         try {
             if (!doctorName.equalsIgnoreCase("All")) {
-                ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(doctorName);
+                ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(-1);
                 for (int i = 0; i < availableSlots.size(); i++) {
                     for (int j = 0; j < unavailable.size(); j++) {
                         if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())
                                 || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(unavailable.get(j).getStartTime().toLocalTime())
-                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))) {
+                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))){
                             availableSlots.remove(i);
-                            break;
+
                         }
                     }
                 }
                 availableSlots.trimToSize();
 
-                ArrayList<Agenda> appointments = findData(selected);
+                ArrayList<Agenda> appointments = findData(selected); //returns data for the day selected
                 for (int i = 0; i < availableSlots.size(); i++){
                     for (int j = 0; j < appointments.size(); j++){
-                        if ((availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())
-                                || availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime()))
-                                && doctorName.substring(4).equals(((Appointment) appointments.get(j)).getDoctorName())){
+                        if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())
+                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime()) //start time of the available slot is after the start time of the appointment and before the end time of the appointment iremove mo
+                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(appointments.get(j).getEndTime().toLocalTime()))
+                                && !(appointments.get(j) instanceof Unavailable)
+                                /*&& doctorName.substring(4).equals(((Appointment) appointments.get(j)).getDoctorName())*/){
                             availableSlots.remove(i);
-                            break;
+
                         }
                     }
                 }
@@ -410,18 +419,20 @@ public class MainController {
 
                 for (int i = 0; i < availableSlots.size(); i++)
                     for (int j = 0; j < unavailable.size(); j++)
-                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())){
+                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())
+                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(unavailable.get(j).getStartTime().toLocalTime())
+                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))){
                             availableSlots.remove(i);
-                            break;
                         }
                 availableSlots.trimToSize();
 
                 ArrayList<Agenda> appointments = findData(selected);
                 for (int i = 0; i < availableSlots.size(); i++)
                     for (int j = 0; j < appointments.size(); j++)
-                        if ((availableSlots.get(i).getStartTime().equals(appointments.get(j).getStartTime()) || availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime()))){
+                        if (availableSlots.get(i).getStartTime().equals(appointments.get(j).getStartTime())
+                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime())
+                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(appointments.get(j).getEndTime().toLocalTime()))){
                             availableSlots.remove(i);
-                            break;
                         }
                 availableSlots.trimToSize();
             }

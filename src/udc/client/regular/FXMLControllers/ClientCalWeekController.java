@@ -1,5 +1,6 @@
 package udc.client.regular.FXMLControllers;
 
+import com.jfoenix.controls.JFXComboBox;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -25,15 +26,11 @@ public class ClientCalWeekController extends ClientSuperController implements In
     @FXML private TableColumn<WeekSchedule, ?> fri;
     @FXML private TableColumn<WeekSchedule, ?> sat;
     @FXML private TableColumn<WeekSchedule, ?> sun;
+    @FXML private JFXComboBox<String> mDoctorCmbBox;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setCellTable();
-    }
-
-    @Override
-    public void insertFilterData(ArrayList<Agenda> data) {
-
     }
 
     @Override

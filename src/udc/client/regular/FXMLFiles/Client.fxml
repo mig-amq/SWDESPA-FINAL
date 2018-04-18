@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import javafx.scene.control.Label?>
@@ -25,7 +24,7 @@
                         <Font size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton fx:id="book" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="56.0" prefHeight="46.0" prefWidth="246.0" ripplerFill="BLACK" text="Book Appoinment">
+                  <JFXButton fx:id="book" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="56.0" prefHeight="46.0" prefWidth="246.0" ripplerFill="BLACK" text="Book Appointment">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -40,48 +39,6 @@
             <Separator layoutX="223.0" orientation="VERTICAL" prefHeight="669.0" prefWidth="5.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="managePane" layoutX="261.0" layoutY="11.0" prefHeight="669.0" prefWidth="564.0" style="-fx-background-color: #f4f4f4;">
-         <children>
-            <Label layoutX="26.0" layoutY="26.0" style="-fx-background-color: #f4f4f4;" text="Manage Appointment">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Label>
-            <Label layoutX="25.0" layoutY="463.0" text="Select Doctor/s">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="21.0" layoutY="530.0" text="View Type">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <JFXComboBox fx:id="mDoctorCmbBox" layoutX="25.0" layoutY="483.0" prefHeight="25.0" prefWidth="196.0" promptText="All" />
-            <JFXRadioButton fx:id="mCalendarView" layoutX="21.0" layoutY="557.0" text="Calendar View" />
-            <JFXRadioButton fx:id="mAgendaView" layoutX="21.0" layoutY="584.0" text="Agenda View" />
-            <JFXButton fx:id="removeButton" layoutX="400.0" layoutY="545.0" prefHeight="54.0" prefWidth="164.0" ripplerFill="BLACK" style="-fx-background-color: #155e3b;" text="Remove" textFill="WHITE">
-               <font>
-                  <Font size="25.0" />
-               </font>
-            </JFXButton>
-            <Label layoutX="156.0" layoutY="530.0" text="Filter View">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <JFXRadioButton fx:id="mDayView" layoutX="158.0" layoutY="557.0" text="Day" />
-            <JFXRadioButton fx:id="mWeekView" layoutX="158.0" layoutY="584.0" prefHeight="17.0" prefWidth="57.0" text="Week" />
-            <AnchorPane fx:id="manageTablePane" layoutX="20.0" layoutY="74.0" minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="543.0">
-               <!--<children>-->
-                  <!--&lt;!&ndash;<fx:include fx:id="cAgendaDay" source="ClientAgendaDay.fxml" />-->
-                  <!--<fx:include fx:id="cAgendaWeek" source="ClientAgendaWeek.fxml" />-->
-                  <!--<fx:include fx:id="cCalWeek" source="ClientCalWeek.fxml" />-->
-                  <!--<fx:include fx:id="cCalDay" source="ClientCalDay.fxml" />&ndash;&gt;-->
-               <!--</children>-->
-            </AnchorPane>
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="bookPane" layoutX="261.0" layoutY="11.0" prefHeight="669.0" prefWidth="564.0" style="-fx-background-color: #f4f4f4;">
          <children>
             <Label layoutX="26.0" layoutY="26.0" style="-fx-background-color: #f4f4f4;" text="Book Appointment">
@@ -89,17 +46,11 @@
                   <Font size="27.0" />
                </font>
             </Label>
-            <Label layoutX="25.0" layoutY="463.0" text="Select Doctor/s">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
             <Label layoutX="21.0" layoutY="530.0" text="View Type">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXComboBox fx:id="bDoctorCmbBox" layoutX="25.0" layoutY="483.0" prefHeight="25.0" prefWidth="196.0" promptText="All" />
             <JFXRadioButton fx:id="bCalendarView" layoutX="21.0" layoutY="557.0" text="Calendar View" />
             <JFXRadioButton fx:id="bAgendaView" layoutX="21.0" layoutY="584.0" text="Agenda View" />
             <JFXButton fx:id="bookButton" layoutX="400.0" layoutY="545.0" prefHeight="54.0" prefWidth="164.0" ripplerFill="BLACK" style="-fx-background-color: #155e3b;" text="Reserve" textFill="WHITE">
@@ -114,7 +65,43 @@
             </Label>
             <JFXRadioButton fx:id="bDayView" layoutX="158.0" layoutY="557.0" text="Day" />
             <JFXRadioButton fx:id="bWeekView" layoutX="158.0" layoutY="584.0" text="Week" />
-            <AnchorPane fx:id="bookTablePane" layoutX="20.0" layoutY="74.0" minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="543.0" />
+            <AnchorPane fx:id="bookTablePane" layoutX="20.0" layoutY="74.0" minHeight="0.0" minWidth="0.0" prefHeight="436.0" prefWidth="543.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="managePane" layoutX="261.0" layoutY="11.0" prefHeight="669.0" prefWidth="564.0" style="-fx-background-color: #f4f4f4;">
+         <children>
+            <Label layoutX="26.0" layoutY="26.0" style="-fx-background-color: #f4f4f4;" text="Manage Appointment">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Label>
+            <Label layoutX="21.0" layoutY="530.0" text="View Type">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXRadioButton fx:id="mCalendarView" layoutX="21.0" layoutY="557.0" text="Calendar View" />
+            <JFXRadioButton fx:id="mAgendaView" layoutX="21.0" layoutY="584.0" text="Agenda View" />
+            <JFXButton fx:id="removeButton" layoutX="400.0" layoutY="545.0" prefHeight="54.0" prefWidth="164.0" ripplerFill="BLACK" style="-fx-background-color: #155e3b;" text="Remove" textFill="WHITE">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </JFXButton>
+            <Label layoutX="156.0" layoutY="530.0" text="Filter View">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXRadioButton fx:id="mDayView" layoutX="158.0" layoutY="557.0" text="Day" />
+            <JFXRadioButton fx:id="mWeekView" layoutX="158.0" layoutY="584.0" prefHeight="17.0" prefWidth="57.0" text="Week" />
+            <AnchorPane fx:id="manageTablePane" layoutX="20.0" layoutY="74.0" minHeight="0.0" minWidth="0.0" prefHeight="436.0" prefWidth="543.0">
+               <!--<children>-->
+                  <!--&lt;!&ndash;<fx:include fx:id="cAgendaDay" source="ClientAgendaDay.fxml" />-->
+                  <!--<fx:include fx:id="cAgendaWeek" source="ClientAgendaWeek.fxml" />-->
+                  <!--<fx:include fx:id="cCalWeek" source="ClientCalWeek.fxml" />-->
+                  <!--<fx:include fx:id="cCalDay" source="ClientCalDay.fxml" />&ndash;&gt;-->
+               <!--</children>-->
+            </AnchorPane>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="homePane" layoutX="281.0" layoutY="10.0" prefHeight="682.0" prefWidth="544.0" style="-fx-background-color: #f4f4f4;">

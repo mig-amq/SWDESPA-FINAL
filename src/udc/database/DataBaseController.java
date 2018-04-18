@@ -527,7 +527,7 @@ public class DataBaseController {
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "' AND approved = 1";
             else
-                stmt += "WHERE approved =" + 1;
+                stmt += "WHERE approved = " + 1;
 
             pStmt = connection.prepareStatement(stmt);
 
@@ -539,7 +539,8 @@ public class DataBaseController {
                 rbuilder = new RecurringAppointmentBuilder(rSet.getString("doctor"), rSet.getString("client"));
 
                 if (rSet.getBoolean("recurring")) {
-                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"), strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
+                            strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
                             rSet.getString("client")));
@@ -759,5 +760,29 @@ public class DataBaseController {
 
     private String timeToStr(LocalDateTime time) {
         return time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a"));
+    }
+
+    public boolean deleteUnavailability (int did, Unavailable agenda) {
+        String stmt = "DELETE FROM unavailability WHERE doctor_id = " + did +
+                " AND time_start = \"" + timeToStr(agenda.getStartTime()) + "\"";
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement(stmt);
+
+            if (pStmt.executeUpdate() == 1)
+                return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
     }
 }

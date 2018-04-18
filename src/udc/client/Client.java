@@ -152,6 +152,8 @@ public class Client extends PaneledView {
             this.getCalendar().selectedProperty().addListener((observable, oldValue, newValue) -> {
                 String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
                 this.getTitle().setText("Client - " + date);
+
+                this.clientController.update();
             });
         } catch (Exception e) {}
     }

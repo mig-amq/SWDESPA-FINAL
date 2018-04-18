@@ -11,29 +11,17 @@ import java.util.ArrayList;
 public abstract class ClientSuperController implements Initializable {
     protected Model model;
     protected Calendar calendar;
-    protected ArrayList<Agenda> agendas;
 
-    public abstract void insertFilterData(ArrayList<Agenda> data);
-    public abstract void insertFilterData(LocalDate selected);
-
+    public abstract void update() throws Exception;
+    public abstract void insertFilterData(LocalDate selected) throws Exception;
     public void setModel(Model model) { this.model = model; }
     public void setCalendar(Calendar calendar) { this.calendar = calendar; }
-    
     public boolean isOdd(int i){
         return i % 2 != 0;
     }
 
-    public ArrayList<Agenda> findData(LocalDate date) throws Exception {
-        agendas =  model.getDbController().getAppointments(-1, "");
-        ArrayList<Agenda> arrayList = new ArrayList<>();
 
-//        for (int i = 0; i < agendas.size(); i++) {
-//            Agenda agenda = agendas.get(i);
-//            if(isEqualDate(agenda, selected))
-//                arrayList.add(agenda);
-//        }
-        return arrayList;
-    }
+
     public String getDispTime(int hr, int i){
         String time;
         String end;
@@ -54,6 +42,4 @@ public abstract class ClientSuperController implements Initializable {
         time += end;
         return time;
     }
-
-    public abstract void update();
 }
