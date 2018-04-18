@@ -1,5 +1,6 @@
 package udc;
 
+import javafx.application.Platform;
 import network.threads.ClientThread;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -50,7 +51,7 @@ public class Model {
                 }
 
                 if (viewController != null)
-                    viewController.update();
+                    Platform.runLater(() -> viewController.update());
             } catch (Exception e) {
                 e.printStackTrace();
             }

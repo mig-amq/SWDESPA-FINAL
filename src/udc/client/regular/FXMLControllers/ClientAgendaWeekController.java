@@ -18,10 +18,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ClientAgendaWeekController extends ClientSuperController implements Initializable {
-
-
-    @FXML
-    private ListView<String> weekList;
+    @FXML private ListView<String> weekList;
 
     private ObservableList<String> items;
 
@@ -265,11 +262,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
     @Override
     public void update() {
 
-    }
-
-    @Override
-    public void insertFilterData(ArrayList<Agenda> data) {
-        items = weekList.getItems();
     }
 
     @Override

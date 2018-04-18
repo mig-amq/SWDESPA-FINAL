@@ -31,8 +31,10 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     private void setList() throws Exception {
       //  items.add("00:00" + "-" + "02:30" + " " + "Dr JDC");
        // items.add("00:00" + "-" + "01:30" + " " + ":)");
+
         LocalDateTime now = calendar.getDate().atStartOfDay();
         System.out.println(model.getDbController().getAppointments(model.getAccount().getId(), "normal"));
+
 
             ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 
@@ -91,11 +93,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     @Override
     public void update() {
 
-    }
-
-    @Override
-    public void insertFilterData(ArrayList<Agenda> data) {
-        items = dayList.getItems();
     }
 
     @Override
