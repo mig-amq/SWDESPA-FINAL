@@ -1,11 +1,14 @@
 package udc.client.regular.FXMLControllers;
 
+import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import udc.Model;
 import udc.client.regular.Controller.ClientSuperController;
+import udc.customfx.calendar.Calendar;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
@@ -24,15 +27,16 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
     private ObservableList<String> items;
 
+
     private void setList() throws Exception {
       //  items.add("00:00" + "-" + "02:30" + " " + "Dr JDC");
        // items.add("00:00" + "-" + "01:30" + " " + ":)");
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = calendar.getDate().atStartOfDay();
+        System.out.println(model.getDbController().getAppointments(model.getAccount().getId(), "normal"));
+
 
             ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
-
-
 
             for (int i = 0; i < temp.size(); i++) {
                 LocalDateTime startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
@@ -61,10 +65,12 @@ public class ClientAgendaDayController extends ClientSuperController implements 
             }
     }
 
+
 @Override
     public void initialize(URL location, ResourceBundle resources) {
        items = dayList.getItems();
             setModel(model);
+            setCalendar(calendar);
     }
 
     @Override
@@ -76,6 +82,12 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void setCalendar (Calendar calendar) {
+        super.setCalendar(calendar);
+
     }
 
     @Override
