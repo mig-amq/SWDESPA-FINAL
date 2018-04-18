@@ -32,10 +32,12 @@ public class SecDayAgendaControl extends AbstractControl {
         btnRemove.setOnAction(event -> {
             String[] contents = agendaList.getSelectionModel().getSelectedItem().toString().split(" ");
             //remove in database, then call model.setState()
-            Appointment a = new Appointment();
-            a.setId(Integer.parseInt(contents[0].trim()));
-            model.getDbController().deleteAppointment(a);
-            model.setState();
+            if (!contents[contents.length - 1].equals("Unavailable")) {
+                Appointment a = new Appointment();
+                a.setId(Integer.parseInt(contents[0].trim()));
+                model.getDbController().deleteAppointment(a);
+                model.setState();
+            } 
         });
     }
 
