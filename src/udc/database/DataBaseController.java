@@ -511,7 +511,7 @@ public class DataBaseController {
             connection = ConnectionConfiguration.getConnection(model);
 
             String stmt = "SELECT \n" +
-                    "    time_start, recurring, appointment_id, approved\n" +
+                    "    time_start, recurring, appointment_id, approved,\n" +
                     "    time_end,\n" +
                     "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
                     "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
@@ -541,7 +541,6 @@ public class DataBaseController {
                 if (rSet.getBoolean("recurring")) {
 //                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
 //                            strToTime(rSet.getString("time_start")),
-                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
@@ -565,6 +564,7 @@ public class DataBaseController {
                 } else {
 //                    tempList.add(builder.build(rSet.getInt("appointment_id"),
 //                            strToTime(rSet.getString("time_start")),
+                    System.out.println(rSet.getString("time_end"));
                     tempList.add(builder.build(rSet.getInt("appointment_id"),
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
