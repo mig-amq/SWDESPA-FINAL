@@ -4,6 +4,7 @@ import udc.objects.enums.AgendaType;
 import udc.objects.time.concrete.Unavailable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class SingleUnavailableBuilder extends UnavailableBuilder {
 
@@ -25,4 +26,17 @@ public class SingleUnavailableBuilder extends UnavailableBuilder {
 
         return this.getUnavailable();
     }
+
+//    public ArrayList<Unavailable> build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
+//        ArrayList<Unavailable> list = new ArrayList<>();
+//        LocalDateTime temp = start;
+//
+//        while (temp.isBefore(end)){
+//            this.build(id, temp, temp.plusMinutes(30));
+//            this.getUnavailable().setType(AgendaType.SINGLE);
+//            temp = temp.plusMinutes(30);
+//            list.add(this.getUnavailable());
+//        }
+//        return list;
+//    }
 }

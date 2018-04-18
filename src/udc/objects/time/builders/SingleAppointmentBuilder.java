@@ -4,6 +4,7 @@ import udc.objects.enums.AgendaType;
 import udc.objects.time.concrete.Appointment;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class SingleAppointmentBuilder extends AppointmentBuilder {
 
@@ -21,14 +22,23 @@ public class SingleAppointmentBuilder extends AppointmentBuilder {
         return this.getAppointment();
     }
 
-    public Appointment build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
-        this.build(id, start, end);
-        this.getAppointment().setDoctorName(doctor);
-        this.getAppointment().setClientName(client);
+    public ArrayList<Appointment> build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
+        ArrayList<Appointment> list = new ArrayList<>();
 
-        this.getAppointment().setType(AgendaType.SINGLE);
+        LocalDateTime temp = start;
+        while(temp.isBefore(end)){
+            this.getAppointment().setId(id);
+            this.getAppointment().setDoctorName(doctor);
+            this.getAppointment().setClientName(client);
+            this.getAppointment().setStartTime(temp);
+            this.getAppointment().setEndTime(temp.plusMinutes(30));
 
-        return this.getAppointment();
+            this.getAppointment().setType(AgendaType.SINGLE);
+            list.add(this.getAppointment());
+            temp = temp.plusMinutes(30);
+        }
+        return list;
+
     }
 
 }
