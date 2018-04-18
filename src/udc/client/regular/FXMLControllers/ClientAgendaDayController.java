@@ -33,6 +33,8 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
             ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 
+
+
             for (int i = 0; i < temp.size(); i++) {
                 LocalDateTime startTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getStartTime();
                 LocalDateTime endTemp = model.getDbController().getAppointments(model.getAccount().getId(), "normal").get(i).getEndTime();
@@ -42,7 +44,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
                 String sMin;
                 String eMin;
                 String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
-
 
                 if (startMin == 0)
                     sMin = "00";

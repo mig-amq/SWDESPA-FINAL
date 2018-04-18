@@ -59,18 +59,22 @@ public class SecWalkInControl {
 
     private void initActions(){
         btnApprove.setOnAction(event -> {
-            System.out.println("Approved");
+            String[] sub = listWalkIn.getSelectionModel().getSelectedItem().toString().split(" ");
+            Appointment a = new Appointment();
+            a.setId(Integer.parseInt(sub[0].trim()));
+            model.getDbController().acceptWalkin(a);
             observableList.remove(listWalkIn.getSelectionModel().getSelectedIndex());
             listWalkIn.setItems(observableList);
         });
 
         btnDeny.setOnAction(event ->{
-            System.out.println("Denied");
             String[] sub = listWalkIn.getSelectionModel().getSelectedItem().toString().split(" ");
             Appointment a = new Appointment();
             a.setId(Integer.parseInt(sub[0].trim()));
             model.getDbController().deleteAppointment(a);
             model.setState();
+            observableList.remove(listWalkIn.getSelectionModel().getSelectedIndex());
+            listWalkIn.setItems(observableList);
         });
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="clinic_db@192.168.0.187" uuid="037f1d7c-6a8d-4351-b0e7-c5c620db2de4">
+    <data-source name="@localhost" uuid="037f1d7c-6a8d-4351-b0e7-c5c620db2de4">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
       <introspection-schemas>*:clinic_db</introspection-schemas>
     </data-source>
