@@ -132,10 +132,7 @@ public class RemoveController extends AnchorPane {
                 for (int i = 0; i < myAppts.size(); i++) {
                     Agenda agenda = myAppts.get(i);
                     System.out.println("agenda " + i + " start: " + agenda.getStartTime() + " end: " + agenda.getEndTime());
-                    if (agenda.getStartTime().isEqual(startTime) &&
-                            agenda.getEndTime().isEqual(endTime)) {
-                        System.out.println("REMOVED!!");
-                        System.out.println("aapt id:"+myAppts.get(i).getId());
+                    if (agenda.getStartTime().isEqual(startTime) && agenda.getEndTime().isEqual(endTime)) {
                         model.getDbController().deleteAppointment((Appointment) agenda);
                         model.setState();
                         found = true;

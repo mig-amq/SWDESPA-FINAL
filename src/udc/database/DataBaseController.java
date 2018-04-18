@@ -527,7 +527,7 @@ public class DataBaseController {
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "' AND approved = 1";
             else
-                stmt += "WHERE approved =" + 1;
+                stmt += "WHERE approved = " + 1;
 
             pStmt = connection.prepareStatement(stmt);
 
