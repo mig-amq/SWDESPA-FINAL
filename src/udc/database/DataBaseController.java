@@ -6,6 +6,7 @@ import udc.objects.account.Client;
 import udc.objects.account.Doctor;
 import udc.objects.account.Secretary;
 import udc.objects.enums.AgendaType;
+import udc.objects.enums.ClientType;
 import udc.objects.time.builders.RecurringAppointmentBuilder;
 import udc.objects.time.builders.RecurringUnavailableBuilder;
 import udc.objects.time.builders.SingleAppointmentBuilder;
@@ -179,6 +180,66 @@ public class DataBaseController {
         }
     }
 
+    public ArrayList<Agenda> getWalkinAppointments () {
+        SingleAppointmentBuilder sap;
+        ArrayList<Agenda> appointments = new ArrayList<>();
+        String sql = "SELECT A.appointment_id AS id, A.time_start AS time_start, A.time_end AS time_end, A.recurring AS recurring, CONCAT(C.first_name, \" \", C.last_name) AS client, CONCAT(D.first_name, \" \", D.last_name) AS doctor \n" +
+                "FROM appointment A INNER JOIN client C ON A.client_id = C.client_id INNER JOIN doctor D ON A.doctor_id = D.doctor_id WHERE C.type LIKE \"WALKIN\";";
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+
+            pStmt = connection.prepareStatement(sql);
+            ResultSet rset0 = pStmt.executeQuery();
+
+            while (rset0.next()) {
+                sap = new SingleAppointmentBuilder(rset0.getString("doctor"), rset0.getString("client"));
+                appointments.add(sap.build(rset0.getInt("id"),
+                        strToTime(rset0.getString("time_start")),
+                        strToTime(rset0.getString("time_end"))));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        return appointments;
+    }
+
+    public boolean deleteAppointment(Appointment a) {
+        String sql = "DELETE FROM appointment WHERE appointment_id = " + a.getId();
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+
+            pStmt = connection.prepareStatement(sql);
+
+            if (pStmt.executeUpdate() == 1)
+                return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
+    }
+
     /**
      * This function inserts a walk-in client to the database.
      *
@@ -215,6 +276,7 @@ public class DataBaseController {
         addAppointment(time_start, time_end, getDocID(doctorName), getClientID(clientName));
     }
 
+
     /**
      * Inserts a new appointment to the appointment table.
      *
@@ -228,7 +290,7 @@ public class DataBaseController {
      * @param clientID   — ID of the client
      */
     public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, int doctorID, int clientID) {
-        String stmt = "INSERT INTO clinic_db.appointment (time_start, time_end, doctor_id, client_id) VALUES (?, ?, ?, ?)";
+        String stmt = "INSERT INTO clinic_db.appointment (time_start, time_end, doctor_id, client_id, recurring) VALUES (?, ?, ?, ?, ?)";
         try {
             connection = ConnectionConfiguration.getConnection(model);
             pStmt = connection.prepareStatement(stmt);
@@ -236,6 +298,7 @@ public class DataBaseController {
             pStmt.setString(2, timeToStr(time_end));
             pStmt.setInt(3, doctorID);
             pStmt.setInt(4, clientID);
+            pStmt.setBoolean(5, false);
 
             if (pStmt.executeUpdate() == 1)
                 System.out.println("New appointment successfully added to database.");
@@ -430,7 +493,6 @@ public class DataBaseController {
             } else if (type.equalsIgnoreCase("CLIENT"))
                 stmt += "WHERE C.client_id = '" + id + "'";
 
-            System.out.println(stmt);
             pStmt = connection.prepareStatement(stmt);
 
             rSet = pStmt.executeQuery();
@@ -613,6 +675,12 @@ public class DataBaseController {
                             break;
                         case "client":
                             temp = new Client(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("client_id"));
+
+                            if (rSet2.getString("type").equals("normal"))
+                                ((Client) temp).setClientType(ClientType.REGULAR);
+                            else
+                                ((Client) temp).setClientType(ClientType.WALKIN);
+
                             break;
                         default:
                             temp = new Secretary(rSet2.getString("first_name"), rSet2.getString("last_name"), rSet2.getInt("secretary_id"));

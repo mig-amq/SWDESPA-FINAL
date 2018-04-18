@@ -25,14 +25,17 @@ public class SecDayAgendaControl extends AbstractControl {
     private JFXListView agendaList;
     private JFXButton btnRemove;
 
-    public SecDayAgendaControl(){
+    public SecDayAgendaControl(Model model){
         ndSecDayAgendaViewNode = loadSecDayAgendaView();
         initComponents();
         agendaList.setItems(FXCollections.observableArrayList(""));
         btnRemove.setOnAction(event -> {
             String[] contents = agendaList.getSelectionModel().getSelectedItem().toString().split(" ");
-            Integer.parseInt(contents[0].trim());
             //remove in database, then call model.setState()
+            Appointment a = new Appointment();
+            a.setId(Integer.parseInt(contents[0].trim()));
+            model.getDbController().deleteAppointment(a);
+            model.setState();
         });
     }
 

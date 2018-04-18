@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class ClientController extends AnchorPane {
 
@@ -35,7 +36,7 @@ public class ClientController extends AnchorPane {
     @FXML private AnchorPane mainPane, homePane, bookPane, managePane;
     @FXML private AnchorPane bookTablePane, manageTablePane;
     @FXML private JFXButton home, book, manage;
-    @FXML private JFXButton bookButton, editButton;
+    @FXML private JFXButton bookButton, removeButton;
     @FXML private JFXRadioButton bAgendaView, bCalendarView, bDayView, bWeekView;
     @FXML private JFXRadioButton mAgendaView, mCalendarView, mDayView, mWeekView;
     @FXML private JFXComboBox<String> bDoctorCmbBox, mDoctorCmbBox;
@@ -67,8 +68,9 @@ public class ClientController extends AnchorPane {
         previous.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("doctor"));
     }
 
-    private void update () {
+    public void update () {
         loadHome();
+        clientSuperController.update();
     }
 
     private void loadHome () {
@@ -229,7 +231,11 @@ public class ClientController extends AnchorPane {
             child.show();
         });
 
-        editButton.setOnAction(event -> {
+        removeButton.setOnAction(event -> {
+            RemoveController remove = new RemoveController(model);
+            Stage child = new Stage(StageStyle.UNDECORATED);
+            child.setScene(new Scene(remove));
+            child.show();
 
         });
     }
@@ -243,9 +249,21 @@ public class ClientController extends AnchorPane {
             clientSuperController = loader.<ClientAgendaDayController>getController();
             clientSuperController.setModel(model);
             clientSuperController.setCalendar(client.getCalendar());
+            clientSuperController.insertFilterData(client.getCalendar().selectedProperty().get());
+
 
    //         System.out.println(model.getAccount().getId());
 
         } catch(Exception e) {}
     }
+
+    /*private ArrayList<Agenda> findData(LocalDate selected) {
+        ArrayList<Agenda> arrayList = new ArrayList<>();
+        for (int i = 0; i < agendas.size(); i++) {
+            Agenda agenda = agendas.get(i);
+            if(isEqualDate(agenda, selected))
+                arrayList.add(agenda);
+        }
+        return arrayList;
+    }*/
 }

@@ -27,11 +27,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import udc.Model;
+import udc.objects.account.Account;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Unavailable;
 
 public class ReserveController extends AnchorPane {
-
     @FXML private AnchorPane pnlTool;
     @FXML private AnchorPane close;
     @FXML private JFXDrawer drawer;
@@ -176,10 +176,7 @@ public class ReserveController extends AnchorPane {
                     alert.showAndWait();
                 }
                 else {
-                    System.out.println("OKAY!!");
                     boolean canAdd = true;
-
-
 
                     while(startTime.isBefore(endTime) || startTime.equals(endTime)) {
                         if(isOverLap(startTime)) {
@@ -195,12 +192,21 @@ public class ReserveController extends AnchorPane {
                         startTime = startTime.plusMinutes(30);
                     }
                     if(canAdd) {
-                        System.out.println("CAN ADD!");
+                        Account account = model.getAccount();
+                        System.out.println("account id:"+account.getId());
+                        String client = account.getFirstName() + " " + account.getLastName();
+
+                        //Add parameter for recurring??
+                        model.getDbController().addAppointment(startTime, endTime, doctorCmb.getValue(), client);
+                        model.getDbController().addUnavailability(doctorCmb.getValue(), startTime, endTime, false);
+
+                        //UPDATE VIEWS
+
+                        Stage stage = (Stage) close.getScene().getWindow();
+                        stage.close();
                     }
 
                 }
-
-
             }
         });
 
@@ -213,7 +219,6 @@ public class ReserveController extends AnchorPane {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("doctors " + unavailList.size());
 
         for(int i = 0; i < unavailList.size(); i++) {
             Unavailable u = unavailList.get(i);
@@ -233,5 +238,4 @@ public class ReserveController extends AnchorPane {
     private boolean isBetween(LocalTime candidate, LocalTime start, LocalTime end) {
         return !candidate.isBefore(start) && !candidate.isAfter(end);
     }
-
 }

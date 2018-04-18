@@ -5,12 +5,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import udc.Model;
 import udc.client.regular.Controller.ClientSuperController;
 import udc.client.regular.Controller.DaySchedule;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -44,7 +46,25 @@ public class ClientCalDayController extends ClientSuperController implements Ini
     }
 
     @Override
+    public void insertFilterData(LocalDate selected) {
+
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         setCellTable();
+        setModel(model);
+
+
+    }
+
+    @Override
+    public void setModel (Model model) {
+        super.setModel(model);
     }
 }

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #ffffff;" stylesheets="@../../../res/styles/client.css" type="AnchorPane" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane fx:id="pnlTool" prefHeight="30.0" prefWidth="400.0" style="-fx-background-color: #26ad80;">
+         <children>
+            <Label layoutX="9.0" layoutY="5.0" text="Remove Appointment" textFill="WHITE" />
+            <AnchorPane fx:id="close" layoutX="370.0" prefHeight="30.0" prefWidth="30.0">
+               <children>
+                  <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" layoutX="7.0" layoutY="21.0" size="16" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="175.0" layoutY="30.0" prefHeight="473.0" prefWidth="400.0" scaleZ="10.0" translateZ="10.0" />
+      <AnchorPane fx:id="mainPanel" layoutY="30.0" prefHeight="473.0" prefWidth="400.0">
+         <children>
+            <JFXButton fx:id="remove" defaultButton="true" layoutX="123.0" layoutY="289.0" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #155e3b; -fx-cursor: hand;" text="Remove" textFill="WHITE">
+               <ripplerFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop color="#d13a3a" />
+                        <Stop color="#d13a3a" offset="0.007662835249042145" />
+                        <Stop color="#ab3b3b" offset="0.31958762886597936" />
+                        <Stop color="#b23a3a" offset="0.5561875419678473" />
+                        <Stop color="#cf3a3a" offset="0.6563573883161511" />
+                        <Stop color="#d13a3a" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </ripplerFill>
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </JFXButton>
+            <TextFlow layoutX="57.0" layoutY="335.0" prefHeight="35.0" prefWidth="287.0" textAlignment="CENTER">
+               <children>
+                  <Label fx:id="lblAlert" textFill="#7c0909">
+                     <font>
+                        <Font name="Open Sans Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </TextFlow>
+            <Label layoutX="34.0" layoutY="86.0" prefHeight="32.0" prefWidth="68.0" text="Date:">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <JFXDatePicker fx:id="datePicker" defaultColor="#155e3b" layoutX="113.0" layoutY="88.0" prefHeight="28.0" prefWidth="253.0" />
+            <Label layoutX="34.0" layoutY="140.0" prefHeight="32.0" prefWidth="68.0" text="Time:">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="startHour" focusColor="#ab2626" layoutX="113.0" layoutY="143.0" prefHeight="28.0" prefWidth="57.0" />
+            <Label layoutX="178.0" layoutY="140.0" text=":">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="212.0" layoutY="179.0" prefHeight="45.0" prefWidth="30.0" text="to">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="38.0" prefHeight="32.0" prefWidth="68.0" text="Doctor:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="doctorCmb" focusColor="#ab2626" layoutX="113.0" layoutY="41.0" prefHeight="28.0" prefWidth="235.0" promptText="Select Doctor" />
+            <JFXComboBox fx:id="startMin" focusColor="#ab2626" layoutX="191.0" layoutY="142.0" prefHeight="28.0" prefWidth="57.0" />
+            <JFXComboBox fx:id="endHour" focusColor="#ab2626" layoutX="113.0" layoutY="228.0" prefHeight="28.0" prefWidth="57.0" />
+            <Label layoutX="178.0" layoutY="231.0" text=":">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <JFXComboBox fx:id="endMin" focusColor="#ab2626" layoutX="189.0" layoutY="228.0" prefHeight="28.0" prefWidth="57.0" />
+            <JFXComboBox fx:id="startM" focusColor="#ab2626" layoutX="262.0" layoutY="142.0" prefHeight="28.0" prefWidth="80.0" />
+            <JFXComboBox fx:id="endM" focusColor="#ab2626" layoutX="262.0" layoutY="228.0" prefHeight="28.0" prefWidth="80.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</fx:root>

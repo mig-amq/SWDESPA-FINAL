@@ -10,6 +10,7 @@ import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -337,8 +338,18 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void insertFilterData(ArrayList<Agenda> data) {
         items = weekList.getItems();
         //  setList();
+    }
+
+    @Override
+    public void insertFilterData(LocalDate selected) {
+        
     }
 }
