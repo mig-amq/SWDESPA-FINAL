@@ -539,8 +539,7 @@ public class DataBaseController {
                 rbuilder = new RecurringAppointmentBuilder(rSet.getString("doctor"), rSet.getString("client"));
 
                 if (rSet.getBoolean("recurring")) {
-//                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
-//                            strToTime(rSet.getString("time_start")),
+                    tempList.add(rbuilder.build(rSet.getInt("appointment_id"),
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
