@@ -23,9 +23,9 @@ import java.util.ArrayList;
 
 public class SecWeekControl extends AbstractControl {
     private Node ndSecWeekViewNode;
+    private ObservableList<Node> NodeComponents;
     private TableView<WeekSchedule> tvWeekView;
     private ObservableList<TableColumn<WeekSchedule, String>> DayListColumns;
-    private ObservableList<Node> NodeComponents;
     private TableColumn<WeekSchedule, String> time;
     private TableColumn<WeekSchedule, String> mon;
     private TableColumn<WeekSchedule, String> tue;
@@ -45,6 +45,54 @@ public class SecWeekControl extends AbstractControl {
 //        tvWeekView.getColumns().get(0).setCellFactory(cellFactory);
 //        insertFilteredData();
 //        tvWeekView.getItems().clear();
+    }
+
+
+
+    private Node loadSecWeekView(){
+        Node node = null;
+        try{
+            node = FXMLLoader.load(getClass().getResource("../FXMLFiles/SecWeekView.fxml"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return node;
+    }
+
+    private void initComponents(){
+        for (int i = 0; i <  NodeComponents.size(); i++) {
+            Node node = NodeComponents.get(i);
+            if(node instanceof TableView && node.getId() != null)
+                if(node.getId().equals("tvWeekView")) {
+                    tvWeekView = (TableView<WeekSchedule>) node;
+                    tvWeekView.getSelectionModel().setCellSelectionEnabled(true);
+                }
+            //add more for additional components
+        }
+    }
+
+
+    private ObservableList<TableColumn> findTableView(ObservableList<Node> a){
+        for (Node b: a) {
+            if(b instanceof TableView) {
+                tvWeekView = (TableView) b;
+                return ((TableView) b).getColumns();
+            }
+        }
+        return null;
+    }
+
+    //Converts String to simple string property
+    private SimpleStringProperty toSSP(String string){
+        return new SimpleStringProperty(string);
+    }
+
+    public Node getNdSecWeekViewNode() {
+        return ndSecWeekViewNode;
+    }
+
+    public TableView getTableView(){
+        return tvWeekView;
     }
 
     private void instantiateColumns(){
@@ -83,30 +131,6 @@ public class SecWeekControl extends AbstractControl {
                 DayListColumns.add(sun);
             }
         }
-
-
-    }
-
-    private Node loadSecWeekView(){
-        Node node = null;
-        try{
-            node = FXMLLoader.load(getClass().getResource("../FXMLFiles/SecWeekView.fxml"));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return node;
-    }
-
-    private void initComponents(){
-        for (int i = 0; i <  NodeComponents.size(); i++) {
-            Node node = NodeComponents.get(i);
-            if(node instanceof TableView && node.getId() != null)
-                if(node.getId().equals("tvWeekView")) {
-                    tvWeekView = (TableView<WeekSchedule>) node;
-                    tvWeekView.getSelectionModel().setCellSelectionEnabled(true);
-                }
-            //add more for additional components
-        }
     }
 
     private void initPropertyValues(){
@@ -115,48 +139,6 @@ public class SecWeekControl extends AbstractControl {
             TableColumn col = DayListColumns.get(i);
             col.setCellValueFactory(new PropertyValueFactory<WeekSchedule, String>(cells[i]));
         }
-    }
-
-    private ObservableList<TableColumn> findTableView(ObservableList<Node> a){
-        for (Node b: a) {
-            if(b instanceof TableView) {
-                tvWeekView = (TableView) b;
-                return ((TableView) b).getColumns();
-            }
-        }
-        return null;
-    }
-
-    //inserts data to table
-//    private void insertAllData(){
-//        /***TODO: BEFORE IMPLEMENTING THIS, CREATE OR USE THREAD FOR UPDATING GATHERED DATA***/
-//        //1. Doctor's clinic open time // DONE
-//        //2. create method for filtering data, filter data based from SecretaryMain.fxml filters //DONE
-//        //3. Color for cells??? optional
-//        //4a. repeat steps for dayview or  create abstract  sec controller? // DONE
-            //4b. need to merge to new repo for testing 20% unsure if it will works well //DONE PERFECT
-//    }
-
-
-    //removes agenda from arraylist then update database
-    private void removeData(){
-        /***TODO: BEFORE IMPLEMENTING THIS, CREATE OR USE THREAD FOR UPDATING GATHERED DATA***/
-        //1. just remopve from arraylist
-        //2. update db
-        //3. repeat steps for dayview or create abstract  sec controller?
-    }
-
-    //Converts String to simple string property
-    private SimpleStringProperty toSSP(String string){
-        return new SimpleStringProperty(string);
-    }
-
-    public Node getNdSecWeekViewNode() {
-        return ndSecWeekViewNode;
-    }
-
-    public TableView getTableView(){
-        return tvWeekView;
     }
 
     public void insertFilteredData(ArrayList<ArrayList<Agenda>> dt, LocalDate stDte){
@@ -193,10 +175,7 @@ public class SecWeekControl extends AbstractControl {
         }
     }
 
-    //Purposely set as public so other modules can use this to be placed
-    // in their respective constructor for weekly
-    // to extract agenda for each day
-    //Check AbstractController from this package to check how it works for same day
+
     public WeekSchedule createWeekSchedule(ArrayList<ArrayList<Agenda>> dt, LocalDate stDte, String tm){
         return new WeekSchedule(tm, gtDataForDay(dt, tm, stDte), gtDataForDay(dt, tm, stDte.minusDays(-1)), // -1 = +1 day
                 gtDataForDay(dt, tm, stDte.minusDays(-2)), gtDataForDay(dt, tm, stDte.minusDays(-3)),
@@ -225,42 +204,5 @@ public class SecWeekControl extends AbstractControl {
         }
         return "";
     }
-
-    /* IF SOMEONE CAN FIX THE isSameAppointment() THEN IT WOULD BE GREAT, IT'S JUST FOR CELL SPANNING
-       I HAVE A CODE FOR CELL SPANNING THAT ONLY WORKS FOR TWO APPOINTMENT SLOTS.
-    private String getCellData(WeekSchedule item, int day){ //1 = monday... 7 = sunday
-        if(day == 1)
-            return item.getsMon();
-        else if (day == 2)
-            return item.getsTue();
-        else if(day == 3)
-            return item.getsWed();
-        else if(day == 4)
-            return item.getsThu();
-        else if(day == 5)
-            return  item.getsFri();
-        else if(day == 6)
-            return  item.getsSat();
-        else if(day == 7)
-            return item.getsSun();
-        return null;
-    }
-
-
-    private boolean isSameAppointment(TableView<WeekSchedule> a, String item,int CurrentRow, int day,TableCell tableCell){
-        for (int i = CurrentRow; i >= 0; i--) {
-            String data = getCellData(a.getItems().get(i), day);
-            if(tableCell.getBackground() == DayListColumns.get(day).getCellFactory().call(DayListColumns.get(day)).getBackground())
-                if(data != null && data.equals(item))
-                    return true;
-            else return false;
-        }
-        return false;
-    }*/
-
-//    private TableColumn<WeekSchedule, String> getColumn(int index){
-//        return DayListColumns.get(index);
-//    }
-
 
 }

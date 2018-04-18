@@ -42,4 +42,6 @@ public abstract class ClientSuperController implements Initializable {
         time += end;
         return time;
     }
+
+
 }

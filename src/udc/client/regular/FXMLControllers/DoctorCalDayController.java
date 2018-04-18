@@ -34,14 +34,14 @@ public class DoctorCalDayController extends ClientSuperController implements Ini
         private ArrayList<Unavailable> unavailables;
         @Override
         public void update() {
-
             try {
                 unavailables = model.getDbController().getUnvailability(-1);
                 agendas = model.getDbController().getAppointments(-1, "");
+                insertUnavailabilitytoAgendas(unavailables, agendas);
+                insertFilterData(calendar.getSelected());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            insertUnavailabilitytoAgendas(unavailables, agendas);
 
 
         }

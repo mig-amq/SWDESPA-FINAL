@@ -338,6 +338,13 @@ public class DoctorCalWeekController extends ClientSuperController implements In
 
     @Override
     public void update() {
-
+        try {
+            unavailables = model.getDbController().getUnvailability(-1);
+            agendas = model.getDbController().getAppointments(-1, "");
+            insertUnavailabilitytoAgendas(unavailables, agendas);
+            insertFilterData(calendar.getSelected());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

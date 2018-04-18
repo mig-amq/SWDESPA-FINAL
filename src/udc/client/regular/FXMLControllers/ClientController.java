@@ -256,4 +256,5 @@ public class ClientController extends AnchorPane {
             e.printStackTrace();
         }
     }
+
 }
