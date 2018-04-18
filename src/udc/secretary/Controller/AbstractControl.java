@@ -127,13 +127,13 @@ public abstract class AbstractControl {
              a.setText(item);
          } else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
              a.setText("");
-             a.setStyle("-fx-background-color: #d83c66");
+             a.setStyle("-fx-background-color: #e25d2d");
          } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Unavailable")){
              a.setText("");
-             a.setStyle("-fx-background-color: #d35e43");
+             a.setStyle("-fx-background-color: #3382bf");
          }else if(item.equalsIgnoreCase("(Unavailable)")){ //both
              a.setText("");
-             a.setStyle("-fx-background-color: #f44242");
+             a.setStyle("-fx-background-color: #87312b");
          }  else{
              a.setStyle("-fx-background-color: #e5e2cc");
              a.setStyle("-fx-border-color: #c6c5ba");

@@ -144,6 +144,7 @@ public class MainController {
 
         }
         cmbBoxDoctors.getItems().setAll(doctorList); // 0 = all  1 = doctor id of doctor1 2 = doctor id of doctor 2
+        cmbBoxDoctors.getSelectionModel().select(0);
         setButtonActions();
     }
 
@@ -380,7 +381,9 @@ public class MainController {
                 ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(doctorName);
                 for (int i = 0; i < availableSlots.size(); i++) {
                     for (int j = 0; j < unavailable.size(); j++) {
-                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())) {
+                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())
+                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(unavailable.get(j).getStartTime().toLocalTime())
+                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))) {
                             availableSlots.remove(i);
                             break;
                         }
@@ -391,13 +394,16 @@ public class MainController {
                 ArrayList<Agenda> appointments = findData(selected);
                 for (int i = 0; i < availableSlots.size(); i++){
                     for (int j = 0; j < appointments.size(); j++){
-                        if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())
+                        if ((availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())
+                                || availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime()))
                                 && doctorName.substring(4).equals(((Appointment) appointments.get(j)).getDoctorName())){
                             availableSlots.remove(i);
                             break;
                         }
                     }
                 }
+                //|| availableSlots.get(i).getStartTime().toLocalTime().isBefore(((Appointment) appointments.get(i)).getEndTime().toLocalTime())
+
                 availableSlots.trimToSize();
             } else{
                 ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(-1);
@@ -413,13 +419,12 @@ public class MainController {
                 ArrayList<Agenda> appointments = findData(selected);
                 for (int i = 0; i < availableSlots.size(); i++)
                     for (int j = 0; j < appointments.size(); j++)
-                        if (availableSlots.get(i).getStartTime().equals(appointments.get(j).getStartTime())){
+                        if ((availableSlots.get(i).getStartTime().equals(appointments.get(j).getStartTime()) || availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime()))){
                             availableSlots.remove(i);
                             break;
                         }
+                availableSlots.trimToSize();
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
