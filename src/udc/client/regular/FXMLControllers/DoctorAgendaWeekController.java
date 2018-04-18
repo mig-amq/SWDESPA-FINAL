@@ -1,5 +1,6 @@
 package udc.client.regular.FXMLControllers;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,9 +40,7 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
         //  items.add("00:00" + "-" + "01:30" + " " + ":)");
 
         String s;
-
-        LocalDateTime now = LocalDateTime.now();
-
+        LocalDateTime now = calendar.getDate().atStartOfDay();
         ArrayList<Agenda> temp = model.getDbController().getAppointments(-1, "");
 
         LocalDateTime startTemp;
@@ -245,6 +244,7 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
 
 
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
