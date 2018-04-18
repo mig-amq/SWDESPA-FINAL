@@ -285,7 +285,7 @@ public class DataBaseController {
     }
 
     public boolean acceptWalkin(Appointment a) {
-        String sql = "UPDATE appointment SET accepted = " + 1 + " WHERE appointment_id = " + a.getId();
+        String sql = "UPDATE appointment SET approved = " + 1 + " WHERE appointment_id = " + a.getId();
 
         try {
             connection = ConnectionConfiguration.getConnection(model);
@@ -511,7 +511,7 @@ public class DataBaseController {
             connection = ConnectionConfiguration.getConnection(model);
 
             String stmt = "SELECT \n" +
-                    "    time_start, recurring, appointment_id, accepted\n" +
+                    "    time_start, recurring, appointment_id, approved\n" +
                     "    time_end,\n" +
                     "    CONCAT(D.first_name, ' ', D.last_name) AS doctor,\n" +
                     "    CONCAT(C.first_name, ' ', C.last_name) AS client\n" +
@@ -523,11 +523,11 @@ public class DataBaseController {
                     "    clinic_db.client AS C ON C.client_id = A.client_id\n";
 
             if (type.equalsIgnoreCase("DOCTOR")) {
-                stmt += "WHERE D.doctor_id = '" + id + "' AND accepted == 1";
+                stmt += "WHERE D.doctor_id = '" + id + "' AND approved = 1";
             } else if (type.equalsIgnoreCase("CLIENT"))
-                stmt += "WHERE C.client_id = '" + id + "' AND accepted == 1";
+                stmt += "WHERE C.client_id = '" + id + "' AND approved = 1";
             else
-                stmt += "WHERE accepted == 1";
+                stmt += "WHERE approved = 1";
 
             pStmt = connection.prepareStatement(stmt);
 
