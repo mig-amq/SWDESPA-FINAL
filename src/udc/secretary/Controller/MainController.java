@@ -352,17 +352,15 @@ public class MainController {
                 secDayAgendaControl.insertFilteredData(findData(calendar.selectedProperty().get()));
                 secViewPane.getChildren().setAll(secDayAgendaView);
             }
-        } else if (rdbtnWeekView.isSelected()){
-            if (rdbtnAvailable.isSelected()){
-
-            } else{
-
-            }
         }
     }
 
     public boolean isCalendarRdBtnSelected(){
         return rdbtnCalendarView.isSelected();
+    }
+
+    public boolean isAgendaRdBtnSelected(){
+        return rdbtnAgendaView.isSelected();
     }
 
     private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctorName){
@@ -387,7 +385,7 @@ public class MainController {
 
         try {
             if (!doctorName.equalsIgnoreCase("All")) {
-                ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(doctorName);
+                ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(-1);
                 for (int i = 0; i < availableSlots.size(); i++) {
                     for (int j = 0; j < unavailable.size(); j++) {
                         if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())
@@ -407,7 +405,7 @@ public class MainController {
                                 || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime()) //start time of the available slot is after the start time of the appointment and before the end time of the appointment iremove mo
                                 && availableSlots.get(i).getStartTime().toLocalTime().isBefore(appointments.get(j).getEndTime().toLocalTime()))
                                 && !(appointments.get(j) instanceof Unavailable)
-                                && doctorName.substring(4).equals(((Appointment) appointments.get(j)).getDoctorName())){
+                                /*&& doctorName.substring(4).equals(((Appointment) appointments.get(j)).getDoctorName())*/){
                             availableSlots.remove(i);
 
                         }

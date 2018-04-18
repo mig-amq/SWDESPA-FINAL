@@ -60,7 +60,7 @@ public class Secretary extends PaneledView {
                 String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
                 if (mainController.isCalendarRdBtnSelected())
                     mainController.calendarViewCondition();
-                else
+                else if (mainController.isAgendaRdBtnSelected())
                     mainController.agendaViewCondition();
                 this.getTitle().setText("Secretary - " + date);
             });

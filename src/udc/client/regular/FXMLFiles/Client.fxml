@@ -24,7 +24,7 @@
                         <Font size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton fx:id="book" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="56.0" prefHeight="46.0" prefWidth="246.0" ripplerFill="BLACK" text="Book Appoinment">
+                  <JFXButton fx:id="book" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="56.0" prefHeight="46.0" prefWidth="246.0" ripplerFill="BLACK" text="Book Appointment">
                      <font>
                         <Font size="16.0" />
                      </font>
