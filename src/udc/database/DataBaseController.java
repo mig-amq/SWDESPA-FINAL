@@ -273,7 +273,40 @@ public class DataBaseController {
     }
 
     public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, String doctorName, String clientName) {
-        addAppointment(time_start, time_end, getDocID(doctorName), getClientID(clientName));
+        addAppointment(time_start, time_end, getDocID(doctorName), getClientID(clientName), false, true);
+    }
+
+    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, String doctorName, String clientName, boolean recurring) {
+        addAppointment(time_start, time_end, getDocID(doctorName), getClientID(clientName), recurring, true);
+    }
+
+    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, String doctorName, String clientName, boolean recurring, boolean approved) {
+        addAppointment(time_start, time_end, getDocID(doctorName), getClientID(clientName), recurring, approved);
+    }
+
+    public boolean acceptWalkin(Appointment a) {
+        String sql = "UPDATE appointment SET accepted = " + 1 + " WHERE appointment_id = " + a.getId();
+
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement(sql);
+
+            if (pStmt.executeUpdate() == 1)
+                return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
     }
 
 
@@ -289,8 +322,8 @@ public class DataBaseController {
      * @param doctorID   — ID of the specific doctor assigned to the appointment
      * @param clientID   — ID of the client
      */
-    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, int doctorID, int clientID) {
-        String stmt = "INSERT INTO clinic_db.appointment (time_start, time_end, doctor_id, client_id) VALUES (?, ?, ?, ?)";
+    public void addAppointment(LocalDateTime time_start, LocalDateTime time_end, int doctorID, int clientID, boolean recurring, boolean approved) {
+        String stmt = "INSERT INTO clinic_db.appointment (time_start, time_end, doctor_id, client_id, recurring, approved) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             connection = ConnectionConfiguration.getConnection(model);
             pStmt = connection.prepareStatement(stmt);
@@ -298,6 +331,8 @@ public class DataBaseController {
             pStmt.setString(2, timeToStr(time_end));
             pStmt.setInt(3, doctorID);
             pStmt.setInt(4, clientID);
+            pStmt.setBoolean(5, recurring);
+            pStmt.setBoolean(6, approved);
 
             if (pStmt.executeUpdate() == 1)
                 System.out.println("New appointment successfully added to database.");
