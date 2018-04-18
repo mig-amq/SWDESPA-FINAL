@@ -34,11 +34,6 @@ public class DoctorController extends SuperController implements Initializable{
     @FXML
     private JFXRadioButton rdBtnCalendarView;
 
-    @FXML
-    private JFXRadioButton rdBtnOpenSlots;
-
-    @FXML
-    private JFXRadioButton rdBtnReservedSlots;
 
     @FXML
     private JFXButton btnSetAvailabitility;
@@ -57,10 +52,8 @@ public class DoctorController extends SuperController implements Initializable{
 
         rdBtnCalendarView.setSelected(true);
         rdBtnDayView.setSelected(true);
-        rdBtnOpenSlots.setSelected(true);
         setViewTypeAction();
         setFilterViewAction();
-        setAppointmentSlotsRdBtnActions();
         rdBtnCalendarView.setToggleGroup(viewTypeGroup);
         rdBtnCalendarView.setSelected(true);
         rdBtnAgendaView.setToggleGroup(viewTypeGroup);
@@ -69,9 +62,6 @@ public class DoctorController extends SuperController implements Initializable{
         rdBtnDayView.setSelected(true);
         rdBtnWeekView.setToggleGroup(dayWeekViewGroup);
 
-        rdBtnOpenSlots.setToggleGroup(availGroup);
-        rdBtnOpenSlots.setSelected(true);
-        rdBtnReservedSlots.setToggleGroup(availGroup);
     }
 
 
@@ -128,17 +118,7 @@ public class DoctorController extends SuperController implements Initializable{
                     }
 
                     if(rdBtnWeekView.isSelected()){
-                        Node node = null;
-                        try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/AgendaViewW.fxml"));
-                            node = loader.load();
-                            sc = loader.<AgendaViewWController>getController();
-                            loader.<AgendaViewWController>getController().setCalendar(calendar);
-                            loader.<AgendaViewWController>getController().setModel(model);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        viewPane.getChildren().add(node);
+
                     }
                 }
             }
@@ -195,17 +175,7 @@ public class DoctorController extends SuperController implements Initializable{
                     }
 
                     if(rdBtnWeekView.isSelected()){
-                        Node node = null;
-                        try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/AgendaViewW.fxml"));
-                            node = loader.load();
-                            sc = loader.<AgendaViewWController>getController();
-                            loader.<AgendaViewWController>getController().setCalendar(calendar);
-                            loader.<AgendaViewWController>getController().setModel(model);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        viewPane.getChildren().add(node);
+                        
                     }
                 }
             }
@@ -314,23 +284,7 @@ public class DoctorController extends SuperController implements Initializable{
         });
     }
 
-    private void setAppointmentSlotsRdBtnActions(){
-        rdBtnOpenSlots.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                /*** INSERT ACTIONS HERE ***/
 
-            }
-        });
-
-        rdBtnReservedSlots.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                /*** INSERT ACTIONS HERE ***/
-
-            }
-        });
-    }
 
     @Override
     public void update(LocalDate ldt) {
