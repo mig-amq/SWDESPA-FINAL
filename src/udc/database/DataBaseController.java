@@ -523,11 +523,11 @@ public class DataBaseController {
                     "    clinic_db.client AS C ON C.client_id = A.client_id\n";
 
             if (type.equalsIgnoreCase("DOCTOR")) {
-                stmt += "WHERE D.doctor_id = '" + id + "' AND accepted == 1";
+                stmt += "WHERE D.doctor_id = '" + id + "' AND accepted = 1";
             } else if (type.equalsIgnoreCase("CLIENT"))
-                stmt += "WHERE C.client_id = '" + id + "' AND accepted == 1";
+                stmt += "WHERE C.client_id = '" + id + "' AND accepted = 1";
             else
-                stmt += "WHERE accepted == 1";
+                stmt += "WHERE accepted = 1";
 
             pStmt = connection.prepareStatement(stmt);
 
