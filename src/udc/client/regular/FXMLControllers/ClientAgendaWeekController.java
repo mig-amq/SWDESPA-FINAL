@@ -254,6 +254,7 @@ public class ClientAgendaWeekController extends ClientSuperController implements
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+       // items.clear();
         items = weekList.getItems();
 
 

@@ -258,6 +258,7 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 //       insertFilterData();
+     //   items.clear();
         items = weekList.getItems();
         //         setList();
 

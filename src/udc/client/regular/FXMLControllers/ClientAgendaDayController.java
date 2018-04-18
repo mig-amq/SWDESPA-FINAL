@@ -31,43 +31,31 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     @FXML
     private ComboBox<String> mDayCmbBox;
 
-    private void setList() throws Exception {
-      //  items.add("00:00" + "-" + "02:30" + " " + "Dr JDC");
-       // items.add("00:00" + "-" + "01:30" + " " + ":)");
-
+    private void setList() throws Exception
+    {
         LocalDateTime now;
+
+        LocalDateTime startTemp;
+        LocalDateTime endTemp;
+        String doctor;
+        int startMin;
+        int endMin;
+        String sMin;
+        String eMin;
+
+        ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 
         if( calendar == null)
             now = LocalDateTime.now();
         else
             now =  calendar.getDate().atStartOfDay();
-        
-
-
-            ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 
             for (int i = 0; i < temp.size(); i++) {
-                LocalDateTime startTemp = temp.get(i).getStartTime();
-                LocalDateTime endTemp = temp.get(i).getEndTime();
-                String doctor = ((Appointment) temp.get(i)).getDoctorName();
-                int startMin = startTemp.getMinute();
-                int endMin = endTemp.getMinute();
-                String sMin;
-                String eMin;
-                String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
+                startTemp = temp.get(i).getStartTime();
+                endTemp = temp.get(i).getEndTime();
+                doctor = ((Appointment) temp.get(i)).getDoctorName();
 
-                if (startMin == 0)
-                    sMin = "00";
-                else
-                    sMin = "30";
-
-                if (endMin == 0)
-                    eMin = "00";
-                else
-                    eMin = "30";
-
-
-                if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())
+                if (startTemp.getDayOfMonth() == now.getDayOfMonth() && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())
                 {
                     String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                             endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
@@ -79,7 +67,9 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
 @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         //items.add("Appointments");
+
        items = dayList.getItems();
 
             setCalendar(calendar);
@@ -116,7 +106,11 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
     @Override
     public void update() {
-
+        try {
+            setList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -72,21 +72,8 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
                 String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
 
                 {
-                    int startMin = startTemp.getMinute();
-                    int endMin = endTemp.getMinute();
-                    String sSMin;
-                    String sEMin;
-                    if (startMin == 0)
-                        sSMin = "00";
-                    else
-                        sSMin = "30";
-
-                    if (endMin == 0)
-                        sEMin = "00";
-                    else
-                        sEMin = "30";
-
-                    if (startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear()) {
+                    if (startTemp.getDayOfMonth() == now.getDayOfMonth() && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())
+                    {
                         String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                                 endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                         items.add(s);
@@ -113,6 +100,7 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+     //   items.clear();
         items = dayList.getItems();
 
         setCalendar(calendar);
@@ -148,7 +136,11 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
 
     @Override
     public void update() {
-
+        try {
+            setList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
