@@ -73,14 +73,11 @@ public class SecDayAgendaControl extends AbstractControl {
     }
 
     public void insertFilteredData(ArrayList<Agenda> data) {
+        agendaList.getItems().clear();
         ObservableList<String> string = FXCollections.observableArrayList();
         for (int i = 0; i < data.size(); i++)
             addString(string, data.get(i));
         agendaList.setItems(FXCollections.observableArrayList(string));
-    }
-
-    public void reset(){
-        agendaList.setItems(FXCollections.observableArrayList(""));
     }
 
     private void addString(ObservableList<String> string, Agenda data){
@@ -120,7 +117,7 @@ public class SecDayAgendaControl extends AbstractControl {
         }
 
         if (data instanceof Appointment){
-            string.add(data.getId() + " " + ": " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+            string.add("ID: " + data.getId() + " " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
                     + ", Dr." + ((Appointment) data).getDoctorName() + ", " + ((Appointment) data).getClientName());
         }
         else if (data instanceof Unavailable){
