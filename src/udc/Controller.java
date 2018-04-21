@@ -121,7 +121,7 @@ public class Controller implements Initializable{
         db.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\:\\d{1,5}")) {
                 settingsLog.setText("Error: Database socket has an invalid format!");
-                btnSave.setDisable(true);
+//                btnSave.setDisable(true);
             } else if (server.getText().matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\:\\d{1,5}")) {
                 settingsLog.setText("");
 //                btnSave.setDisable(false);
@@ -131,7 +131,7 @@ public class Controller implements Initializable{
         server.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\:\\d{1,5}")) {
                 settingsLog.setText("Error: Server socket has an invalid format!");
-                btnSave.setDisable(true);
+//                btnSave.setDisable(true);
             } else if (db.getText().matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\:\\d{1,5}")) {
                 settingsLog.setText("");
 //                btnSave.setDisable(false);
