@@ -3,12 +3,16 @@ package udc.secretary.Controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import udc.objects.time.concrete.Agenda;
+import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Available;
+import udc.objects.time.concrete.Unavailable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -53,6 +57,62 @@ public class SecWeekAgendaControl extends AbstractControl{
 
     public void insertFilteredData(ArrayList<ArrayList<Agenda>> data){
         //still incomplete
-        weekAgendaList.setItems(FXCollections.observableArrayList(""));
+        weekAgendaList.getItems().clear();
+        ObservableList<String> string = FXCollections.observableArrayList();
+        for (int i = 0; i < 7; i++){
+            for (int j = 0; j < data.get(i).size(); j++)
+                addString(string, data.get(i).get(j));
+        }
+        weekAgendaList.setItems(string);
+    }
+
+    private void addString(ObservableList<String> string, Agenda data){
+        String hrS = Integer.toString(data.getStartTime().getHour());
+        String minS = Integer.toString(data.getStartTime().getMinute());
+        String hrE = "";
+        String minE = "";
+        if (!(data instanceof Available)) {
+            hrE = Integer.toString(data.getEndTime().getHour());
+            minE = Integer.toString(data.getEndTime().getMinute());
+        }
+        String sTimeOfDay = "AM";
+        String eTimeOfDay = "AM";
+
+        if (data.getStartTime().getHour() < 10)
+            hrS = "0" + hrS;
+        else if (data.getStartTime().getHour() >= 12) {
+            if (data.getStartTime().getHour() != 12)
+                hrS = Integer.toString(Integer.parseInt(hrS) - 12);
+            sTimeOfDay = "PM";
+        }
+
+        if (data.getStartTime().getMinute() < 10)
+            minS = "0" + minS;
+
+        if (!(data instanceof Available)) {
+            if (data.getEndTime().getHour() < 10)
+                hrE = "0" + hrE;
+            else if (data.getEndTime().getHour() >= 12) {
+                if (data.getEndTime().getHour() != 12)
+                    hrE = Integer.toString(Integer.parseInt(hrE) - 12);
+                eTimeOfDay = "PM";
+            }
+
+            if (data.getEndTime().getMinute() < 10)
+                minE = "0" + minE;
+        }
+
+        if (data instanceof Appointment){
+            string.add("ID: " + data.getId() + " " + data.getStartTime().getMonth() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear() + " "
+                    + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+                    + ", Dr." + ((Appointment) data).getDoctorName() + ", " + ((Appointment) data).getClientName());
+        } else if (data instanceof Unavailable){
+            string.add(data.getStartTime().getMonth() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear() + " "
+                    + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+                    + ", Dr." + ((Unavailable) data).getDoctorName() + ", Unavailable");
+        } else if (data instanceof Available){
+            string.add(data.getStartTime().getMonth() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear() + " "
+                    + hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Available) data).getDoctorName() + ", Open");
+        }
     }
 }

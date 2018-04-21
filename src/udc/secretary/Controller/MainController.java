@@ -35,10 +35,11 @@ public class MainController {
     private SecDayAgendaControl secDayAgendaControl;
     private SecWeekAgendaControl secWeekAgendaControl;
     private SecWalkInControl walkInControl;
+    private SecAppointmentControl secAppointmentControl;
     private JFXRadioButton rdbtnCalendarView, rdbtnAgendaView,
             rdbtnDayView, rdbtnWeekView, rdbtnAvailable, rdbtnTaken;
     private JFXComboBox cmbBoxDoctors;
-    private JFXButton btnWalkIn;
+    private JFXButton btnWalkIn, btnAdd;
     private Model model;
     private ArrayList<String> doctorList;
     private ArrayList<Agenda> agendas;
@@ -143,6 +144,8 @@ public class MainController {
                     cmbBoxDoctors = (JFXComboBox) node;
                 else if (node instanceof JFXButton && node.getId().equals("btnWalkIn"))
                     btnWalkIn = (JFXButton) node;
+                else if (node instanceof JFXButton && node.getId().equals("btnAdd"))
+                    btnAdd = (JFXButton) node;
             }
 
         }
@@ -220,6 +223,23 @@ public class MainController {
                 stage.show();
             }
             catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        btnAdd.setOnAction(event -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/SecAppointmentView.fxml"));
+            secAppointmentControl = new SecAppointmentControl(model);
+            loader.setController(secAppointmentControl);
+            loader.setRoot(secAppointmentControl.getSecAppointmentNode());
+            Parent root;
+            try{
+                root = (Parent) secAppointmentControl.getSecAppointmentNode();
+                Stage stage = new Stage();
+                stage.setTitle("New Walk-in");
+                stage.setScene(new Scene(root, 482, 524));
+                stage.show();
+            } catch(Exception e){
                 e.printStackTrace();
             }
         });
@@ -354,6 +374,7 @@ public class MainController {
             if (rdbtnAvailable.isSelected()){
                 secViewPane.getChildren().setAll(secWeekAgendaView);
             } else{
+                secWeekAgendaControl.insertFilteredData(findWeekAgenda());
                 secViewPane.getChildren().setAll(secWeekAgendaView);
             }
         }
