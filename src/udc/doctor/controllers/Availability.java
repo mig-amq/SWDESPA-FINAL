@@ -62,6 +62,8 @@ public class Availability extends AnchorPane {
             try {
                 Available av = this.getAvailable();
                 av.setDoctorName(this.getModel().getAccount().getFirstName() + " " + this.getModel().getAccount().getLastName());
+                av.setId(this.getModel().getAccount().getId());
+                this.getModel().getDbController().addAvailability(av);
                 this.getModel().setState();
             } catch (Exception e) {
                 err.setText(e.getMessage());
@@ -157,13 +159,12 @@ public class Availability extends AnchorPane {
         Available av = new Available();
         av.setStartTime(from);
         av.setEndTime(to);
-        av.setRecurring(recur);
+        av.setRecurringDays(recur.substring(0, recur.length() - 1));
 
         if (recur.isEmpty())
             av.setType(AgendaType.SINGLE);
         else
             av.setType(AgendaType.RECURRING);
-
 
         if (Agenda.clashes(this.getAppointments(), from, to))
             throw new Exception("Error: An appointment has already been booked at that time range");

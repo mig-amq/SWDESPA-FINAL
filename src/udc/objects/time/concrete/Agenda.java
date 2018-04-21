@@ -12,7 +12,6 @@ public class Agenda {
     protected LocalDateTime endTime;
     protected AgendaType type;
     protected ArrayList<Agenda> exceptions;
-    protected String recurring;
 
     public Agenda () {
         this.setExceptions(new ArrayList<>());
@@ -111,10 +110,6 @@ public class Agenda {
         return exceptions;
     }
 
-    public String getRecurring() {
-        return recurring;
-    }
-
     public void setType(AgendaType type) {
         this.type = type;
     }
@@ -135,7 +130,4 @@ public class Agenda {
         this.exceptions = exceptions;
     }
 
-    public void setRecurring(String recurring) {
-        this.recurring = recurring;
-    }
 }

@@ -13,6 +13,7 @@ import udc.objects.time.builders.SingleAppointmentBuilder;
 import udc.objects.time.builders.SingleUnavailableBuilder;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Available;
 import udc.objects.time.concrete.Unavailable;
 
 import java.sql.Connection;
@@ -366,7 +367,7 @@ public class DataBaseController {
      * @param recurring  True or false, if the unavailability is recurring or not.
      */
     public void addUnavailability(int doctor_id, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring) {
-        String stmt = "INSERT INTO clinic_db.unavailability (doctor_id, time_start, time_end, recurring) VALUES (?, ?, ?, ?)";
+        String stmt = "INSERT INTO clinic_db.availability (doctor_id, time_start, time_end, recurring) VALUES (?, ?, ?, ?)";
         try {
             connection = ConnectionConfiguration.getConnection(model);
             pStmt = connection.prepareStatement(stmt);
@@ -407,7 +408,7 @@ public class DataBaseController {
      * @param recurring  True or false, if the unavailability is recurring or not.
      */
     public void updateUnavailability(int doctor_id, LocalDateTime time_start, LocalDateTime time_end, Boolean recurring) {
-        String stmt = "UPDATE clinic_db.unavailability " +
+        String stmt = "UPDATE clinic_db.availability " +
                 "SET time_start = ?, time_end = ?, recurring = ? " +
                 "WHERE doctor_id = '" + doctor_id + "'";
         try {
@@ -615,16 +616,16 @@ public class DataBaseController {
             connection = ConnectionConfiguration.getConnection(model);
 
             if (doctor_id < 0) {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.unavailability");
+                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.availability");
             } else {
-                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.unavailability " +
+                pStmt = connection.prepareStatement("SELECT * FROM clinic_db.availability " +
                         "WHERE doctor_id = '" + doctor_id + "'");
             }
             rSet = pStmt.executeQuery();
 
             // Traversing result set and instantiating unavailability to temp list
             while (rSet.next()) {
-                if (rSet.getBoolean("recurring")) {
+                if (rSet.getString("recurring") != null || !rSet.getString("recurring").isEmpty()) {
                     tempList.add(builder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
@@ -763,7 +764,7 @@ public class DataBaseController {
     }
 
     public boolean deleteUnavailability (int did, Unavailable agenda) {
-        String stmt = "DELETE FROM unavailability WHERE doctor_id = " + did +
+        String stmt = "DELETE FROM availability WHERE doctor_id = " + did +
                 " AND time_start = \"" + timeToStr(agenda.getStartTime()) + "\"";
         try {
             connection = ConnectionConfiguration.getConnection(model);
@@ -784,5 +785,32 @@ public class DataBaseController {
         }
 
         return false;
+    }
+
+    public void addAvailability(Available av) {
+        String stmt = "INSERT INTO availability (doctor_id, time_start, time_end, recurring) VALUES (?, ?, ?, ?)";
+        try {
+            connection = ConnectionConfiguration.getConnection(model);
+            pStmt = connection.prepareStatement(stmt);
+
+            pStmt.setInt(1, av.getId());
+            pStmt.setString(2, av.getStartTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")));
+            pStmt.setString(3, av.getStartTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+            pStmt.setString(4, av.getRecurringDays());
+
+            if (pStmt.executeUpdate() == 1)
+                System.out.println("Inserted Availability");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 }

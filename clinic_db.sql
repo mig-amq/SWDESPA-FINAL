@@ -165,7 +165,7 @@ UNLOCK TABLES;
 -- Table structure for table `unavailability`
 --
 
-DROP TABLE IF EXISTS `unavailability`;
+DROP TABLE IF EXISTS availability;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `unavailability` (
@@ -183,9 +183,9 @@ CREATE TABLE `unavailability` (
 -- Dumping data for table `unavailability`
 --
 
-LOCK TABLES `unavailability` WRITE;
-/*!40000 ALTER TABLE `unavailability` DISABLE KEYS */;
-/*!40000 ALTER TABLE `unavailability` ENABLE KEYS */;
+LOCK TABLES availability WRITE;
+/*!40000 ALTER TABLE availability DISABLE KEYS */;
+/*!40000 ALTER TABLE availability ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

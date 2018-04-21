@@ -51,7 +51,7 @@ public class Content implements Initializable {
         add.setOnAction(event -> {
             Availability availability = null;
             try {
-                availability = new Availability(this.getModel().getAccount());
+                availability = new Availability(this.getModel());
 
                 Stage child = new Stage(StageStyle.UNDECORATED);
                 child.initOwner(add.getScene().getWindow());

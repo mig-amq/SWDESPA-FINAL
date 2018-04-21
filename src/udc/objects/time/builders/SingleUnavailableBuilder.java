@@ -13,14 +13,14 @@ public class SingleUnavailableBuilder extends UnavailableBuilder {
     }
 
     public Unavailable build (LocalDateTime start, LocalDateTime end) {
-        this.build(start, end);
+        super.build(start, end);
         this.getUnavailable().setType(AgendaType.SINGLE);
 
         return this.getUnavailable();
     }
 
     public Unavailable build (int id, LocalDateTime start, LocalDateTime end) {
-        this.build(id, start, end);
+        super.build(id, start, end);
 
         this.getUnavailable().setType(AgendaType.SINGLE);
 
