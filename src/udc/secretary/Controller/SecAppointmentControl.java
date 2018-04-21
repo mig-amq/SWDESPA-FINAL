@@ -51,28 +51,30 @@ public class SecAppointmentControl {
     private void initComponents(){
         for (int i = 0; i < nodeComponents.size(); i++){
             Node node = nodeComponents.get(i);
-            if (node.getId().equals("nameTextField"))
-                nameTextField = (JFXTextField) node;
-            else if (node.getId().equals("datePicker"))
-                datePicker = (JFXDatePicker) node;
-            else if (node.getId().equals("hrStartComboBox"))
-                hrStartComboBox = (JFXComboBox) node;
-            else if (node.getId().equals("minStartComboBox"))
-                minStartComboBox = (JFXComboBox) node;
-            else if (node.getId().equals("hrEndComboBox"))
-                hrEndComboBox = (JFXComboBox) node;
-            else if (node.getId().equals("minEndComboBox"))
-                minEndComboBox = (JFXComboBox) node;
-            else if (node.getId().equals("startComboBox"))
-                startComboBox = (JFXComboBox) node;
-            else if (node.getId().equals("endComboBox"))
-                endComboBox = (JFXComboBox) node;
-            else if (node.getId().equals("docComboBox"))
-                docComboBox = (JFXComboBox) node;
-            else if (node.getId().equals("btnAdd"))
-                btnAdd = (JFXButton) node;
-            else if (node.getId().equals("btnCancel"))
-                btnCancel = (JFXButton) node;
+            if (node.getId() != null) {
+                if (node.getId().equals("nameTextField"))
+                    nameTextField = (JFXTextField) node;
+                else if (node.getId().equals("datePicker"))
+                    datePicker = (JFXDatePicker) node;
+                else if (node.getId().equals("hrStartComboBox"))
+                    hrStartComboBox = (JFXComboBox) node;
+                else if (node.getId().equals("minStartComboBox"))
+                    minStartComboBox = (JFXComboBox) node;
+                else if (node.getId().equals("hrEndComboBox"))
+                    hrEndComboBox = (JFXComboBox) node;
+                else if (node.getId().equals("minEndComboBox"))
+                    minEndComboBox = (JFXComboBox) node;
+                else if (node.getId().equals("startComboBox"))
+                    startComboBox = (JFXComboBox) node;
+                else if (node.getId().equals("endComboBox"))
+                    endComboBox = (JFXComboBox) node;
+                else if (node.getId().equals("docComboBox"))
+                    docComboBox = (JFXComboBox) node;
+                else if (node.getId().equals("btnAdd"))
+                    btnAdd = (JFXButton) node;
+                else if (node.getId().equals("btnCancel"))
+                    btnCancel = (JFXButton) node;
+            }
         }
         initValues();
     }

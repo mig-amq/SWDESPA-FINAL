@@ -8,21 +8,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="482.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXTextField fx:id="nameTextField" focusColor="#1c6c9e" layoutX="97.0" layoutY="63.0" prefHeight="26.0" prefWidth="321.0" />
-      <Label layoutX="23.0" layoutY="63.0" prefHeight="26.0" prefWidth="66.0" text="Name:">
+      <Label fx:id="lblName" layoutX="23.0" layoutY="63.0" prefHeight="26.0" prefWidth="66.0" text="Name:">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="23.0" layoutY="137.0" prefHeight="26.0" prefWidth="66.0" text="Date:">
+      <Label fx:id="lblDate" layoutX="23.0" layoutY="137.0" prefHeight="26.0" prefWidth="66.0" text="Date:">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="23.0" layoutY="222.0" prefHeight="26.0" prefWidth="74.0" text="Time Start:">
+      <Label fx:id="lblStart" layoutX="23.0" layoutY="222.0" prefHeight="26.0" prefWidth="74.0" text="Time Start:">
          <font>
             <Font size="15.0" />
          </font>
@@ -34,25 +33,25 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="199.0" layoutY="222.0" prefHeight="26.0" prefWidth="28.0" text=":" textAlignment="CENTER">
+      <Label fx:id="lblStartSep" alignment="CENTER" layoutX="199.0" layoutY="222.0" prefHeight="26.0" prefWidth="28.0" text=":" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <JFXComboBox fx:id="minStartComboBox" focusColor="#1c6c9e" layoutX="238.0" layoutY="222.0" prefHeight="26.0" prefWidth="82.0" />
-      <Label layoutX="23.0" layoutY="322.0" prefHeight="26.0" prefWidth="74.0" text="Time End:">
+      <Label fx:id="lblEnd" layoutX="23.0" layoutY="322.0" prefHeight="26.0" prefWidth="74.0" text="Time End:">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
       <JFXComboBox fx:id="hrEndComboBox" focusColor="#1c6c9e" layoutX="100.0" layoutY="322.0" prefHeight="26.0" prefWidth="82.0" />
-      <Label alignment="CENTER" layoutX="199.0" layoutY="322.0" prefHeight="26.0" prefWidth="28.0" text=":" textAlignment="CENTER">
+      <Label fx:id="lblEndSep" alignment="CENTER" layoutX="199.0" layoutY="322.0" prefHeight="26.0" prefWidth="28.0" text=":" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <JFXComboBox fx:id="minEndComboBox" focusColor="#1c6c9e" layoutX="238.0" layoutY="322.0" prefHeight="26.0" prefWidth="82.0" />
-      <Label layoutX="23.0" layoutY="413.0" prefHeight="26.0" prefWidth="74.0" text="Doctor:">
+      <Label fx:id="lblDoctors" layoutX="23.0" layoutY="413.0" prefHeight="26.0" prefWidth="74.0" text="Doctor:">
          <font>
             <Font size="15.0" />
          </font>
@@ -68,7 +67,7 @@
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <Label layoutX="19.0" layoutY="14.0" prefHeight="38.0" prefWidth="415.0" text="Add Appointment">
+      <Label fx:id="lblAdd" layoutX="19.0" layoutY="14.0" prefHeight="38.0" prefWidth="415.0" text="Add Appointment">
          <font>
             <Font size="24.0" />
          </font>
