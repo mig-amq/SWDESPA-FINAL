@@ -3,7 +3,6 @@ package udc.doctor;
 import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,9 +15,8 @@ import udc.Model;
 import udc.customfx.calendar.Calendar;
 import udc.customfx.drawerpanel.DrawerPanel;
 import udc.customfx.paneledview.PaneledView;
-import udc.doctor.controllers.DoctorController;
+import udc.doctor.controllers.Content;
 import udc.notifier.AppointmentNotifier;
-import udc.objects.account.Account;
 import udc.objects.enums.PanelType;
 
 import java.io.ByteArrayInputStream;
@@ -30,15 +28,15 @@ import java.util.Locale;
 public class Doctor extends PaneledView {
 
     protected Label username;
-    protected ImageView img;
+    private ImageView img;
 
     private Calendar calendar;
     private AnchorPane userPane;
     private AnchorPane calPane;
-    private DoctorController dc;
 
     private DrawerPanel drawerPane;
-    protected AppointmentNotifier notifier;
+    private AppointmentNotifier notifier;
+    private Content content;
 
     public Doctor(double width, double height, Locale lang) throws IOException {
         super(width, height, lang);
@@ -52,8 +50,10 @@ public class Doctor extends PaneledView {
         super(800, 650);
         this.setModel(model);
 
-        dc.setModel(this.getModel());
-        dc.setCalendar(this.calendar);
+
+        content.setModel(this.getModel());
+        content.setAgendas(this.getModel().getAccount().getAppointments());
+        content.update();
     }
 
     @Override
@@ -91,7 +91,6 @@ public class Doctor extends PaneledView {
         calPane = new AnchorPane();
         calPane.setPrefHeight(255);
 
-        dc = new DoctorController();
 
         try {
             AnchorPane buttonPanel = new AnchorPane();
@@ -144,15 +143,16 @@ public class Doctor extends PaneledView {
                 String date = newValue.format(DateTimeFormatter.ofPattern("LLLL dd, uuuu (E)", this.getLocale()));
                 this.getTitle().setText("Doctor - " + date);
 
-                if (dc != null) {
-                    dc.update(this.calendar.getDate());
+                if (content != null) {
+                    content.setDate(newValue);
+                    content.update();
                 }
             });
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Doctor.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Content.fxml"));
             this.contentPane.getChildren().add(loader.load());
 
-            dc = loader.getController();
+            content = loader.getController();
         } catch (IOException e) {
             e.printStackTrace();
         }

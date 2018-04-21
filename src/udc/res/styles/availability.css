@@ -1,0 +1,18 @@
+Label, JFXCheckBox {
+    -fx-text-fill: #ab2626;
+    -fx-prompt-text-fill: #ab2626;
+}
+
+#pnlTool {
+    -fx-background-color: #8a1d1d;
+}
+
+#close {
+    -fx-cursor: hand;
+}
+
+JFXButton {
+    -fx-background-color: #8a1d1d;
+    -fx-text-fill: #fff;
+    -fx-background-radius: 0;
+}

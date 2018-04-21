@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="740.0" type="TableView" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <columns>
+        <TableColumn fx:id="time" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" sortable="false" text="Time" />
+        <TableColumn fx:id="description" editable="false" maxWidth="615.0" minWidth="468.0" prefWidth="557.0" resizable="false" sortable="false" text="Description">
+         <columns>
+            <TableColumn fx:id="monday" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Monday" />
+            <TableColumn fx:id="tuesday" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Tuesday" />
+            <TableColumn fx:id="wednesday" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Wednesday" />
+            <TableColumn fx:id="thursday" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Thursday" />
+            <TableColumn fx:id="friday" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Friday" />
+            <TableColumn fx:id="Saturday" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Saturday" />
+            <TableColumn fx:id="Sunday" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Sunday" />
+         </columns></TableColumn>
+    </columns>
+</fx:root>

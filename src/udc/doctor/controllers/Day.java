@@ -1,42 +1,45 @@
 package udc.doctor.controllers;
 
+import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import udc.Model;
-import udc.customfx.calendar.Calendar;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Unavailable;
+import udc.secretary.Controller.AbstractControl;
 import udc.secretary.Controller.DaySchedule;
 import udc.secretary.Controller.WeekSchedule;
 
-import java.time.LocalDate;
+import java.io.IOException;
 import java.util.ArrayList;
 
+public class Day extends TableView {
+    private Node node;
+    private TableView<DaySchedule> tbView;
+    private ObservableList<Node> components;
+    private TableColumn<DaySchedule, String> tcDoctorColumn;
 
-public abstract class SuperController {
-    protected Model model;
-    protected  Calendar calendar;
-    protected ArrayList<Agenda> agendas;
-    protected ArrayList<Unavailable> Unavailability;
+    public Day() throws IOException{
+        node = FXMLLoader.load(getClass().getResource("../fxml/Day.fxml"));
+        components = ((AnchorPane)((ScrollPane)(node)).getContent()).getChildren();
 
-    public void setModel(Model model) {
-        this.model = model;
+        initComponents(components);
+        initPropertValues();
     }
 
-    public Model getModel() {
-        return model;
+    public Node getNode() {
+        return node;
     }
 
-    public void setCalendar(Calendar calendar){
-        this.calendar = calendar;
+    public boolean isOdd(int i){
+        return i % 2 != 0;
     }
-
-    public Calendar getCalendar(){
-        return calendar;
-    }
-
-    public abstract void update(LocalDate ldt);
 
     public String getDispTime(int hr, int i){
         String time;
@@ -59,10 +62,6 @@ public abstract class SuperController {
 
         time += end;
         return time;
-    }
-
-    public boolean isOdd(int i){
-        return i % 2 != 0;
     }
 
     public String convertTimeFromTable(String time){
@@ -123,44 +122,6 @@ public abstract class SuperController {
         return index;
     }
 
-    protected void insertUnavailabilitytoAgendas(){
-        for (int i = 0; i < Unavailability.size() ; i++)
-            agendas.add(Unavailability.get(i));
-    }
-
-    protected LocalDate findStartingDay(LocalDate date){
-        LocalDate tempDate = date;
-        int subtract = date.getDayOfWeek().getValue() - 1;
-        tempDate = date.minusDays(subtract);
-        return tempDate;
-    }
-
-    private boolean isEqualDate(Agenda agenda, LocalDate selected){
-
-        if(agenda instanceof Appointment) {
-            return agenda.getStartTime().toLocalDate().isEqual(selected);
-        }
-        return false;//
-    }
-
-    protected ArrayList<Agenda> findData(LocalDate selected){
-        ArrayList<Agenda> arrayList = new ArrayList<>();
-        for (int i = 0; i < agendas.size(); i++) {
-            Agenda agenda = agendas.get(i);
-            if(isEqualDate(agenda, selected))
-                arrayList.add(agenda);
-        }
-        return arrayList;
-    }
-
-    protected ArrayList<ArrayList<Agenda>> findWeekAgenda(){
-        ArrayList<ArrayList<Agenda>> WeekAgenda = new ArrayList<>();
-        LocalDate StDayofWeek = findStartingDay(calendar.getSelected());
-        for (int i = 0; i < 7; i++)
-            WeekAgenda.add(findData(StDayofWeek.minusDays(-i)));
-        return WeekAgenda;
-    }
-
     public void setColumnCellFactory(TableColumn<WeekSchedule, String> a, int b){
         a.setCellFactory(column -> {
             return new TableCell<WeekSchedule, String>() {
@@ -179,7 +140,6 @@ public abstract class SuperController {
     }
 
     private void applyCellFactoryCondition(String item, TableCell a){
-        System.out.println(item);
         if (item.contains("Dr. Miguel Quiambao") && !item.contains("Unavailable")) {
             a.setStyle("-fx-background-color: #42f498");
 //                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
@@ -195,13 +155,13 @@ public abstract class SuperController {
             a.setText(item);
         } else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
             a.setText("");
-            a.setStyle("-fx-background-color: #d83c66");
+            a.setStyle("-fx-background-color: #e25d2d");
         } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Unavailable")){
             a.setText("");
-            a.setStyle("-fx-background-color: #d35e43");
+            a.setStyle("-fx-background-color: #3382bf");
         }else if(item.equalsIgnoreCase("(Unavailable)")){ //both
             a.setText("");
-            a.setStyle("-fx-background-color: #f44242");
+            a.setStyle("-fx-background-color: #87312b");
         }  else{
             a.setStyle("-fx-background-color: #e5e2cc");
             a.setStyle("-fx-border-color: #c6c5ba");
@@ -225,6 +185,67 @@ public abstract class SuperController {
 
             };
         });
+    }
+
+    private void initComponents(ObservableList<Node> component){
+        for (int i = 0; i < component.size(); i++) {
+            Node node  = component.get(i);
+            if(node.getId() !=null){
+                if(node.getId().equals("tbView")){
+                    tbView = (TableView) node;
+                    tbView.getSelectionModel().setCellSelectionEnabled(true);
+                    for (int j = 0; j < tbView.getColumns().size(); j++) {
+                        if (tbView.getColumns().get(j).getId().equals("colDoctors"))
+                            tcDoctorColumn = (TableColumn<DaySchedule, String>) tbView.getColumns().get(j);
+                    }
+                }
+
+                //add more here if you're adding more components to gui
+            }
+        }
+    }
+
+    private void initPropertValues(){
+        String[] cells = new String[]{"sTime", "sClientDoctor"};
+        for (int i = 0; i < tbView.getColumns().size(); i++) {
+            TableColumn col = tbView.getColumns().get(i);
+            col.setCellValueFactory(new PropertyValueFactory<WeekSchedule, String>(cells[i]));
+        }
+    }
+
+    public void insertFilteredData(ArrayList<Agenda> data){//ArrayList<Appointment> data
+//        data = sortTime(data);
+        //TODO: ADD UNAVAILABILITY DISPLAY, PLACE IT INSIDE findData method()
+        tbView.getItems().clear();
+        int hr = 7;
+        for (int i = 0; i < 33; i++) {
+            int index;
+
+            String time = getDispTime(hr, i);
+            if(!isOdd(i))
+                hr++;
+            String index1 = getUnavailabilityFromList(data, time);
+            if((index = getDataIndexfromList(data, time)) >= 0 ) {
+                Appointment agenda = (Appointment) data.get(index);
+                tbView.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName() + "\nClient: " + agenda.getClientName()));
+            }else if(!index1.equals("")){
+                String[] a = index1.split(" | ");
+                if(a.length == 2) {
+                    tbView.getItems().add(new DaySchedule(time, "(Unavailable)"));
+                } else if(a.length == 1){
+                    Unavailable agenda = (Unavailable) data.get(Integer.parseInt(a[a.length -1]));
+                    tbView.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName() + " - " + "Unavailable"));
+                }else {
+                    tbView.getItems().add(new DaySchedule(time, ""));
+                }
+            }
+            else
+                tbView.getItems().add(new DaySchedule(time, ""));
+        }
+        setColumnCellFactory(tcDoctorColumn);
+    }
+    public TableView<DaySchedule> getTbView(){
+        return tbView;
     }
 
 }

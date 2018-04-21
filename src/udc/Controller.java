@@ -124,7 +124,7 @@ public class Controller implements Initializable{
                 btnSave.setDisable(true);
             } else if (server.getText().matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\:\\d{1,5}")) {
                 settingsLog.setText("");
-                btnSave.setDisable(false);
+//                btnSave.setDisable(false);
             }
         });
 
@@ -134,7 +134,7 @@ public class Controller implements Initializable{
                 btnSave.setDisable(true);
             } else if (db.getText().matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\:\\d{1,5}")) {
                 settingsLog.setText("");
-                btnSave.setDisable(false);
+//                btnSave.setDisable(false);
             }
         });
 

@@ -131,16 +131,14 @@ public class Calendar extends AnchorPane{
 
             panel.getChildren().add(label);
 
-            if (temp.isAfter(LocalDate.now()) || temp.isEqual(LocalDate.now())) {
-                LocalDate finalTemp = temp;
-                label.setOnMouseClicked(event -> this.select(finalTemp));
+            LocalDate finalTemp = temp;
+            label.setOnMouseClicked(event -> this.select(finalTemp));
 
-                if (selected.get() != null) {
-                    if (selected.get().isEqual(temp))
-                        label.getStyleClass().add("selected");
-                } else if (temp.isEqual(LocalDate.now())) {
+            if (selected.get() != null) {
+                if (selected.get().isEqual(temp))
                     label.getStyleClass().add("selected");
-                }
+            } else if (temp.isEqual(LocalDate.now())) {
+                label.getStyleClass().add("selected");
             }
 
             temp = temp.plus(1, ChronoUnit.DAYS);
