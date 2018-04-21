@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="cAgendaWeek" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="436.0" prefWidth="543.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="udc.client.regular.FXMLControllers.ClientAgendaDayController">
+   <children>
+      <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="543.0">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="406.0" prefWidth="529.0">
+               <children>
+                  <ListView fx:id="weekList" prefHeight="420.0" prefWidth="551.0" />
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+      <Label layoutX="1.0" layoutY="392.0" text="Select Doctor/s">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="mWeekCmbBox" layoutX="1.0" layoutY="412.0" prefHeight="25.0" prefWidth="196.0" promptText="All" />
+   </children>
+</AnchorPane>
