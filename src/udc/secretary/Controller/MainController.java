@@ -27,17 +27,19 @@ import java.util.ArrayList;
 
 public class MainController {
     private AnchorPane contentPane, secViewPane;
-    private Node SecretaryMainNode, secWeekView, secDayView, secDayAgendaView, secWalkInView;
+    private Node SecretaryMainNode, secWeekView, secDayView, secDayAgendaView, secWeekAgendaView;
     private Pane SecretaryMainPane;
     private ObservableList<Node> SCMpaneComponents;
     private SecWeekControl secWeekControl;
     private SecDayViewControl secDayViewControl;
     private SecDayAgendaControl secDayAgendaControl;
+    private SecWeekAgendaControl secWeekAgendaControl;
     private SecWalkInControl walkInControl;
+    private SecAppointmentControl secAppointmentControl;
     private JFXRadioButton rdbtnCalendarView, rdbtnAgendaView,
             rdbtnDayView, rdbtnWeekView, rdbtnAvailable, rdbtnTaken;
     private JFXComboBox cmbBoxDoctors;
-    private JFXButton btnWalkIn;
+    private JFXButton btnWalkIn, btnAdd;
     private Model model;
     private ArrayList<String> doctorList;
     private ArrayList<Agenda> agendas;
@@ -70,6 +72,7 @@ public class MainController {
         secWeekControl = new SecWeekControl();
         secDayViewControl = new SecDayViewControl();
         secDayAgendaControl = new SecDayAgendaControl(model);
+        secWeekAgendaControl = new SecWeekAgendaControl();
     }
 
     private void initNodesChildren(){
@@ -77,6 +80,7 @@ public class MainController {
         secDayView = secDayViewControl.getSecDayViewNode(); //scrollpane
         secWeekView = secWeekControl.getNdSecWeekViewNode();//scrollpane
         secDayAgendaView = secDayAgendaControl.getNdSecDayAgendaViewNode();
+        secWeekAgendaView = secWeekAgendaControl.getNdSecWeekAgendaViewNode();
     }
 
     private void initData(AnchorPane pnlTool){
@@ -140,6 +144,8 @@ public class MainController {
                     cmbBoxDoctors = (JFXComboBox) node;
                 else if (node instanceof JFXButton && node.getId().equals("btnWalkIn"))
                     btnWalkIn = (JFXButton) node;
+                else if (node instanceof JFXButton && node.getId().equals("btnAdd"))
+                    btnAdd = (JFXButton) node;
             }
 
         }
@@ -160,7 +166,6 @@ public class MainController {
         rdbtnAgendaView.setOnAction(event -> {
             setDisableButtons(false);
             secViewPane.getChildren().clear();
-            secDayAgendaControl.reset();
             agendaViewCondition();
         });
 
@@ -218,6 +223,23 @@ public class MainController {
                 stage.show();
             }
             catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        btnAdd.setOnAction(event -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/SecAppointmentView.fxml"));
+            secAppointmentControl = new SecAppointmentControl(model);
+            loader.setController(secAppointmentControl);
+            loader.setRoot(secAppointmentControl.getSecAppointmentNode());
+            Parent root;
+            try{
+                root = (Parent) secAppointmentControl.getSecAppointmentNode();
+                Stage stage = new Stage();
+                stage.setTitle("New Walk-in");
+                stage.setScene(new Scene(root, 482, 524));
+                stage.show();
+            } catch(Exception e){
                 e.printStackTrace();
             }
         });
@@ -317,7 +339,6 @@ public class MainController {
     }
 
     public void calendarViewCondition(){
-        rdbtnWeekView.setDisable(false);
         if (rdbtnDayView.isSelected()){
             secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()));
             setColumnName((String) cmbBoxDoctors.getSelectionModel().getSelectedItem());
@@ -337,11 +358,7 @@ public class MainController {
     }
 
     public void agendaViewCondition(){
-        secViewPane.getChildren().clear();
-        rdbtnWeekView.setDisable(true);
-        rdbtnDayView.setSelected(true);
         if (rdbtnDayView.isSelected()){
-            secDayAgendaControl.reset();
             secDayAgendaControl.setLabel(calendar.selectedProperty().get());
             if (rdbtnAvailable.isSelected()){
                 secDayAgendaControl.setRemoveButtonDisabled(true);
@@ -351,6 +368,14 @@ public class MainController {
                 secDayAgendaControl.setRemoveButtonDisabled(false);
                 secDayAgendaControl.insertFilteredData(findData(calendar.selectedProperty().get()));
                 secViewPane.getChildren().setAll(secDayAgendaView);
+            }
+        } else if (rdbtnWeekView.isSelected()){
+            secWeekAgendaControl.setLabel(calendar.selectedProperty().get());
+            if (rdbtnAvailable.isSelected()){
+                secViewPane.getChildren().setAll(secWeekAgendaView);
+            } else{
+                secWeekAgendaControl.insertFilteredData(findWeekAgenda());
+                secViewPane.getChildren().setAll(secWeekAgendaView);
             }
         }
     }
@@ -364,7 +389,7 @@ public class MainController {
     }
 
     private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctorName){
-        //TODO: fix doctor names and timeslots
+        //TODO: fix this to reflect the new way to get available slots
         ArrayList<Agenda> availableSlots = new ArrayList<Agenda>();
         int hr = 7;
         int min;

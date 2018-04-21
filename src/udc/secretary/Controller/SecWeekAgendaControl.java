@@ -9,75 +9,61 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import udc.Model;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Available;
 import udc.objects.time.concrete.Unavailable;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class SecDayAgendaControl extends AbstractControl {
-    private Node ndSecDayAgendaViewNode;
+public class SecWeekAgendaControl extends AbstractControl{
+    private Node ndSecWeekAgendaViewNode;
     private Label lblSlots;
-    private JFXListView agendaList;
-    private JFXButton btnRemove;
+    private JFXListView weekAgendaList;
 
-    public SecDayAgendaControl(Model model){
-        ndSecDayAgendaViewNode = loadSecDayAgendaView();
+    public SecWeekAgendaControl(){
+        ndSecWeekAgendaViewNode = loadSecWeekAgendaViewNode();
         initComponents();
-        agendaList.setItems(FXCollections.observableArrayList(""));
-        btnRemove.setOnAction(event -> {
-            String[] contents = agendaList.getSelectionModel().getSelectedItem().toString().split(" ");
-            //remove in database, then call model.setState()
-            if (!contents[contents.length - 1].equals("Unavailable")) {
-                Appointment a = new Appointment();
-                a.setId(Integer.parseInt(contents[0].trim()));
-                model.getDbController().deleteAppointment(a);
-                model.setState();
-            } 
-        });
+        weekAgendaList.setItems(FXCollections.observableArrayList(""));
     }
 
-    public void setRemoveButtonDisabled(boolean cond){
-        btnRemove.setDisable(cond);
-    }
-
-    private Node loadSecDayAgendaView(){
+    private Node loadSecWeekAgendaViewNode(){
         Node node = null;
         try{
-            node = FXMLLoader.load(getClass().getResource("../FXMLFiles/SecDayAgendaView.fxml"));
-        }catch (Exception e){
+            node = FXMLLoader.load(getClass().getResource("../FXMLFiles/SecWeekAgendaView.fxml"));
+        } catch (Exception e){
             e.printStackTrace();
         }
+
         return node;
     }
 
     private void initComponents(){
-        Node n = ndSecDayAgendaViewNode.lookup("#lblSlots");
+        Node n = ndSecWeekAgendaViewNode.lookup("#lblSlots");
         lblSlots = (Label) n;
-        n = ((AnchorPane) ndSecDayAgendaViewNode).lookup("#agendaScroll");
-        agendaList = (JFXListView) ((AnchorPane) ((ScrollPane) n).getContent().lookup("#anchorAgenda")).getChildren().get(0);
-        btnRemove = (JFXButton) ((AnchorPane) ((ScrollPane) n).getContent().lookup("#anchorAgenda")).getChildren().get(1);
+        n = ((AnchorPane) ndSecWeekAgendaViewNode).lookup("#agendaScroll");
+        weekAgendaList = (JFXListView) ((AnchorPane) ((ScrollPane) n).getContent().lookup("#anchorAgenda")).getChildren().get(0);
     }
 
-    public Node getNdSecDayAgendaViewNode(){
-        return ndSecDayAgendaViewNode;
+    public Node getNdSecWeekAgendaViewNode() {
+        return ndSecWeekAgendaViewNode;
     }
 
     public void setLabel(LocalDate date){
-        lblSlots.setText("Slots for ");
+        lblSlots.setText("Slots for the Week of ");
         lblSlots.setText(lblSlots.getText() + date);
     }
 
-    public void insertFilteredData(ArrayList<Agenda> data) {
-        agendaList.getItems().clear();
+    public void insertFilteredData(ArrayList<ArrayList<Agenda>> data){
+        //still incomplete
+        weekAgendaList.getItems().clear();
         ObservableList<String> string = FXCollections.observableArrayList();
-        for (int i = 0; i < data.size(); i++)
-            addString(string, data.get(i));
-        agendaList.setItems(FXCollections.observableArrayList(string));
+        for (int i = 0; i < 7; i++){
+            for (int j = 0; j < data.get(i).size(); j++)
+                addString(string, data.get(i).get(j));
+        }
+        weekAgendaList.setItems(string);
     }
 
     private void addString(ObservableList<String> string, Agenda data){
@@ -117,14 +103,16 @@ public class SecDayAgendaControl extends AbstractControl {
         }
 
         if (data instanceof Appointment){
-            string.add("ID: " + data.getId() + " " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+            string.add("ID: " + data.getId() + " " + data.getStartTime().getMonth() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear() + " "
+                    + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
                     + ", Dr." + ((Appointment) data).getDoctorName() + ", " + ((Appointment) data).getClientName());
-        }
-        else if (data instanceof Unavailable){
-            string.add(hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+        } else if (data instanceof Unavailable){
+            string.add(data.getStartTime().getMonth() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear() + " "
+                    + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
                     + ", Dr." + ((Unavailable) data).getDoctorName() + ", Unavailable");
         } else if (data instanceof Available){
-            string.add(hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Available) data).getDoctorName() + ", Open");
+            string.add(data.getStartTime().getMonth() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear() + " "
+                    + hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Available) data).getDoctorName() + ", Open");
         }
     }
 }

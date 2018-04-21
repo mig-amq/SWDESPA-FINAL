@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="482.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXTextField fx:id="nameTextField" focusColor="#1c6c9e" layoutX="97.0" layoutY="63.0" prefHeight="26.0" prefWidth="321.0" />
+      <Label layoutX="23.0" layoutY="63.0" prefHeight="26.0" prefWidth="66.0" text="Name:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="23.0" layoutY="137.0" prefHeight="26.0" prefWidth="66.0" text="Date:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="23.0" layoutY="222.0" prefHeight="26.0" prefWidth="74.0" text="Time Start:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <JFXDatePicker fx:id="datePicker" defaultColor="#1c6c9ef2" layoutX="100.0" layoutY="136.0" prefHeight="26.0" prefWidth="321.0" />
+      <JFXComboBox fx:id="hrStartComboBox" focusColor="#1c6c9e" layoutX="100.0" layoutY="222.0" prefHeight="26.0" prefWidth="82.0" />
+      <Label alignment="CENTER" layoutX="190.0" layoutY="280.0" prefHeight="26.0" prefWidth="46.0" text="to">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="199.0" layoutY="222.0" prefHeight="26.0" prefWidth="28.0" text=":" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="minStartComboBox" focusColor="#1c6c9e" layoutX="238.0" layoutY="222.0" prefHeight="26.0" prefWidth="82.0" />
+      <Label layoutX="23.0" layoutY="322.0" prefHeight="26.0" prefWidth="74.0" text="Time End:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="hrEndComboBox" focusColor="#1c6c9e" layoutX="100.0" layoutY="322.0" prefHeight="26.0" prefWidth="82.0" />
+      <Label alignment="CENTER" layoutX="199.0" layoutY="322.0" prefHeight="26.0" prefWidth="28.0" text=":" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="minEndComboBox" focusColor="#1c6c9e" layoutX="238.0" layoutY="322.0" prefHeight="26.0" prefWidth="82.0" />
+      <Label layoutX="23.0" layoutY="413.0" prefHeight="26.0" prefWidth="74.0" text="Doctor:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="docComboBox" focusColor="#1c6c9e" layoutX="97.0" layoutY="413.0" prefHeight="26.0" prefWidth="322.0" />
+      <JFXButton fx:id="btnAdd" layoutX="157.0" layoutY="471.0" prefHeight="37.0" prefWidth="82.0" style="-fx-background-color: #1c6c9e;" text="Add" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnCancel" layoutX="258.0" layoutY="471.0" prefHeight="38.0" prefWidth="82.0" style="-fx-background-color: #1c6c9e;" text="Cancel" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <Label layoutX="19.0" layoutY="14.0" prefHeight="38.0" prefWidth="415.0" text="Add Appointment">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="startComboBox" focusColor="#1c6c9e" layoutX="340.0" layoutY="222.0" prefHeight="26.0" prefWidth="66.0" />
+      <JFXComboBox fx:id="endComboBox" focusColor="#1c6c9e" layoutX="340.0" layoutY="322.0" prefHeight="26.0" prefWidth="66.0" />
+   </children>
+</AnchorPane>
