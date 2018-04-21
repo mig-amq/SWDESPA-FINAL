@@ -195,10 +195,10 @@ public class SecWeekControl extends AbstractControl {
             } else if (!index1.equals("")) {
                 String[] a = index1.split(" | ");
                 if (a.length == 2) {
-                   return "(Unavailable)";
+                   return "(Available)";
                 } else if (a.length == 1) {
                     Unavailable agenda = (Unavailable) data.get(DayofWeek).get(Integer.parseInt(a[a.length - 1]));
-                    return "Dr. " + agenda.getDoctorName() + " - " + "Unavailable";
+                    return "Dr. " + agenda.getDoctorName() + " - " + "Available";
                 }
             }
         }

@@ -84,10 +84,10 @@ public class SecDayViewControl extends AbstractControl {
              }else if(!index1.equals("")){
                  String[] a = index1.split(" | ");
                  if(a.length == 2) {
-                     tbView.getItems().add(new DaySchedule(time, "(Unavailable)"));
+                     tbView.getItems().add(new DaySchedule(time, "(Available)"));
                  } else if(a.length == 1){
                      Unavailable agenda = (Unavailable) data.get(Integer.parseInt(a[a.length -1]));
-                     tbView.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName() + " - " + "Unavailable"));
+                     tbView.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName() + " - " + "Available"));
                  }else {
                      tbView.getItems().add(new DaySchedule(time, ""));
                  }

@@ -53,7 +53,7 @@ public abstract class AbstractControl {
     //this adds 0 to the front
     public String convertIntHrorMintoString(int value) {
         if(value == 0)//for this case if you decided to use 12am as time
-        return "00";
+            return "00";
         else if(value < 10)
             return 0 + String.valueOf(value);
         return String.valueOf(value);
@@ -67,7 +67,7 @@ public abstract class AbstractControl {
                 String endTime = convertIntHrorMintoString(data.get(i).getEndTime().getHour()) + convertIntHrorMintoString(data.get(i).getEndTime().getMinute());
                 String nTime = convertTimeFromTable(time); //converts time from table to military
                 if (nTime.equals(agendaTime) || (Integer.parseInt(endTime) > Integer.parseInt(nTime) && Integer.parseInt(agendaTime)
-                < Integer.parseInt(nTime)))
+                        < Integer.parseInt(nTime)))
                     return i;
             }
         }
@@ -90,7 +90,6 @@ public abstract class AbstractControl {
                 }
             }
         }
-        System.out.println("Index1: " + index);
         return index;
     }
 
@@ -111,36 +110,39 @@ public abstract class AbstractControl {
         });
     }
 
-     private void applyCellFactoryCondition(String item, TableCell a){
-         if (item.contains("Dr. Miguel Quiambao") && !item.contains("Unavailable")) {
-             a.setStyle("-fx-background-color: #42f498");
+    private void applyCellFactoryCondition(String item, TableCell a){
+        System.out.println(item);
+        if (item.contains("Dr. Miguel Quiambao") && !item.contains("Available")) {
+            a.setStyle("-fx-border-color: #42f498");
 //                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
 //                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
 //                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
-             a.setText(item);
-         }else if(item.contains("Dr. Mitchell Ong") && !item.contains("Unavailable")){
-             a.setStyle("-fx-background-color: #6aa2fc");
+            System.out.println(item);
+            a.setText(item);
+        }else if(item.contains("Dr. Mitchell Ong") && !item.contains("Available")){
+            a.setStyle("-fx-border-color: #6aa2fc");
 //                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
 //                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
 //                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
-             //See SecWeekControl for Code Continuation
-             a.setText(item);
-         } else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
-             a.setText("");
-             a.setStyle("-fx-background-color: #e25d2d");
-         } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Unavailable")){
-             a.setText("");
-             a.setStyle("-fx-background-color: #3382bf");
-         }else if(item.equalsIgnoreCase("(Unavailable)")){ //both
-             a.setText("");
-             a.setStyle("-fx-background-color: #87312b");
-         }  else{
-             a.setStyle("-fx-background-color: #e5e2cc");
-             a.setStyle("-fx-border-color: #c6c5ba");
-             a.setText(null);
-             a.setGraphic(null);
-         }
-     }
+            //See SecWeekControl for Code Continuation
+
+            a.setText(item);
+        } else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Available")){
+            a.setText("");
+            a.setStyle("-fx-border-color: #3382bf");
+        } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Available")){
+            a.setText("");
+            a.setStyle("-fx-border-color: #e25d2d");
+        }else if(item.equalsIgnoreCase("(Available)")){ //both
+            a.setText("");
+            a.setStyle("-fx-border-color-color: #ffffff");
+        }  else{
+            a.setStyle("-fx-border-color: #87312b");
+//            a.setStyle("-fx-background-color: #c6c5ba");
+            a.setText(null);
+            a.setGraphic(null);
+        }
+    }
 
     public void setColumnCellFactory(TableColumn<DaySchedule, String> a){
         a.setCellFactory(column -> {
