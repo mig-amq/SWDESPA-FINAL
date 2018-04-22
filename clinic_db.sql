@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: clinic_db
 -- ------------------------------------------------------
--- Server version	5.7.21
+-- Server version	5.7.20-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -55,7 +55,7 @@ CREATE TABLE `appointment` (
   `time_end` varchar(45) NOT NULL,
   `doctor_id` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
-  `recurring` tinyint(4) NOT NULL,
+  `recurring` tinyint(4) NOT NULL DEFAULT '0',
   `except_dates` varchar(999) DEFAULT NULL,
   `approved` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`appointment_id`),
@@ -63,7 +63,7 @@ CREATE TABLE `appointment` (
   KEY `fk_appointment_client1_idx` (`client_id`),
   CONSTRAINT `fk_appointment_client1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_appointment_doctor1` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,8 +72,36 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (1,'2018/04/17 07:30 am','2018/04/17 08:00 am',1,1,0,NULL),(2,'2018/04/18 07:30 am','2018/04/18 08:00 am',1,2,0,NULL),(3,'2018/04/19 07:30 am','2018/04/19 08:00 am',1,1,0,NULL),(4,'2018/04/20 07:30 am','2018/04/20 08:00 am',1,2,0,NULL),(5,'2018/04/21 07:30 am','2018/04/21 08:00 am',1,1,0,NULL),(6,'2018/04/22 07:30 am','2018/04/22 08:00 am',1,2,0,NULL),(7,'2018/04/23 07:30 am','2018/04/23 08:00 am',1,1,0,NULL),(8,'2018/04/17 05:30 pm','2018/04/17 06:00 pm',2,1,0,NULL),(9,'2018/04/18 06:00 pm','2018/04/18 06:30 pm',2,2,0,NULL),(10,'2018/04/18 06:30 pm','2018/04/18 07:00 pm',2,1,0,NULL);
+INSERT INTO `appointment` VALUES (1,'2018/04/17 07:30 am','2018/04/17 08:00 am',1,1,0,NULL,1),(2,'2018/04/18 07:30 am','2018/04/18 08:00 am',1,2,0,NULL,1),(3,'2018/04/19 07:30 am','2018/04/19 08:00 am',1,1,0,NULL,1),(4,'2018/04/20 07:30 am','2018/04/20 08:00 am',1,2,0,NULL,1),(5,'2018/04/21 07:30 am','2018/04/21 08:00 am',1,1,0,NULL,1),(6,'2018/04/22 07:30 am','2018/04/22 08:00 am',1,2,0,NULL,1),(7,'2018/04/23 07:30 am','2018/04/23 08:00 am',1,1,0,NULL,1),(8,'2018/04/17 05:30 pm','2018/04/17 06:00 pm',2,1,0,NULL,1),(9,'2018/04/18 06:00 pm','2018/04/18 06:30 pm',2,2,0,NULL,1),(10,'2018/04/18 06:30 pm','2018/04/18 07:00 pm',2,1,0,NULL,1),(11,'2018/04/18 02:30 pm','2018/04/18 04:30 pm',1,1,0,NULL,1);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `availability`
+--
+
+DROP TABLE IF EXISTS `availability`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `availability` (
+  `doctor_id` int(11) NOT NULL,
+  `time_start` varchar(45) NOT NULL,
+  `time_end` varchar(45) NOT NULL,
+  `recurring` varchar(45) NOT NULL,
+  `except_dates` varchar(999) DEFAULT NULL,
+  KEY `fk_availability_doctor_idx` (`doctor_id`),
+  CONSTRAINT `fk_availability_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `availability`
+--
+
+LOCK TABLES `availability` WRITE;
+/*!40000 ALTER TABLE `availability` DISABLE KEYS */;
+INSERT INTO `availability` VALUES (1,'2018/04/18 08:30 am','2018/04/18 11:30 am','0',NULL),(2,'2018/04/18 10:30 am','2018/04/18 02:30 pm','0',NULL);
+/*!40000 ALTER TABLE `availability` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -161,33 +189,6 @@ LOCK TABLES `secretary` WRITE;
 INSERT INTO `secretary` VALUES (1,'Ivan','Dichaves',4);
 /*!40000 ALTER TABLE `secretary` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `unavailability`
---
-
-DROP TABLE IF EXISTS availability;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `availability` (
-  `doctor_id` int(11) NOT NULL,
-  `time_start` varchar(45) NOT NULL,
-  `time_end` varchar(45) NOT NULL,
-  `recurring` tinyint(4) NOT NULL,
-  `except_dates` varchar(999) DEFAULT NULL,
-  KEY `fk_availability_doctor_idx` (`doctor_id`),
-  CONSTRAINT `fk_availability_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `unavailability`
---
-
-LOCK TABLES availability WRITE;
-/*!40000 ALTER TABLE availability DISABLE KEYS */;
-/*!40000 ALTER TABLE availability ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -198,4 +199,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-17 20:11:18
+-- Dump completed on 2018-04-21 18:03:35
