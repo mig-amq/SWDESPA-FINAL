@@ -57,6 +57,7 @@ CREATE TABLE `appointment` (
   `client_id` int(11) NOT NULL,
   `recurring` tinyint(4) NOT NULL,
   `except_dates` varchar(999) DEFAULT NULL,
+  `approved` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`appointment_id`),
   KEY `fk_appointment_doctor1_idx` (`doctor_id`),
   KEY `fk_appointment_client1_idx` (`client_id`),
@@ -168,7 +169,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS availability;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `unavailability` (
+CREATE TABLE `availability` (
   `doctor_id` int(11) NOT NULL,
   `time_start` varchar(45) NOT NULL,
   `time_end` varchar(45) NOT NULL,

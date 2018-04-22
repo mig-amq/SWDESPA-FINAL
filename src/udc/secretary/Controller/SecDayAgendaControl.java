@@ -72,59 +72,57 @@ public class SecDayAgendaControl extends AbstractControl {
         lblSlots.setText(lblSlots.getText() + date);
     }
 
-    public void insertFilteredData(ArrayList<Agenda> data) {
+    public void insertFilteredData(ArrayList<Agenda> data, LocalDate selected) {
         agendaList.getItems().clear();
         ObservableList<String> string = FXCollections.observableArrayList();
         for (int i = 0; i < data.size(); i++)
-            addString(string, data.get(i));
+            addString(string, data.get(i), selected);
         agendaList.setItems(FXCollections.observableArrayList(string));
     }
 
-    private void addString(ObservableList<String> string, Agenda data){
-        String hrS = Integer.toString(data.getStartTime().getHour());
-        String minS = Integer.toString(data.getStartTime().getMinute());
-        String hrE = "";
-        String minE = "";
-        if (!(data instanceof Available)) {
-            hrE = Integer.toString(data.getEndTime().getHour());
-            minE = Integer.toString(data.getEndTime().getMinute());
-        }
-        String sTimeOfDay = "AM";
-        String eTimeOfDay = "AM";
+    private void addString(ObservableList<String> string, Agenda data, LocalDate selected){
+        if (data.getStartTime().toLocalDate().isEqual(selected)) {
+            String hrS = Integer.toString(data.getStartTime().getHour());
+            String minS = Integer.toString(data.getStartTime().getMinute());
+            String hrE = "";
+            String minE = "";
+            if (!(data instanceof Unavailable)) {
+                hrE = Integer.toString(data.getEndTime().getHour());
+                minE = Integer.toString(data.getEndTime().getMinute());
+            }
+            String sTimeOfDay = "AM";
+            String eTimeOfDay = "AM";
 
-        if (data.getStartTime().getHour() < 10)
-            hrS = "0" + hrS;
-        else if (data.getStartTime().getHour() >= 12) {
-            if (data.getStartTime().getHour() != 12)
-                hrS = Integer.toString(Integer.parseInt(hrS) - 12);
-            sTimeOfDay = "PM";
-        }
-
-        if (data.getStartTime().getMinute() < 10)
-            minS = "0" + minS;
-
-        if (!(data instanceof Available)) {
-            if (data.getEndTime().getHour() < 10)
-                hrE = "0" + hrE;
-            else if (data.getEndTime().getHour() >= 12) {
-                if (data.getEndTime().getHour() != 12)
-                    hrE = Integer.toString(Integer.parseInt(hrE) - 12);
-                eTimeOfDay = "PM";
+            if (data.getStartTime().getHour() < 10)
+                hrS = "0" + hrS;
+            else if (data.getStartTime().getHour() >= 12) {
+                if (data.getStartTime().getHour() != 12)
+                    hrS = Integer.toString(Integer.parseInt(hrS) - 12);
+                sTimeOfDay = "PM";
             }
 
-            if (data.getEndTime().getMinute() < 10)
-                minE = "0" + minE;
-        }
+            if (data.getStartTime().getMinute() < 10)
+                minS = "0" + minS;
 
-        if (data instanceof Appointment){
-            string.add("ID: " + data.getId() + " " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
-                    + ", Dr." + ((Appointment) data).getDoctorName() + ", " + ((Appointment) data).getClientName());
-        }
-        else if (data instanceof Unavailable){
-            string.add(hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
-                    + ", Dr." + ((Unavailable) data).getDoctorName() + ", Unavailable");
-        } else if (data instanceof Available){
-            string.add(hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Available) data).getDoctorName() + ", Open");
+            if (!(data instanceof Unavailable)) {
+                if (data.getEndTime().getHour() < 10)
+                    hrE = "0" + hrE;
+                else if (data.getEndTime().getHour() >= 12) {
+                    if (data.getEndTime().getHour() != 12)
+                        hrE = Integer.toString(Integer.parseInt(hrE) - 12);
+                    eTimeOfDay = "PM";
+                }
+
+                if (data.getEndTime().getMinute() < 10)
+                    minE = "0" + minE;
+            }
+
+            if (data instanceof Appointment) {
+                string.add("ID: " + data.getId() + " " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+                        + ", Dr." + ((Appointment) data).getDoctorName() + ", " + ((Appointment) data).getClientName());
+            } else if (data instanceof Unavailable) {
+                string.add(hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Unavailable) data).getDoctorName() + ", Open");
+            }
         }
     }
 }

@@ -71,7 +71,7 @@ public class SecWeekAgendaControl extends AbstractControl{
         String minS = Integer.toString(data.getStartTime().getMinute());
         String hrE = "";
         String minE = "";
-        if (!(data instanceof Available)) {
+        if (!(data instanceof Unavailable)) {
             hrE = Integer.toString(data.getEndTime().getHour());
             minE = Integer.toString(data.getEndTime().getMinute());
         }
@@ -89,7 +89,7 @@ public class SecWeekAgendaControl extends AbstractControl{
         if (data.getStartTime().getMinute() < 10)
             minS = "0" + minS;
 
-        if (!(data instanceof Available)) {
+        if (!(data instanceof Unavailable)) {
             if (data.getEndTime().getHour() < 10)
                 hrE = "0" + hrE;
             else if (data.getEndTime().getHour() >= 12) {
@@ -103,16 +103,11 @@ public class SecWeekAgendaControl extends AbstractControl{
         }
 
         if (data instanceof Appointment){
-            string.add("ID: " + data.getId() + " " + data.getStartTime().getMonth() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear() + " "
-                    + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+            string.add("ID: " + data.getId() + " " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
                     + ", Dr." + ((Appointment) data).getDoctorName() + ", " + ((Appointment) data).getClientName());
-        } else if (data instanceof Unavailable){
-            string.add(data.getStartTime().getMonth() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear() + " "
-                    + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
-                    + ", Dr." + ((Unavailable) data).getDoctorName() + ", Unavailable");
-        } else if (data instanceof Available){
-            string.add(data.getStartTime().getMonth() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear() + " "
-                    + hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Available) data).getDoctorName() + ", Open");
+        }
+        else if (data instanceof Unavailable){ //unavailable class is treated as available slot
+            string.add(hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Unavailable) data).getDoctorName() + ", Open");
         }
     }
 }
