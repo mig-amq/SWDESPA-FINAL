@@ -362,11 +362,15 @@ public class MainController {
             secDayAgendaControl.setLabel(calendar.selectedProperty().get());
             if (rdbtnAvailable.isSelected()){
                 secDayAgendaControl.setRemoveButtonDisabled(true);
-                secDayAgendaControl.insertFilteredData(getAvailableSlots(calendar.selectedProperty().get(), cmbBoxDoctors.getSelectionModel().getSelectedItem().toString()));
+                secDayAgendaControl.insertFilteredData(getAvailableSlots(calendar.selectedProperty().get(), cmbBoxDoctors.getSelectionModel().getSelectedItem().toString()), calendar.getSelected());
                 secViewPane.getChildren().setAll(secDayAgendaView);
             } else{
                 secDayAgendaControl.setRemoveButtonDisabled(false);
-                secDayAgendaControl.insertFilteredData(findData(calendar.selectedProperty().get()));
+                try {
+                    secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(-1, ""), calendar.getSelected());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 secViewPane.getChildren().setAll(secDayAgendaView);
             }
         } else if (rdbtnWeekView.isSelected()){
@@ -388,6 +392,7 @@ public class MainController {
         return rdbtnAgendaView.isSelected();
     }
 
+    //old way of getting available slots
     private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctorName){
         //TODO: fix this to reflect the new way to get available slots
         ArrayList<Agenda> availableSlots = new ArrayList<Agenda>();
@@ -468,4 +473,12 @@ public class MainController {
         return availableSlots;
     }
 
+//    NEW IMPLEMENTATION OF getAvailableSlots()
+//    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, int doctor_id){
+//        if (doctor_id > 0)
+//              ArrayList<Agenda> availableSlots = model.getDbController().getUnvailability(doctor_id); //returns availability of that doctor
+    //    else doctor_id = -1, getUnvailability(doctor_id);
+//        //now you have the available slots, get the appointment slots of all doctors? then check all pag may nagequal start time, tanggalin mo yung availability na yun
+//        //after the loop ok na return it
+//    }
 }

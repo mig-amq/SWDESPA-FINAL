@@ -6,11 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import udc.Model;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class SecWalkInControl {
@@ -61,11 +63,18 @@ public class SecWalkInControl {
         btnApprove.setOnAction(event -> {
             if (listWalkIn.getItems().size() != 0) {
                 String[] sub = listWalkIn.getSelectionModel().getSelectedItem().toString().split(" ");
-                Appointment a = new Appointment();
-                a.setId(Integer.parseInt(sub[0].trim()));
-                model.getDbController().acceptWalkin(a);
-                observableList.remove(listWalkIn.getSelectionModel().getSelectedIndex());
-                listWalkIn.setItems(observableList);
+                if (isValidAppointment(sub)) {
+                    Appointment a = new Appointment();
+                    a.setId(Integer.parseInt(sub[0].trim()));
+                    model.getDbController().acceptWalkin(a);
+                    observableList.remove(listWalkIn.getSelectionModel().getSelectedIndex());
+                    listWalkIn.setItems(observableList);
+                } else{
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Slot taken!");
+                    alert.setContentText("The chosen appointment slot is already taken!");
+                    alert.showAndWait();
+                }
             }
         });
 
@@ -80,6 +89,47 @@ public class SecWalkInControl {
                 listWalkIn.setItems(observableList);
             }
         });
+    }
+
+    private boolean isValidAppointment(String[] sub){
+        //id, mm-dd-yyyy:, hrS:minSsTimeofDay, -, hrE:minEeTimeofDay, Dr.Doctorname, clientname
+        //String[] date = sub[1].split("-"); //date[0] month, date[1] day, date[2].substring(0,4) year
+        boolean valid = true;
+        String[] date = sub[1].split("-");
+        int m = Integer.parseInt(date[0]);
+        int d = Integer.parseInt(date[1]);
+        int y = Integer.parseInt(date[2].substring(0, 4));
+
+        //String[] starttime = sub[2].split(":") starttime[0] hour, starttime[1].substring(0, 2) minute
+        String[] starttime = sub[2].split(":");
+        int hrS = Integer.parseInt(starttime[0]);
+        int minS = Integer.parseInt(starttime[1].substring(0, 2));
+        if (starttime[1].substring(2, 4).equalsIgnoreCase("pm"))
+            hrS += 12;
+
+        //String[] endtime = sub[4].split(":") endtime[0] hour, endttime[1].substring(0, 2) minute
+        String[] endtime = sub[4].split(":");
+        int hrE = Integer.parseInt(endtime[0]);
+        int minE = Integer.parseInt(endtime[1].substring(0, 2));
+        if (endtime[1].substring(2, 4).equalsIgnoreCase("pm"))
+            hrE += 12;
+
+        LocalDateTime appSDateTime = LocalDateTime.of(y, m, d, hrS, minS);
+        LocalDateTime appEDateTime = LocalDateTime.of(y, m, d, hrE, minE);
+
+        //lacks checking if the time slot is available
+        try {
+            ArrayList<Agenda> appointments = model.getDbController().getAppointments(-1, "");
+            for (int i = 0; i < appointments.size(); i++){
+                if (appSDateTime.isEqual(appointments.get(i).getStartTime()) || appEDateTime.isEqual(appointments.get(i).getEndTime())
+                    || (appSDateTime.isBefore(appointments.get(i).getEndTime()) && appSDateTime.isAfter(appointments.get(i).getStartTime()))
+                    || (appEDateTime.isAfter(appointments.get(i).getStartTime()) && appEDateTime.isBefore(appointments.get(i).getEndTime())))
+                    valid = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return valid;
     }
 
     public void resetList(){

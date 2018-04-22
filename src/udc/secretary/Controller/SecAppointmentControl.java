@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import javafx.stage.Stage;
 import udc.Model;
 import udc.objects.time.concrete.Agenda;
 
@@ -109,6 +110,7 @@ public class SecAppointmentControl {
                 addWalkIn();
 //                if (addWalkIn()){
 //
+//                    ((Stage) getSecAppointmentNode().getScene().getWindow()).close();
 //                } else {
 //                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
 //                    alert.setTitle("Slot Taken!");
@@ -124,7 +126,7 @@ public class SecAppointmentControl {
         });
 
         btnCancel.setOnAction(event -> {
-            //close window
+            ((Stage) getSecAppointmentNode().getScene().getWindow()).close();
         });
     }
 
@@ -182,5 +184,13 @@ public class SecAppointmentControl {
 
     //check if the slot chosen is not taken
     private void addWalkIn(){
+        // get checking for conflicts in appointments from SecWalkInControl class
+        // get appointments and doctor's unavailability, combine them in a single list
+        // iterate and check if the start time of the walk in appointment to be added clashes with any of the contents of the list, if clashes return false agad
+        // if none return true
+        // OR
+        // get available slots like in MainController
+        // iterate and check if the start time of the walk in appointment to be added is equal to any of the contents if equal, return true agad
+        // if natapos yung loop return false
     }
 }

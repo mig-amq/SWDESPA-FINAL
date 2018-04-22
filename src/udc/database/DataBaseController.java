@@ -563,13 +563,13 @@ public class DataBaseController {
                     tempList.get(tempList.size() - 1).setExceptions(temp0);
                 } else {
 //                    tempList.add(builder.build(rSet.getInt("appointment_id"),
-////                            strToTime(rSet.getString("time_start")),
-//                    System.out.println(rSet.getString("time_end"));
-//                    tempList.add(builder.build(rSet.getInt("appointment_id"),
 //                            strToTime(rSet.getString("time_start")),
-//                            strToTime(rSet.getString("time_end")),
-//                            rSet.getString("doctor"),
-//                            rSet.getString("client")));
+//                    System.out.println(rSet.getString("time_end"));
+                    tempList.add(builder.build(/*rSet.getInt("appointment_id"),*/
+                            strToTime(rSet.getString("time_start")),
+                            strToTime(rSet.getString("time_end")),
+                            rSet.getString("doctor"),
+                            rSet.getString("client")));
                 }
             }
 
