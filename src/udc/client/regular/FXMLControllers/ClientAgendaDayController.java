@@ -22,14 +22,14 @@ import java.util.ResourceBundle;
 
 public class ClientAgendaDayController extends ClientSuperController implements Initializable {
 
-
     @FXML
     private ListView<String> dayList;
 
-    private ObservableList<String> items;
-
     @FXML
     private ComboBox<String> mDayCmbBox;
+
+    private ObservableList<String> items;
+
 
     private void setList() throws Exception
     {
@@ -41,8 +41,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
 
         ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
         dayList.getItems().clear();
-        ArrayList<String> sTemp = null;
-
 
         if( calendar == null)
             now = LocalDateTime.now();
@@ -54,24 +52,25 @@ public class ClientAgendaDayController extends ClientSuperController implements 
                 endTemp = temp.get(i).getEndTime();
                 doctor = ((Appointment) temp.get(i)).getDoctorName();
 
-                if ((mDayCmbBox.getValue() == null || mDayCmbBox.getValue().equals(doctor) && (startTemp.getDayOfMonth() == now.getDayOfMonth() && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())))
+                if ((mDayCmbBox.getValue() == null || mDayCmbBox.getValue().equals(doctor) && (startTemp.getDayOfMonth() == now.getDayOfMonth()
+                     && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() &&
+                     startTemp.getYear() == now.getYear())))
                 {
                     String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                      endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                     items.add(s);
                 }
-
             }
+
     }
 
 
-@Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources)
+    {
        items = dayList.getItems();
-
-            setCalendar(calendar);
-
+       System.out.println("Hi: " + items);
+       setCalendar(calendar);
     }
 
     public void setCmb()
@@ -79,7 +78,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         ObservableList<String> list = FXCollections.observableArrayList();
         list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
         mDayCmbBox.setItems(list);
-
         mDayCmbBox.valueProperty().addListener((observable -> {
             update();
         }));
@@ -88,21 +86,17 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     @Override
     public void setModel (Model model) {
         super.setModel(model);
-
         try {
             setList();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         setCmb();
-
     }
 
     @Override
     public void setCalendar (Calendar calendar) {
         super.setCalendar(calendar);
-
     }
 
     @Override

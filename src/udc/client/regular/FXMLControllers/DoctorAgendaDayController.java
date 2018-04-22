@@ -31,76 +31,73 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
 
     private ObservableList<String> items;
 
-    private void setList() throws Exception {
 
-        ObservableList<String> finaltemp = null;
+    private void setList() throws Exception
+    {
+        LocalDateTime now;
+
+        LocalDateTime startTemp;
+        LocalDateTime endTemp;
+        String doctor;
+
+        ArrayList<Agenda> temp = model.getDbController().getAppointments(-1, "");
         dayList.getItems().clear();
 
-        LocalDateTime now;
         if( calendar == null)
             now = LocalDateTime.now();
         else
             now =  calendar.getSelected().atStartOfDay();
 
-
-        ArrayList<Agenda> temp = model.getDbController().getAppointments(-1, "");
-
         items.add("TAKEN SLOTS");
 
-
             for (int i = 0; i < temp.size(); i++) {
-                LocalDateTime startTemp = temp.get(i).getStartTime();
-                LocalDateTime endTemp = temp.get(i).getEndTime();
-                String doctor = ((Appointment) temp.get(i)).getDoctorName();
-                String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
-
+                startTemp = temp.get(i).getStartTime();
+                endTemp = temp.get(i).getEndTime();
+                doctor = ((Appointment) temp.get(i)).getDoctorName();
+                if ((bDayCmbBox.getValue() == null || bDayCmbBox.getValue().equals(doctor) && (startTemp.getDayOfMonth() == now.getDayOfMonth()
+                     && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() &&
+                     startTemp.getYear() == now.getYear())))
                 {
-                    if ((bDayCmbBox.getValue() == null || bDayCmbBox.getValue().equals(doctor) && (startTemp.getDayOfMonth() == now.getDayOfMonth() && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() && startTemp.getYear() == now.getYear())))
-                    {
-                        String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                                endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
-                        items.add(s);
-                    }
+                    String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                            endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                    items.add(s);
                 }
             }
-
     }
 
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-     //   items.clear();
+    public void initialize(URL location, ResourceBundle resources)
+    {
         items = dayList.getItems();
-
+        System.out.println("Hi: " + items);
         setCalendar(calendar);
-
-
     }
+
     public void setCmb()
     {
         ObservableList<String> list = FXCollections.observableArrayList();
         list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
         bDayCmbBox.setItems(list);
+        bDayCmbBox.valueProperty().addListener((observable -> {
+            update();
+        }));
     }
 
     @Override
     public void setModel (Model model) {
         super.setModel(model);
-
         try {
             setList();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         setCmb();
     }
-
 
     @Override
     public void setCalendar (Calendar calendar) {
         super.setCalendar(calendar);
-
     }
 
     @Override
@@ -114,6 +111,6 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
 
     @Override
     public void insertFilterData(LocalDate selected) {
-        items = dayList.getItems();
+
     }
 }

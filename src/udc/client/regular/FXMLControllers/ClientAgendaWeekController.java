@@ -16,75 +16,52 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ClientAgendaWeekController extends ClientSuperController implements Initializable {
-    @FXML private ListView<String> weekList;
+    @FXML
+    private ListView<String> weekList;
 
     @FXML
     private ComboBox<String> mWeekCmbBox;
 
     private ObservableList<String> items;
 
-//    private ObservableList<Agenda> mon;
-//    private ObservableList<Agenda> tues;
-//    private ObservableList<Agenda> wed;
-//    private ObservableList<Agenda> thurs;
-//    private ObservableList<Agenda> fri;
-//    private ObservableList<Agenda> sat;
-//    private ObservableList<Agenda> sun;
-
-    private void setList() throws Exception {
-        //  items.add("00:00" + "-" + "02:30" + " " + "Dr JDC");
-        //  items.add("00:00" + "-" + "01:30" + " " + ":)");
-
+    private void setList() throws Exception
+    {
         LocalDateTime now;
-        if( calendar == null)
+        LocalDateTime startTemp;
+        LocalDateTime endTemp;
+        int weekNo;
+        int weekTemp;
+        String doctor;
+        String s;
+        WeekFields weekFTemp;
+
+        if(calendar == null)
             now = LocalDateTime.now();
         else
             now =  calendar.getDate().atStartOfDay();
 
-        String s;
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        weekNo = now.get(weekFields.weekOfWeekBasedYear());
+
+        System.out.println(weekNo);
 
         ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
 
-     //   dayList.getItems().clear();
-
-        LocalDateTime startTemp;
-        LocalDateTime endTemp;
-        int startMin;
-        int endMin;
-        String sMin;
-        String eMin;
-        String doctor;
-
         for (int i = 0; i < temp.size(); i++)
         {
             startTemp = temp.get(i).getStartTime();
             endTemp = temp.get(i).getEndTime();
-            startMin = startTemp.getMinute();
-            endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
+            weekFTemp = WeekFields.of(Locale.getDefault());
+            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 1) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
-                        items.add(s);
-
-            }
-        }
-
-        for (int i = 0; i < temp.size(); i++)
-        {
-            startTemp = temp.get(i).getStartTime();
-            endTemp = temp.get(i).getEndTime();
-            startMin = startTemp.getMinute();
-            endMin = endTemp.getMinute();
-            doctor = ((Appointment) temp.get(i)).getDoctorName();
-            String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
-
-            if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 2) {
+            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 1) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
@@ -95,11 +72,11 @@ public class ClientAgendaWeekController extends ClientSuperController implements
         {
             startTemp = temp.get(i).getStartTime();
             endTemp = temp.get(i).getEndTime();
-            startMin = startTemp.getMinute();
-            endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
+            weekFTemp = WeekFields.of(Locale.getDefault());
+            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 3) {
+            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 2) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
@@ -110,12 +87,11 @@ public class ClientAgendaWeekController extends ClientSuperController implements
         {
             startTemp = temp.get(i).getStartTime();
             endTemp = temp.get(i).getEndTime();
-            startMin = startTemp.getMinute();
-            endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
-            String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
+            weekFTemp = WeekFields.of(Locale.getDefault());
+            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 4) {
+            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 3) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
@@ -126,12 +102,11 @@ public class ClientAgendaWeekController extends ClientSuperController implements
         {
             startTemp = temp.get(i).getStartTime();
             endTemp = temp.get(i).getEndTime();
-            startMin = startTemp.getMinute();
-            endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
-            String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
+            weekFTemp = WeekFields.of(Locale.getDefault());
+            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 5) {
+            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 4) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
@@ -142,12 +117,11 @@ public class ClientAgendaWeekController extends ClientSuperController implements
         {
             startTemp = temp.get(i).getStartTime();
             endTemp = temp.get(i).getEndTime();
-            startMin = startTemp.getMinute();
-            endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
-            String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
+            weekFTemp = WeekFields.of(Locale.getDefault());
+            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 6) {
+            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 5) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
@@ -158,53 +132,73 @@ public class ClientAgendaWeekController extends ClientSuperController implements
         {
             startTemp = temp.get(i).getStartTime();
             endTemp = temp.get(i).getEndTime();
-            startMin = startTemp.getMinute();
-            endMin = endTemp.getMinute();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
-            String eampm = temp.get(i).getEndTime().format(DateTimeFormatter.ofPattern("a"));
+            weekFTemp = WeekFields.of(Locale.getDefault());
+            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (temp.get(i).getStartTime().getDayOfWeek().getValue() == 7) {
+            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 6) {
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                items.add(s);
+            }
+        }
+
+        for (int i = 0; i < temp.size(); i++)
+        {
+            startTemp = temp.get(i).getStartTime();
+            endTemp = temp.get(i).getEndTime();
+            doctor = ((Appointment) temp.get(i)).getDoctorName();
+            weekFTemp = WeekFields.of(Locale.getDefault());
+            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
+
+            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 7) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
                 items.add(s);
             }
         }
     }
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-       // items.clear();
         items = weekList.getItems();
-
-
-    }
+        System.out.println("Hi: " + items);
+        setCalendar(calendar);
+}
 
     public void setCmb()
     {
         ObservableList<String> list = FXCollections.observableArrayList();
         list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
         mWeekCmbBox.setItems(list);
+        mWeekCmbBox.valueProperty().addListener((observable -> {
+            update();
+        }));
     }
-
 
     @Override
     public void setModel (Model model) {
         super.setModel(model);
-
         try {
             setList();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         setCmb();
     }
 
     @Override
-    public void update() {
+    public void setCalendar (Calendar calendar) {
+        super.setCalendar(calendar);
+    }
 
+    @Override
+    public void update() {
+        try {
+            setList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
