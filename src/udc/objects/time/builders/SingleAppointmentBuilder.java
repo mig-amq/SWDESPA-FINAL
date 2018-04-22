@@ -22,7 +22,7 @@ public class SingleAppointmentBuilder extends AppointmentBuilder {
         return this.getAppointment();
     }
 
-    public ArrayList<Appointment> build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
+    public ArrayList<Appointment> buildMultiple (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
         ArrayList<Appointment> list = new ArrayList<>();
 
         LocalDateTime temp = start;

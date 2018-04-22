@@ -22,22 +22,22 @@ public class RecurringAppointmentBuilder extends AppointmentBuilder {
         return this.getAppointment();
     }
 
-//    public ArrayList<Appointment> build (LocalDateTime start, LocalDateTime end, String doctor, String client) {
-//        ArrayList<Appointment> list = new ArrayList<>();
-//        LocalDateTime temp = start;
-//        while(temp.isBefore(end)){
-//
-//            this.getAppointment().setDoctorName(doctor);
-//            this.getAppointment().setClientName(client);
-//            this.getAppointment().setStartTime(temp);
-//            this.getAppointment().setEndTime(temp.plusMinutes(30));
-//            this.getAppointment().setType(AgendaType.RECURRING);
-//            temp = temp.plusMinutes(30);
-//            list.add(this.getAppointment());
-//        }
-//
-//        return list;
-//    }
+    public ArrayList<Appointment> buildMultiple (LocalDateTime start, LocalDateTime end, String doctor, String client) {
+        ArrayList<Appointment> list = new ArrayList<>();
+        LocalDateTime temp = start;
+        while(temp.isBefore(end)){
+
+            this.getAppointment().setDoctorName(doctor);
+            this.getAppointment().setClientName(client);
+            this.getAppointment().setStartTime(temp);
+            this.getAppointment().setEndTime(temp.plusMinutes(30));
+            this.getAppointment().setType(AgendaType.RECURRING);
+            temp = temp.plusMinutes(30);
+            list.add(this.getAppointment());
+        }
+
+        return list;
+    }
 
     public Appointment build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
         this.build(id, start, end);
@@ -49,20 +49,20 @@ public class RecurringAppointmentBuilder extends AppointmentBuilder {
         return this.getAppointment();
     }
 
-//    public ArrayList<Appointment> build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
-//        ArrayList<Appointment> list = new ArrayList<>();
-//        LocalDateTime temp = start;
-//        while(temp.isBefore(end)){
-//            this.getAppointment().setID(id
-;//            this.getAppointment().setDoctorName(doctor);
-//            this.getAppointment().setClientName(client);
-//            this.getAppointment().setStartTime(temp);
-//            this.getAppointment().setEndTime(temp.plusMinutes(30));
-//            this.getAppointment().setType(AgendaType.RECURRING);
-//            temp = temp.plusMinutes(30);
-//            list.add(this.getAppointment());
-//        }
-//
-//        return list;
-//    }
+    public ArrayList<Appointment> buildMultiple (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
+        ArrayList<Appointment> list = new ArrayList<>();
+        LocalDateTime temp = start;
+        while(temp.isBefore(end)){
+            this.getAppointment().setId(id);
+            this.getAppointment().setDoctorName(doctor);
+            this.getAppointment().setClientName(client);
+            this.getAppointment().setStartTime(temp);
+            this.getAppointment().setEndTime(temp.plusMinutes(30));
+            this.getAppointment().setType(AgendaType.RECURRING);
+            temp = temp.plusMinutes(30);
+            list.add(this.getAppointment());
+        }
+
+        return list;
+    }
 }
