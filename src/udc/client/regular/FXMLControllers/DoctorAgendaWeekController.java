@@ -161,6 +161,9 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
                 items.add(s);
             }
         }
+
+        if (items == null)
+            items.add("No appointments this Week");
     }
 
 

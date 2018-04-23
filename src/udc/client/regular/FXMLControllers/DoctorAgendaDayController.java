@@ -63,6 +63,9 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
                             endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                     items.add(s);
                 }
+
+                if (items == null)
+                    items.add("No appointments Today");
             }
     }
 

@@ -77,9 +77,6 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             weekFTemp = WeekFields.of(Locale.getDefault());
             weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
-            System.out.println("Today Week NO: " + weekNo + "\n" +
-                    "chosen week no: " + weekTemp);
-
             if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 2) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
@@ -161,6 +158,9 @@ public class ClientAgendaWeekController extends ClientSuperController implements
                 items.add(s);
             }
         }
+
+        if (items == null)
+            items.add("No appointments this Week");
     }
 
     @Override
