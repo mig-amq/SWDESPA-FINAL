@@ -245,7 +245,7 @@ public class MainController {
         });
     }
 
-    private void insertUnavailabilitytoAgendas(){
+    private void insertUnavailabilitytoAgendas() {
         for (int i = 0; i < Unavailability.size() ; i++)
             agendas.add(Unavailability.get(i));
     }
@@ -362,7 +362,7 @@ public class MainController {
             secDayAgendaControl.setLabel(calendar.selectedProperty().get());
             if (rdbtnAvailable.isSelected()){
                 secDayAgendaControl.setRemoveButtonDisabled(true);
-                secDayAgendaControl.insertFilteredData(getAvailableSlots(calendar.selectedProperty().get(), cmbBoxDoctors.getSelectionModel().getSelectedItem().toString()), calendar.getSelected());
+                secDayAgendaControl.insertFilteredData(getAvailableSlots(calendar.selectedProperty().get(), cmbBoxDoctors.getSelectionModel().getSelectedIndex()), calendar.getSelected());
                 secViewPane.getChildren().setAll(secDayAgendaView);
             } else{
                 secDayAgendaControl.setRemoveButtonDisabled(false);
@@ -392,93 +392,35 @@ public class MainController {
         return rdbtnAgendaView.isSelected();
     }
 
-    //old way of getting available slots
-    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctorName){
-        //TODO: fix this to reflect the new way to get available slots
-        ArrayList<Agenda> availableSlots = new ArrayList<Agenda>();
-        int hr = 7;
-        int min;
-        for (int i = 0; i < 30; i++){
-            if (i % 2 != 0){
-                hr++;
-                min = 0;
-            }
-            else
-                min = 30;
-
-            Available a = new Available();
-            a.setStartTime(LocalDateTime.of(selected, LocalTime.of(hr, min)));
-            if (!doctorName.equalsIgnoreCase("All"))
-                a.setDoctorName(doctorName.substring(4));
-            availableSlots.add(a);
-        }
-
+//    NEW IMPLEMENTATION OF getAvailableSlots()
+    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, int doctor_id){
+        ArrayList<Unavailable> availableSlots = new ArrayList<>();
+        ArrayList<Agenda> available = new ArrayList<>();
+        ArrayList<Agenda> appointments = new ArrayList<>();
         try {
-            if (!doctorName.equalsIgnoreCase("All")) {
-                ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(-1);
-                for (int i = 0; i < availableSlots.size(); i++) {
-                    for (int j = 0; j < unavailable.size(); j++) {
-                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())
-                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(unavailable.get(j).getStartTime().toLocalTime())
-                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))){
-                            availableSlots.remove(i);
-
-                        }
-                    }
-                }
-                availableSlots.trimToSize();
-
-                ArrayList<Agenda> appointments = findData(selected); //returns data for the day selected
-                for (int i = 0; i < availableSlots.size(); i++){
-                    for (int j = 0; j < appointments.size(); j++){
-                        if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime())
-                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime()) //start time of the available slot is after the start time of the appointment and before the end time of the appointment iremove mo
-                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(appointments.get(j).getEndTime().toLocalTime()))
-                                && !(appointments.get(j) instanceof Unavailable)
-                                /*&& doctorName.substring(4).equals(((Appointment) appointments.get(j)).getDoctorName())*/){
-                            availableSlots.remove(i);
-
-                        }
-                    }
-                }
-                //|| availableSlots.get(i).getStartTime().toLocalTime().isBefore(((Appointment) appointments.get(i)).getEndTime().toLocalTime())
-
-                availableSlots.trimToSize();
-            } else{
-                ArrayList<Unavailable> unavailable = model.getDbController().getUnvailability(-1);
-
-                for (int i = 0; i < availableSlots.size(); i++)
-                    for (int j = 0; j < unavailable.size(); j++)
-                        if (availableSlots.get(i).getStartTime().equals(unavailable.get(j).getStartTime())
-                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(unavailable.get(j).getStartTime().toLocalTime())
-                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(unavailable.get(j).getEndTime().toLocalTime()))){
-                            availableSlots.remove(i);
-                        }
-                availableSlots.trimToSize();
-
-                ArrayList<Agenda> appointments = findData(selected);
-                for (int i = 0; i < availableSlots.size(); i++)
-                    for (int j = 0; j < appointments.size(); j++)
-                        if (availableSlots.get(i).getStartTime().equals(appointments.get(j).getStartTime())
-                                || (availableSlots.get(i).getStartTime().toLocalTime().isAfter(appointments.get(j).getStartTime().toLocalTime())
-                                && availableSlots.get(i).getStartTime().toLocalTime().isBefore(appointments.get(j).getEndTime().toLocalTime()))){
-                            availableSlots.remove(i);
-                        }
-                availableSlots.trimToSize();
-            }
-        } catch (Exception e) {
+            if (doctor_id > 0)
+                availableSlots = model.getDbController().getUnvailability(doctor_id); //returns availability of that doctor
+            else
+                availableSlots = model.getDbController().getUnvailability(-1);
+            appointments = model.getDbController().getAppointments(-1, "");
+        } catch(Exception e){
             e.printStackTrace();
         }
 
-        return availableSlots;
-    }
+        for (int i = 0; i < availableSlots.size(); i++){
+            for (int j = 0; j < appointments.size(); j++){
+                if (appointments.get(j).getStartTime().toLocalDate().isEqual(selected))
+                    if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime()))
+                        availableSlots.remove(i);
+            }
+        }
 
-//    NEW IMPLEMENTATION OF getAvailableSlots()
-//    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, int doctor_id){
-//        if (doctor_id > 0)
-//              ArrayList<Agenda> availableSlots = model.getDbController().getUnvailability(doctor_id); //returns availability of that doctor
-    //    else doctor_id = -1, getUnvailability(doctor_id);
-//        //now you have the available slots, get the appointment slots of all doctors? then check all pag may nagequal start time, tanggalin mo yung availability na yun
-//        //after the loop ok na return it
-//    }
+        for (int i = 0; i < availableSlots.size(); i++)
+            available.add((Agenda) availableSlots.get(i));
+
+
+        return available;
+        //now you have the available slots, get the appointment slots of all doctors? then check all pag may nagequal start time, tanggalin mo yung availability na yun
+        //after the loop ok na return it
+    }
 }
