@@ -1,7 +1,6 @@
 package udc.client.regular.FXMLControllers;
 
 import com.jfoenix.controls.JFXComboBox;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -66,11 +65,9 @@ public class ClientCalDayController extends ClientSuperController implements Ini
                 hr++;
             String index1 = getUnavailabilityFromList(data, time);
             if((index = getDataIndexfromList(data, time)) >= 0 ) {
-                System.out.println("appointment HEHHEH");
                 Appointment agenda = (Appointment) data.get(index);
                 dayTable.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName()));
             }else if(!index1.equals("")){
-                System.out.println("ALIEN HEHHEH");
                 String[] a = index1.split(" | ");
                 if(a.length == 2) {
                     dayTable.getItems().add(new DaySchedule(time, "(Unavailable)"));
@@ -84,7 +81,6 @@ public class ClientCalDayController extends ClientSuperController implements Ini
             else
                 dayTable.getItems().add(new DaySchedule(time, ""));
         }
-
         setColumnCellFactory(doctor);
     }
 
@@ -108,18 +104,9 @@ public class ClientCalDayController extends ClientSuperController implements Ini
     private void applyCellFactoryCondition(String item, TableCell a){
         if (item.contains("Dr. Miguel Quiambao") && !item.contains("Unavailable")) {
             a.setStyle("-fx-background-color: #42f498");
-            //                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
-            //                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
-            //                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
             a.setText(item);
-            System.out.println("QUIAMBAO");
         }else if(item.contains("Dr. Mitchell Ong") && !item.contains("Unavailable")){
             a.setStyle("-fx-background-color: #6aa2fc");
-            //                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
-            //                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
-            //                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
-            //See SecWeekControl for Code Continuation
-            System.out.println("MITCHELL");
             a.setText(item);
         }
 //        else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
@@ -133,8 +120,8 @@ public class ClientCalDayController extends ClientSuperController implements Ini
 //            a.setStyle("-fx-background-color: #87312b");
 //        }
          else{
-            a.setStyle("-fx-background-color: #f4f4f4");
-//            a.setStyle("-fx-border-color: #c6c5ba");
+//            a.setStyle("-fx-background-color: #f4f4f4");
+            a.setStyle("-fx-border-color: #f4f4f4");
             a.setText(null);
             a.setGraphic(null);
         }
@@ -166,22 +153,14 @@ public class ClientCalDayController extends ClientSuperController implements Ini
         });
     }
 
-
-
     public ArrayList<Agenda> findData(LocalDate selected) throws Exception {
         agendas =  model.getDbController().getAppointments( model.getAccount().getId(), "CLIENT");
         ArrayList<Agenda> arrayList = new ArrayList<>();
 
         for (int i = 0; i < agendas.size(); i++) {
             Agenda agenda = agendas.get(i);
-            System.out.print("Agenda ID: " + agenda.getId() + " start: " + agenda.getStartTime() + " end: " + agenda.getEndTime());
-            if(agenda instanceof Appointment)
-                System.out.println(" " + ((Appointment) agenda).getDoctorName());
-            if(isEqualDate(agenda, selected)) {
-                System.out.print("SELECTED Agenda ID: " + agenda.getId() + " start: " + agenda.getStartTime() + " end: " + agenda.getEndTime());
-                System.out.println(" " + ((Appointment) agenda).getDoctorName());
+            if(isEqualDate(agenda, selected))
                 arrayList.add(agenda);
-            }
         }
         return arrayList;
     }
@@ -190,15 +169,14 @@ public class ClientCalDayController extends ClientSuperController implements Ini
         String sDoctorName = mDoctorCmbBox.getSelectionModel().getSelectedItem();
 
         if(sDoctorName!= null && agenda instanceof Appointment) {
-            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Appointment)agenda).getDoctorName())){
+            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Appointment)agenda).getDoctorName()))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-            }
             else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Appointment) agenda).getDoctorName()))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
             else if(sDoctorName.equals("All"))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
         }else if(sDoctorName != null && agenda instanceof Unavailable){
-            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable)agenda).getDoctorName())) //mq
+            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable)agenda).getDoctorName()))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
             else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
@@ -224,7 +202,6 @@ public class ClientCalDayController extends ClientSuperController implements Ini
                 String nTime = convertTimeFromTable(time); //converts time from table to military
                 if (nTime.equals(agendaTime) || (Integer.parseInt(endTime) > Integer.parseInt(nTime) && Integer.parseInt(agendaTime)
                         < Integer.parseInt(nTime))) {
-
                     index += i + " ";
                     counter--;
                 }

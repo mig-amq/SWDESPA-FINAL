@@ -6,6 +6,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import udc.Model;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Unavailable;
@@ -34,7 +37,30 @@ public class SecAppointmentControl {
         nodeComponents = ((AnchorPane) secAppointmentNode).getChildren();
         initComponents();
         datePicker.setValue(LocalDate.now());
+        Callback<DatePicker, DateCell> dayCellFactory = this.getDayCellFactory();
+        datePicker.setDayCellFactory(dayCellFactory);
         initActions();
+    }
+
+    private Callback<DatePicker, DateCell> getDayCellFactory() {
+        final Callback<DatePicker, DateCell> dayCellFactory = new Callback<>() {
+
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item.isBefore(LocalDate.now())) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #ffffff;");
+                        }
+                    }
+                };
+            }
+        };
+        return dayCellFactory;
     }
 
     public Node getSecAppointmentNode(){

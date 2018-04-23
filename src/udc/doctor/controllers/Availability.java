@@ -4,10 +4,13 @@ import com.jfoenix.controls.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import udc.Model;
 import udc.objects.account.Account;
@@ -64,6 +67,8 @@ public class Availability extends AnchorPane {
     public void initialize() {
         close.setOnMouseClicked(event -> stage.close());
         date.setValue(LocalDate.now());
+        Callback<DatePicker, DateCell> dayCellFactory= this.getDayCellFactory();
+        date.setDayCellFactory(dayCellFactory);
         add.setOnAction(event -> {
             System.out.println("henlo");
             try {
@@ -193,5 +198,25 @@ public class Availability extends AnchorPane {
         return av;
     }
 
+    private Callback<DatePicker, DateCell> getDayCellFactory() {
+        final Callback<DatePicker, DateCell> dayCellFactory = new Callback<>() {
+
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item.isBefore(LocalDate.now())) {
+                            setDisable(true);
+                            setStyle("-fx-background-color: #ffffff;");
+                        }
+                    }
+                };
+            }
+        };
+        return dayCellFactory;
+    }
 
 }

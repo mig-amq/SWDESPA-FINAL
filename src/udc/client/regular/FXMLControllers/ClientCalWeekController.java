@@ -243,8 +243,8 @@ public class ClientCalWeekController extends ClientSuperController implements In
 ////                a.setStyle("-fx-border-color-color: #ffffff");
 //        }
         else{
-            a.setStyle("-fx-background-color: #f4f4f4");
-//            a.setStyle("-fx-background-color: #c6c5ba");
+//            a.setStyle("-fx-background-color: #f4f4f4");
+            a.setStyle("-fx-border-color: #f4f4f4");
             a.setText(null);
             a.setGraphic(null);
         }
