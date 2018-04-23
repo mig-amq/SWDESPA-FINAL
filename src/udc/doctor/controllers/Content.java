@@ -31,10 +31,12 @@ public class Content implements Initializable {
     private ArrayList<Available> availability; //implement later when bored
     private Day dayView;
     private Week weekView;
+    private AgendaDay agendaDayView;
+    private AgendaWeek agendaWeekView;
 
     @FXML private JFXButton add, remove;
     @FXML private AnchorPane content;
-    @FXML private JFXRadioButton day, week;
+    @FXML private JFXRadioButton day, week, agendaDay, agendaWeek;
 
     public Content () {
         this.setDate(LocalDate.now());
@@ -52,6 +54,8 @@ public class Content implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         day.setOnMouseClicked(event -> update());
         week.setOnMouseClicked(event -> update());
+        agendaDay.setOnMouseClicked(event -> update());
+        agendaWeek.setOnMouseClicked(event -> update());
 
         add.setOnAction(event -> {
             Availability availability = null;
@@ -94,11 +98,16 @@ public class Content implements Initializable {
                 dayView = new Day();
                 this.content.getChildren().add(dayView.getNode());
                 dayView.insertFilteredData(findData(this.getDate()));
-            } else {
+            } else if(week.isSelected()) {
                 weekView = new Week(this.model.getAccount().getAppointments(), this.getDate());
                 this.content.getChildren().add(weekView.getNode());
                 weekView.insertFilteredData(findWeekAgenda(this.getDate()), findStartingDay(this.date));
-
+            } else if(agendaDay.isSelected()){
+                agendaDayView = new AgendaDay(this.model);
+                this.content.getChildren().add(agendaDayView.getNode());
+            } else if(agendaWeek.isSelected()){
+                agendaWeekView = new AgendaWeek(this.model);
+                this.content.getChildren().add(agendaWeekView.getNode());
             }
         } catch (IOException e) {
             e.printStackTrace();

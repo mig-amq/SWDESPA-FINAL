@@ -3,18 +3,24 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="740.0" type="TableView" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <columns>
-        <TableColumn fx:id="time" editable="false" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" sortable="false" text="Time" />
-        <TableColumn fx:id="description" editable="false" maxWidth="615.0" minWidth="468.0" prefWidth="557.0" resizable="false" sortable="false" text="Description">
-         <columns>
-            <TableColumn fx:id="mon" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Monday" />
-            <TableColumn fx:id="tue" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Tuesday" />
-            <TableColumn fx:id="wed" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Wednesday" />
-            <TableColumn fx:id="thu" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Thursday" />
-            <TableColumn fx:id="fri" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Friday" />
-            <TableColumn fx:id="Sat" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Saturday" />
-            <TableColumn fx:id="Sun" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Sunday" />
-         </columns></TableColumn>
-    </columns>
-</fx:root>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<content>
+    <AnchorPane fx:id="tablePane" minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="740.0">
+        <children>
+            <TableView fx:id="tvWeekView" prefHeight="500.0" prefWidth="740.0">
+                <columns>
+                    <TableColumn fx:id="mon" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Monday" />
+                    <TableColumn fx:id="tue" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Tuesday" />
+                    <TableColumn fx:id="wed" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Wednesday" />
+                    <TableColumn fx:id="thu" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Thursday" />
+                    <TableColumn fx:id="fri" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Friday" />
+                    <TableColumn fx:id="Sat" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Saturday" />
+                    <TableColumn fx:id="Sun" editable="false" maxWidth="92.0" minWidth="92.0" prefWidth="92.0" sortable="false" text="Sunday" />
+                </columns>
+            </TableView>
+        </children></AnchorPane>
+</content>
+</ScrollPane>

@@ -1,6 +1,7 @@
 package udc.doctor.controllers;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +43,12 @@ public class Week extends TableView<AgendaRow> {
     private TableView<WeekSchedule> tvWeekView;
 
     public Week (ArrayList<Agenda> data) throws IOException{
-        node = FXMLLoader.load(getClass().getResource("../fxml/Week.fxml"));
+        DayListColumns = FXCollections.observableArrayList();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/Week.fxml"));
+        loader.setController(this);
+        loader.load();
+
+        node = (Node) loader.getRoot();
         components = ((AnchorPane)((ScrollPane)(node)).getContent()).getChildren();
 
         initComponents(components);
@@ -257,9 +263,9 @@ public class Week extends TableView<AgendaRow> {
 
     private void insertDateToColumn(ArrayList<String> list){
         for (int i = 0; i < list.size(); i++) {
-            int size = tvWeekView.getColumns().get(i + 1).getText().split(" | ").length;
+            int size = tvWeekView.getColumns().get(i).getText().split(" | ").length;
             tvWeekView.getColumns().get(i + 1).setText(list.get(i) + " " + tvWeekView.getColumns().
-                    get(i + 1).getText().split(" | ")[size -1] );
+                    get(i).getText().split(" | ")[size -1] );
         }
     }
 
