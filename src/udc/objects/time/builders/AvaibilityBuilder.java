@@ -9,6 +9,10 @@ public class AvaibilityBuilder implements AgendaBuilder {
     private int id;
     private Available available;
 
+    public AvaibilityBuilder(){
+        available = new Available();
+    }
+
     @Override
     public Agenda build(LocalDateTime start, LocalDateTime end) {
         this.setAvailable(new Available());

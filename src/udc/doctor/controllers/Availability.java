@@ -3,6 +3,7 @@ package udc.doctor.controllers;
 import com.jfoenix.controls.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -11,20 +12,25 @@ import javafx.util.StringConverter;
 import udc.Model;
 import udc.objects.account.Account;
 import udc.objects.enums.AgendaType;
+import udc.objects.time.builders.RecurringAvailabilityBuilder;
+import udc.objects.time.builders.SingleAvailabilityBuilder;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Available;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class Availability extends AnchorPane {
 
     private Model model;
     private ArrayList<Agenda> appointments;
+    private ArrayList<Available> availabilities;
     private Stage stage;
 
     @FXML
@@ -59,14 +65,17 @@ public class Availability extends AnchorPane {
         close.setOnMouseClicked(event -> stage.close());
         date.setValue(LocalDate.now());
         add.setOnAction(event -> {
+            System.out.println("henlo");
             try {
-                Available av = this.getAvailable();
-                av.setDoctorName(this.getModel().getAccount().getFirstName() + " " + this.getModel().getAccount().getLastName());
-                av.setId(this.getModel().getAccount().getId());
-                this.getModel().getDbController().addAvailability(av);
-                this.getModel().setState();
+                availabilities = this.getAvailable();
+                System.out.println(availabilities);
+                for(int i = 0; i < availabilities.size(); i++){
+                    System.out.println(availabilities.get(i).getStartTime()+" "+availabilities.get(i).getEndTime()+" "+availabilities.size());
+                    this.model.getDbController().addAvailability(availabilities.get(i));
+                }
             } catch (Exception e) {
                 err.setText(e.getMessage());
+                e.printStackTrace();
             }
         });
 
@@ -124,7 +133,7 @@ public class Availability extends AnchorPane {
         return model;
     }
 
-    public Available getAvailable () throws Exception{
+    public ArrayList<Available> getAvailable () throws Exception{
         int i = 0;
         String recurring[] = new String[7];
 
@@ -156,15 +165,19 @@ public class Availability extends AnchorPane {
         LocalDateTime from = date.getValue().atTime(LocalTime.parse(fromStr, DateTimeFormatter.ofPattern("hh:mm a")));
         LocalDateTime to = date.getValue().atTime(LocalTime.parse(toStr, DateTimeFormatter.ofPattern("hh:mm a")));
 
-        Available av = new Available();
-        av.setStartTime(from);
-        av.setEndTime(to);
-        av.setRecurringDays(recur.substring(0, recur.length() - 1));
+        ArrayList<Available> av;
 
-        if (recur.isEmpty())
-            av.setType(AgendaType.SINGLE);
-        else
-            av.setType(AgendaType.RECURRING);
+
+        if (recur.isEmpty()) {
+            SingleAvailabilityBuilder single = new SingleAvailabilityBuilder();
+            av = single.buildMultiple(this.getModel().getAccount().getId(), from, to);
+        }
+        else{
+            RecurringAvailabilityBuilder notSingle = new RecurringAvailabilityBuilder();
+            String name = this.getModel().getAccount().getFirstName()+" "+this.getModel().getAccount().getLastName();
+            av = notSingle.buildMultiple(from, to, name, recur.substring(0, recur.length() + 1));
+
+        }
 
         if (Agenda.clashes(this.getAppointments(), from, to))
             throw new Exception("Error: An appointment has already been booked at that time range");
@@ -179,4 +192,6 @@ public class Availability extends AnchorPane {
 
         return av;
     }
+
+
 }

@@ -11,20 +11,11 @@ import java.util.ArrayList;
 public class RecurringAvailabilityBuilder extends AvaibilityBuilder {
     private ArrayList<Agenda> availablelist;
 
-    public void buildRecurring(int id, LocalDateTime start, LocalDateTime end){
-        LocalDateTime temp;
-        temp = start;
-        while(temp.isBefore(end)){
-            this.getAvailable().setType(AgendaType.RECURRING);
-            this.getAvailable().setId(id);
-            this.getAvailable().setStartTime(temp);
-            this.getAvailable().setEndTime(temp.plusMinutes(30));
-            availablelist.add(this.getAvailable());
-            temp = temp.plusMinutes(30);
-        }
+    public RecurringAvailabilityBuilder(){
+        super();
     }
 
-    public Available build (LocalDateTime start, LocalDateTime end, String doctor, String client) {
+    public Available build (LocalDateTime start, LocalDateTime end, String doctor) {
         this.build(start, end);
         this.getAvailable().setDoctorName(doctor);
 
@@ -33,15 +24,17 @@ public class RecurringAvailabilityBuilder extends AvaibilityBuilder {
         return this.getAvailable();
     }
 
-    public ArrayList<Available> buildMultiple (LocalDateTime start, LocalDateTime end, String doctor, String client) {
+    public ArrayList<Available> buildMultiple (LocalDateTime start, LocalDateTime end, String doctor, String recurringDays) {
         ArrayList<Available> list = new ArrayList<>();
         LocalDateTime temp = start;
+        Available av;
         while (temp.isBefore(end)) {
-
-            this.getAvailable().setDoctorName(doctor);
-            this.getAvailable().setStartTime(temp);
-            this.getAvailable().setEndTime(temp.plusMinutes(30));
-            this.getAvailable().setType(AgendaType.RECURRING);
+            av = new Available();
+            av.setRecurringDays(recurringDays);
+            av.setDoctorName(doctor);
+            av.setStartTime(temp);
+            av.setEndTime(temp.plusMinutes(30));
+            av.setType(AgendaType.RECURRING);
             temp = temp.plusMinutes(30);
             list.add(this.getAvailable());
         }

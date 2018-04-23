@@ -30,6 +30,7 @@ public class Content implements Initializable {
     private ArrayList<Agenda> agendas;
     private ArrayList<Available> availability; //implement later when bored
     private Day dayView;
+    private Week weekView;
 
     @FXML private JFXButton add, remove;
     @FXML private AnchorPane content;
@@ -43,6 +44,10 @@ public class Content implements Initializable {
         this.agendas = agendas;
     }
 
+    public void setAvailability(ArrayList<Available> availability){
+        this.availability = availability;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         day.setOnMouseClicked(event -> update());
@@ -52,16 +57,17 @@ public class Content implements Initializable {
             Availability availability = null;
             try {
                 availability = new Availability(this.getModel());
-
                 Stage child = new Stage(StageStyle.UNDECORATED);
                 child.initOwner(add.getScene().getWindow());
                 child.initModality(Modality.WINDOW_MODAL);
                 child.setScene(new Scene(availability));
                 availability.setStage(child);
                 child.showAndWait();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         });
     }
 
@@ -89,7 +95,10 @@ public class Content implements Initializable {
                 this.content.getChildren().add(dayView.getNode());
                 dayView.insertFilteredData(findData(this.getDate()));
             } else {
-                this.content.getChildren().add(new Week(this.model.getAccount().getAppointments(), this.getDate()));
+                weekView = new Week(this.model.getAccount().getAppointments(), this.getDate());
+                this.content.getChildren().add(weekView.getNode());
+                weekView.insertFilteredData(findWeekAgenda(this.getDate()), findStartingDay(this.date));
+
             }
         } catch (IOException e) {
             e.printStackTrace();
