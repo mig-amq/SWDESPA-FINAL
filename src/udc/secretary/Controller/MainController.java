@@ -338,6 +338,17 @@ public class MainController {
         return WeekAgenda;
     }
 
+    public ArrayList<ArrayList<Agenda>> findWeekAvailable(){
+        ArrayList<ArrayList<Agenda>> weekAvailable = new ArrayList<>();
+        LocalDate startDay = findStartingDay(calendar.getSelected());
+        System.out.println(startDay);
+        for (int i = 0; i < 7; i++) {
+            System.out.println(startDay.minusDays(-i));
+            weekAvailable.add(getAvailableSlots(startDay.minusDays(-i), cmbBoxDoctors.getSelectionModel().getSelectedIndex()));
+        }
+        return weekAvailable;
+    }
+
     public void calendarViewCondition(){
         if (rdbtnDayView.isSelected()){
             secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()));
@@ -357,6 +368,7 @@ public class MainController {
         secDayViewControl.getTbView().getColumns().get(secDayViewControl.getTbView().getColumns().size()-1).setText(name);
     }
 
+    //todo: week agenda view is buggy
     public void agendaViewCondition(){
         if (rdbtnDayView.isSelected()){
             secDayAgendaControl.setLabel(calendar.selectedProperty().get());
@@ -367,7 +379,10 @@ public class MainController {
             } else{
                 secDayAgendaControl.setRemoveButtonDisabled(false);
                 try {
-                    secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(-1, ""), calendar.getSelected());
+                    if (cmbBoxDoctors.getSelectionModel().getSelectedIndex() > 0)
+                        secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(cmbBoxDoctors.getSelectionModel().getSelectedIndex(), "doctor"), calendar.getSelected());
+                    else
+                        secDayAgendaControl.insertFilteredData(model.getDbController().getAppointments(-1, ""), calendar.getSelected());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -376,6 +391,7 @@ public class MainController {
         } else if (rdbtnWeekView.isSelected()){
             secWeekAgendaControl.setLabel(calendar.selectedProperty().get());
             if (rdbtnAvailable.isSelected()){
+                secWeekAgendaControl.insertAvailableData(findWeekAvailable());
                 secViewPane.getChildren().setAll(secWeekAgendaView);
             } else{
                 secWeekAgendaControl.insertFilteredData(findWeekAgenda());
@@ -403,13 +419,18 @@ public class MainController {
             else
                 availableSlots = model.getDbController().getUnvailability(-1);
             appointments = model.getDbController().getAppointments(-1, "");
-        } catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
         }
 
         for (int i = 0; i < availableSlots.size(); i++){
+            if (!availableSlots.get(i).getStartTime().toLocalDate().isEqual(selected))
+                availableSlots.remove(i);
+        }
+
+        for (int i = 0; i < availableSlots.size(); i++){
             for (int j = 0; j < appointments.size(); j++){
-                if (appointments.get(j).getStartTime().toLocalDate().isEqual(selected))
+                if (appointments.get(j).getStartTime().toLocalDate().isEqual(selected) && availableSlots.get(i).getStartTime().toLocalDate().isEqual(selected))
                     if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime()))
                         availableSlots.remove(i);
             }

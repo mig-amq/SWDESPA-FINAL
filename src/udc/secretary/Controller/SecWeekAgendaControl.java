@@ -55,6 +55,52 @@ public class SecWeekAgendaControl extends AbstractControl{
         lblSlots.setText(lblSlots.getText() + date);
     }
 
+    public void insertAvailableData(ArrayList<ArrayList<Agenda>> data){
+        weekAgendaList.getItems().clear();
+        ObservableList<String> string = FXCollections.observableArrayList();
+        for (int i = 0; i < 7; i++){
+            for (int j = 0; j < data.get(i).size(); j++)
+                addAvailable(string, data.get(i).get(j));
+        }
+        weekAgendaList.setItems(string);
+    }
+
+    public void addAvailable(ObservableList<String> string, Agenda data){
+        String hrS = Integer.toString(data.getStartTime().getHour());
+        String minS = Integer.toString(data.getStartTime().getMinute());
+        String hrE = "";
+        String minE = "";
+        hrE = Integer.toString(data.getEndTime().getHour());
+        minE = Integer.toString(data.getEndTime().getMinute());
+        String sTimeOfDay = "AM";
+        String eTimeOfDay = "AM";
+
+        if (data.getStartTime().getHour() < 10)
+            hrS = "0" + hrS;
+        else if (data.getStartTime().getHour() >= 12) {
+            if (data.getStartTime().getHour() != 12)
+                hrS = Integer.toString(Integer.parseInt(hrS) - 12);
+            sTimeOfDay = "PM";
+        }
+
+        if (data.getStartTime().getMinute() < 10)
+            minS = "0" + minS;
+
+        if (data.getEndTime().getHour() < 10)
+            hrE = "0" + hrE;
+        else if (data.getEndTime().getHour() >= 12) {
+            if (data.getEndTime().getHour() != 12)
+                hrE = Integer.toString(Integer.parseInt(hrE) - 12);
+            eTimeOfDay = "PM";
+        }
+
+        if (data.getEndTime().getMinute() < 10)
+            minE = "0" + minE;
+
+        string.add(data.getStartTime().getMonthValue() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear()
+                    + " " + hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Unavailable) data).getDoctorName() + ", Open");
+    }
+
     public void insertFilteredData(ArrayList<ArrayList<Agenda>> data){
         //still incomplete
         weekAgendaList.getItems().clear();
@@ -71,10 +117,8 @@ public class SecWeekAgendaControl extends AbstractControl{
         String minS = Integer.toString(data.getStartTime().getMinute());
         String hrE = "";
         String minE = "";
-        if (!(data instanceof Unavailable)) {
-            hrE = Integer.toString(data.getEndTime().getHour());
-            minE = Integer.toString(data.getEndTime().getMinute());
-        }
+        hrE = Integer.toString(data.getEndTime().getHour());
+        minE = Integer.toString(data.getEndTime().getMinute());
         String sTimeOfDay = "AM";
         String eTimeOfDay = "AM";
 
@@ -89,25 +133,21 @@ public class SecWeekAgendaControl extends AbstractControl{
         if (data.getStartTime().getMinute() < 10)
             minS = "0" + minS;
 
-        if (!(data instanceof Unavailable)) {
-            if (data.getEndTime().getHour() < 10)
-                hrE = "0" + hrE;
-            else if (data.getEndTime().getHour() >= 12) {
-                if (data.getEndTime().getHour() != 12)
-                    hrE = Integer.toString(Integer.parseInt(hrE) - 12);
-                eTimeOfDay = "PM";
-            }
-
-            if (data.getEndTime().getMinute() < 10)
-                minE = "0" + minE;
+        if (data.getEndTime().getHour() < 10)
+            hrE = "0" + hrE;
+        else if (data.getEndTime().getHour() >= 12) {
+            if (data.getEndTime().getHour() != 12)
+                hrE = Integer.toString(Integer.parseInt(hrE) - 12);
+            eTimeOfDay = "PM";
         }
+
+        if (data.getEndTime().getMinute() < 10)
+            minE = "0" + minE;
 
         if (data instanceof Appointment){
-            string.add("ID: " + data.getId() + " " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
+            string.add("ID: " + data.getId() + " " + data.getStartTime().getMonthValue() + "-" + data.getStartTime().getDayOfMonth() + "-" + data.getStartTime().getYear()
+                    + " " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay
                     + ", Dr." + ((Appointment) data).getDoctorName() + ", " + ((Appointment) data).getClientName());
-        }
-        else if (data instanceof Unavailable){ //unavailable class is treated as available slot
-            string.add(hrS + ":" + minS + sTimeOfDay + ", Dr." + ((Unavailable) data).getDoctorName() + ", Open");
         }
     }
 }
