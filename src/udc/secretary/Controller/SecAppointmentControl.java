@@ -8,14 +8,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javafx.stage.Stage;
 import udc.Model;
 import udc.objects.time.concrete.Agenda;
-import udc.objects.time.concrete.Unavailable;
 
 public class SecAppointmentControl {
     private Node secAppointmentNode;
@@ -109,40 +107,16 @@ public class SecAppointmentControl {
     private void initActions(){
         btnAdd.setOnAction(event -> {
             if (allValid()){
-                if (addWalkIn()){
-                    String[] name = nameTextField.getText().split(" ");
-                    model.getDbController().addWalkIn(name[0], name[1]);
-
-                    String hrS = hrStartComboBox.getSelectionModel().getSelectedItem().toString();
-                    String minS = minStartComboBox.getSelectionModel().getSelectedItem().toString();
-                    String hrE = hrEndComboBox.getSelectionModel().getSelectedItem().toString();
-                    String minE = minEndComboBox.getSelectionModel().getSelectedItem().toString();
-                    int startH = Integer.parseInt(hrS);
-                    int startM = Integer.parseInt(minS);
-                    int endH = Integer.parseInt(hrE);
-                    int endM = Integer.parseInt(minE);
-                    if (startComboBox.getSelectionModel().getSelectedItem().toString().equals("PM") && startH < 12)
-                        startH += 12;
-
-                    if (endComboBox.getSelectionModel().getSelectedItem().toString().equals("PM") && endH < 12)
-                        endH += 12;
-
-                    String[] sub = datePicker.getValue().toString().split("-");
-                    LocalDateTime startTime = LocalDateTime.of(Integer.parseInt(sub[0]), Integer.parseInt(sub[1]), Integer.parseInt(sub[2]), startH, startM);
-                    LocalDateTime endTime = LocalDateTime.of(startTime.toLocalDate(), LocalTime.of(endH, endM));
-
-                    model.getDbController().addAppointment(startTime, endTime, docComboBox.getSelectionModel().getSelectedItem().toString(),
-                                                 name[0] + " " + name[1], false, true);
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setContentText("Added successfully!");
-                    alert.showAndWait();
-                    clear();
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Slot Taken!");
-                    alert.setContentText("The chosen time slot has already been taken!");
-                    alert.showAndWait();
-                }
+                addWalkIn();
+//                if (addWalkIn()){
+//
+//                    ((Stage) getSecAppointmentNode().getScene().getWindow()).close();
+//                } else {
+//                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//                    alert.setTitle("Slot Taken!");
+//                    alert.setContentText("The chosen time slot has already been taken!");
+//                    alert.showAndWait();
+//                }
             } else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error!");
@@ -154,18 +128,6 @@ public class SecAppointmentControl {
         btnCancel.setOnAction(event -> {
             ((Stage) getSecAppointmentNode().getScene().getWindow()).close();
         });
-    }
-
-    private void clear(){
-        nameTextField.setText("");
-        datePicker.setValue(LocalDate.now());
-        hrStartComboBox.getSelectionModel().select(0);
-        minStartComboBox.getSelectionModel().select(0);
-        startComboBox.getSelectionModel().select(0);
-        hrEndComboBox.getSelectionModel().select(0);
-        minEndComboBox.getSelectionModel().select(0);
-        endComboBox.getSelectionModel().select(0);
-        docComboBox.getSelectionModel().select(0);
     }
 
     private boolean allValid(){
@@ -184,10 +146,8 @@ public class SecAppointmentControl {
         if (endComboBox.getSelectionModel().getSelectedItem().toString().equals("PM") && endH < 12)
             endH += 12;
 
-        String[] sub = datePicker.getValue().toString().split("-");
-        LocalDateTime startTime = LocalDateTime.of(Integer.parseInt(sub[0]), Integer.parseInt(sub[1]), Integer.parseInt(sub[2]), startH, startM);
-        LocalDateTime endTime = LocalDateTime.of(startTime.toLocalDate(), LocalTime.of(endH, endM));
-
+        LocalTime startTime = LocalTime.of(startH, startM);
+        LocalTime endTime = LocalTime.of(endH, endM);
 
         if (datePicker.getValue().isBefore(LocalDate.now()) || nameTextField.getText() == null
             || hrStartComboBox.getSelectionModel().getSelectedItem().toString() == null
@@ -216,7 +176,6 @@ public class SecAppointmentControl {
                 Integer.parseInt(minEndComboBox.getSelectionModel().getSelectedItem().toString()) == 0 &&
                 endComboBox.getSelectionModel().getSelectedItem().toString().equals("AM"))
             || startTime.isAfter(endTime) //start time is after end time
-            || startTime.isBefore(LocalDateTime.now())
                 )
             return false;
 
@@ -224,32 +183,7 @@ public class SecAppointmentControl {
     }
 
     //check if the slot chosen is not taken
-    private boolean addWalkIn(){
-        String hrS = hrStartComboBox.getSelectionModel().getSelectedItem().toString();
-        String minS = minStartComboBox.getSelectionModel().getSelectedItem().toString();
-        String hrE = hrEndComboBox.getSelectionModel().getSelectedItem().toString();
-        String minE = minEndComboBox.getSelectionModel().getSelectedItem().toString();
-        int startH = Integer.parseInt(hrS);
-        int startM = Integer.parseInt(minS);
-        int endH = Integer.parseInt(hrE);
-        int endM = Integer.parseInt(minE);
-        if (startComboBox.getSelectionModel().getSelectedItem().toString().equals("PM") && startH < 12)
-            startH += 12;
-
-        if (endComboBox.getSelectionModel().getSelectedItem().toString().equals("PM") && endH < 12)
-            endH += 12;
-
-        String[] sub = datePicker.getValue().toString().split("-");
-        LocalDateTime startTime = LocalDateTime.of(Integer.parseInt(sub[0]), Integer.parseInt(sub[1]), Integer.parseInt(sub[2]), startH, startM);
-        LocalDateTime endTime = LocalDateTime.of(startTime.toLocalDate(), LocalTime.of(endH, endM));
-
-        ArrayList<Agenda> availableSlots = getAvailableSlots(startTime.toLocalDate(), docComboBox.getSelectionModel().getSelectedIndex() + 1);
-        for (int i = 0; i < availableSlots.size(); i++){
-            if (availableSlots.get(i).getStartTime().equals(startTime))
-                return true;
-        }
-
-        return false;
+    private void addWalkIn(){
         // get checking for conflicts in appointments from SecWalkInControl class
         // get appointments and doctor's unavailability, combine them in a single list
         // iterate and check if the start time of the walk in appointment to be added clashes with any of the contents of the list, if clashes return false agad
@@ -258,39 +192,5 @@ public class SecAppointmentControl {
         // get available slots like in MainController
         // iterate and check if the start time of the walk in appointment to be added is equal to any of the contents if equal, return true agad
         // if natapos yung loop return false
-    }
-
-    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, int doctor_id){
-        ArrayList<Unavailable> availableSlots = new ArrayList<>();
-        ArrayList<Agenda> available = new ArrayList<>();
-        ArrayList<Agenda> appointments = new ArrayList<>();
-        try {
-            availableSlots = model.getDbController().getUnvailability(doctor_id); //returns availability of that doctor
-            appointments = model.getDbController().getAppointments(-1, "");
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        for (int i = 0; i < availableSlots.size(); i++){
-            if (!availableSlots.get(i).getStartTime().toLocalDate().isEqual(selected))
-                availableSlots.remove(i);
-        }
-        availableSlots.trimToSize();
-
-        for (int i = 0; i < availableSlots.size(); i++){
-            for (int j = 0; j < appointments.size(); j++){
-                if (appointments.get(j).getStartTime().toLocalDate().isEqual(selected) && availableSlots.get(i).getStartTime().toLocalDate().isEqual(selected))
-                    if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime()))
-                        availableSlots.remove(i);
-            }
-        }
-        availableSlots.trimToSize();
-
-        for (int i = 0; i < availableSlots.size(); i++)
-            available.add((Agenda) availableSlots.get(i));
-        available.trimToSize();
-
-
-        return available;
     }
 }

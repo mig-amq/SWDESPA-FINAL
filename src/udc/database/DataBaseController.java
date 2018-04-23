@@ -565,7 +565,7 @@ public class DataBaseController {
 //                    tempList.add(builder.build(rSet.getInt("appointment_id"),
 //                            strToTime(rSet.getString("time_start")),
 //                    System.out.println(rSet.getString("time_end"));
-                    tempList.add(builder.build(rSet.getInt("appointment_id"),
+                    tempList.add(builder.build(/*rSet.getInt("appointment_id"),*/
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end")),
                             rSet.getString("doctor"),
@@ -655,12 +655,10 @@ public class DataBaseController {
                     rSet1 = pStmt.executeQuery();
 
                     if (rSet1.next()) {
-                        ArrayList<Unavailable> available = builder.buildMultiple(rSet.getInt("doctor_id"),
+                        tempList = builder.buildMultiple(rSet.getInt("doctor_id"),
                                 strToTime(rSet.getString("time_start")),
                                 strToTime(rSet.getString("time_end")),
                                 rSet1.getString("first_name") + " " + rSet1.getString("last_name"));
-                        for (int i = 0; i < available.size(); i++)
-                            tempList.add(available.get(i));
                     }
                 }
             }

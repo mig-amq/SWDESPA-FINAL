@@ -12,11 +12,10 @@ public class SingleAppointmentBuilder extends AppointmentBuilder {
         super(doctor, client);
     }
 
-    public Appointment build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
+    public Appointment build (LocalDateTime start, LocalDateTime end, String doctor, String client) {
         this.build(start, end);
         this.getAppointment().setDoctorName(doctor);
         this.getAppointment().setClientName(client);
-        this.getAppointment().setId(id);
 
         this.getAppointment().setType(AgendaType.SINGLE);
 
