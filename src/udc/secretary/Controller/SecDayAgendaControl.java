@@ -80,16 +80,16 @@ public class SecDayAgendaControl extends AbstractControl {
         agendaList.setItems(FXCollections.observableArrayList(string));
     }
 
+    //todo: all doctors display only displays one doctor
     private void addString(ObservableList<String> string, Agenda data, LocalDate selected){
         if (data.getStartTime().toLocalDate().isEqual(selected)) {
             String hrS = Integer.toString(data.getStartTime().getHour());
             String minS = Integer.toString(data.getStartTime().getMinute());
             String hrE = "";
             String minE = "";
-            if (!(data instanceof Unavailable)) {
-                hrE = Integer.toString(data.getEndTime().getHour());
-                minE = Integer.toString(data.getEndTime().getMinute());
-            }
+            hrE = Integer.toString(data.getEndTime().getHour());
+            minE = Integer.toString(data.getEndTime().getMinute());
+
             String sTimeOfDay = "AM";
             String eTimeOfDay = "AM";
 
@@ -104,18 +104,17 @@ public class SecDayAgendaControl extends AbstractControl {
             if (data.getStartTime().getMinute() < 10)
                 minS = "0" + minS;
 
-            if (!(data instanceof Unavailable)) {
-                if (data.getEndTime().getHour() < 10)
-                    hrE = "0" + hrE;
-                else if (data.getEndTime().getHour() >= 12) {
-                    if (data.getEndTime().getHour() != 12)
-                        hrE = Integer.toString(Integer.parseInt(hrE) - 12);
-                    eTimeOfDay = "PM";
-                }
+            if (data.getEndTime().getHour() < 10)
+                hrE = "0" + hrE;
+            else if (data.getEndTime().getHour() >= 12) {
+                if (data.getEndTime().getHour() != 12)
+                    hrE = Integer.toString(Integer.parseInt(hrE) - 12);
+                eTimeOfDay = "PM";
+            }
 
                 if (data.getEndTime().getMinute() < 10)
                     minE = "0" + minE;
-            }
+
 
             if (data instanceof Appointment) {
                 string.add("ID: " + data.getId() + " " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay

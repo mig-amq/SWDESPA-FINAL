@@ -27,13 +27,14 @@ public class SingleUnavailableBuilder extends UnavailableBuilder {
         return this.getUnavailable();
     }
 
-    public ArrayList<Unavailable> buildMultiple (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
+    public ArrayList<Unavailable> buildMultiple (int id, LocalDateTime start, LocalDateTime end, String doctor) {
         ArrayList<Unavailable> list = new ArrayList<>();
         LocalDateTime temp = start;
 
         while (temp.isBefore(end)){
             this.build(id, temp, temp.plusMinutes(30));
             this.getUnavailable().setType(AgendaType.SINGLE);
+            this.getUnavailable().setDoctorName(doctor);
             temp = temp.plusMinutes(30);
             list.add(this.getUnavailable());
         }

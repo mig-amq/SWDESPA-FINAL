@@ -625,8 +625,8 @@ public class DataBaseController {
 
             // Traversing result set and instantiating unavailability to temp list
             while (rSet.next()) {
-                if (rSet.getString("recurring") != null || !rSet.getString("recurring").isEmpty()) {
-                    tempList.add(builder.build(rSet.getInt("doctor_id"),
+                if (!rSet.getString("recurring").equals("0")) {
+                    tempList.add(rbuilder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),
                             strToTime(rSet.getString("time_end"))));
 
@@ -639,16 +639,27 @@ public class DataBaseController {
 
                         temp1.setStartTime(strToTime(time1));
                         temp1.setEndTime(strToTime(time2));
-                        temp1.setType(AgendaType.SINGLE);
+                        temp1.setType(AgendaType.RECURRING);
 
                         temp0.add(temp1);
                     }
 
                     tempList.get(tempList.size() - 1).setExceptions(temp0);
                 } else {
-                    tempList.add(rbuilder.build(rSet.getInt("doctor_id"),
-                            strToTime(rSet.getString("time_start")),
-                            strToTime(rSet.getString("time_end"))));
+                    if (doctor_id < 0) {
+                        pStmt = connection.prepareStatement("SELECT * FROM doctor");
+                    } else {
+                        pStmt = connection.prepareStatement("SELECT * FROM doctor " +
+                                "WHERE doctor_id = '" + doctor_id + "'");
+                    }
+                    rSet1 = pStmt.executeQuery();
+
+                    if (rSet1.next()) {
+                        tempList = builder.buildMultiple(rSet.getInt("doctor_id"),
+                                strToTime(rSet.getString("time_start")),
+                                strToTime(rSet.getString("time_end")),
+                                rSet1.getString("first_name") + " " + rSet1.getString("last_name"));
+                    }
                 }
             }
 
