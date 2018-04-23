@@ -62,7 +62,7 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             weekFTemp = WeekFields.of(Locale.getDefault());
             weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 1) {
+            if ((mWeekCmbBox.getValue() == null || mWeekCmbBox.getValue().equals("All") || mWeekCmbBox.getValue().equals(doctor)) && weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 1) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
@@ -77,7 +77,7 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             weekFTemp = WeekFields.of(Locale.getDefault());
             weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 2) {
+            if ((mWeekCmbBox.getValue() == null || mWeekCmbBox.getValue().equals("All") || mWeekCmbBox.getValue().equals(doctor)) && weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 2) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
@@ -92,7 +92,7 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             weekFTemp = WeekFields.of(Locale.getDefault());
             weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 3) {
+            if ((mWeekCmbBox.getValue() == null || mWeekCmbBox.getValue().equals("All") || mWeekCmbBox.getValue().equals(doctor)) && weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 3) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
@@ -107,7 +107,7 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             weekFTemp = WeekFields.of(Locale.getDefault());
             weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 4) {
+            if ((mWeekCmbBox.getValue() == null || mWeekCmbBox.getValue().equals("All") || mWeekCmbBox.getValue().equals(doctor)) && weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 4) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
@@ -122,7 +122,7 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             weekFTemp = WeekFields.of(Locale.getDefault());
             weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 5) {
+            if ((mWeekCmbBox.getValue() == null || mWeekCmbBox.getValue().equals("All") || mWeekCmbBox.getValue().equals(doctor)) && weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 5) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
@@ -137,7 +137,7 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             weekFTemp = WeekFields.of(Locale.getDefault());
             weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 6) {
+            if ((mWeekCmbBox.getValue() == null || mWeekCmbBox.getValue().equals("All") || mWeekCmbBox.getValue().equals(doctor)) && weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 6) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
@@ -152,7 +152,7 @@ public class ClientAgendaWeekController extends ClientSuperController implements
             weekFTemp = WeekFields.of(Locale.getDefault());
             weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
-            if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 7) {
+            if ((mWeekCmbBox.getValue() == null || mWeekCmbBox.getValue().equals("All") || mWeekCmbBox.getValue().equals(doctor)) && weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 7) {
                 s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
                         endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
@@ -173,6 +173,7 @@ public class ClientAgendaWeekController extends ClientSuperController implements
     {
         ObservableList<String> list = FXCollections.observableArrayList();
         list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
+        list.add("All");
         mWeekCmbBox.setItems(list);
         mWeekCmbBox.valueProperty().addListener((observable -> {
             update();

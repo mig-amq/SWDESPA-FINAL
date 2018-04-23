@@ -53,7 +53,7 @@ public class ClientAgendaDayController extends ClientSuperController implements 
                 endTemp = temp.get(i).getEndTime();
                 doctor = ((Appointment) temp.get(i)).getDoctorName();
 
-                if ((mDayCmbBox.getValue() == null || mDayCmbBox.getValue().equals(doctor)) && (startTemp.getDayOfMonth() == now.getDayOfMonth()
+                if ((mDayCmbBox.getValue() == null || mDayCmbBox.getValue().equals(doctor) || mDayCmbBox.getValue().equals("All")) && (startTemp.getDayOfMonth() == now.getDayOfMonth()
                      && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() &&
                      startTemp.getYear() == now.getYear()))
                 {
@@ -80,6 +80,7 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     {
         ObservableList<String> list = FXCollections.observableArrayList();
         list = FXCollections.observableArrayList(model.getDbController().loadDoctors());
+        list.add("All");
         mDayCmbBox.setItems(list);
         mDayCmbBox.valueProperty().addListener((observable -> {
             update();
