@@ -82,6 +82,8 @@ public class Availability extends AnchorPane {
                 err.setText(e.getMessage());
                 e.printStackTrace();
             }
+
+            model.setState();
         });
 
         for (int i = 7; i <= 12; i++) {

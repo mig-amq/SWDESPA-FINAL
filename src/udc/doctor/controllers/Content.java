@@ -105,9 +105,11 @@ public class Content implements Initializable {
             } else if(agendaDay.isSelected()){
                 agendaDayView = new AgendaDay(this.model);
                 this.content.getChildren().add(agendaDayView.getNode());
+                agendaDayView.insertFilteredData(this.model, this.getDate());
             } else if(agendaWeek.isSelected()){
                 agendaWeekView = new AgendaWeek(this.model);
                 this.content.getChildren().add(agendaWeekView.getNode());
+                agendaWeekView.insertFilteredData(this.model);
             }
         } catch (IOException e) {
             e.printStackTrace();

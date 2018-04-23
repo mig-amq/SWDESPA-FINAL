@@ -46,29 +46,41 @@ public class AgendaDay extends AnchorPane {
         node = loader.getRoot();
     }
 
-    private void initComponents(){
-        Node n = ndSecDayAgendaViewNode.lookup("#lblSlots");
-        lblSlots = (Label) n;
-        n = ((AnchorPane) ndSecDayAgendaViewNode).lookup("#agendaScroll");
-        agendaList = (JFXListView) ((AnchorPane) ((ScrollPane) n).getContent().lookup("#anchorAgenda")).getChildren().get(0);
-        btnRemove = (JFXButton) ((AnchorPane) ((ScrollPane) n).getContent().lookup("#anchorAgenda")).getChildren().get(1);
-    }
-
-    public Node getNdSecDayAgendaViewNode(){
-        return ndSecDayAgendaViewNode;
-    }
-
     public void setLabel(LocalDate date){
         lblSlots.setText("Slots for ");
         lblSlots.setText(lblSlots.getText() + date);
     }
 
-    public void insertFilteredData(ArrayList<Agenda> data, LocalDate selected) {
-        agendaList.getItems().clear();
-        ObservableList<String> string = FXCollections.observableArrayList();
-        for (int i = 0; i < data.size(); i++)
-            addString(string, data.get(i), selected);
-        agendaList.setItems(FXCollections.observableArrayList(string));
+    public void insertFilteredData(Model model, LocalDate selected) {
+        ArrayList<Agenda> data;
+        try {
+            data = model.getDbController().getAppointments(model.getAccount().getId(), "doctor");
+            agendaList.getItems().clear();
+            ObservableList<String> string = FXCollections.observableArrayList();
+            for (int i = 0; i < data.size(); i++)
+                addString(string, data.get(i), selected);
+            agendaList.setItems(FXCollections.observableArrayList(string));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void initialize() {
+        btnRemove.setOnAction(event -> {
+            System.out.println("henlo");
+            try {
+                Agenda a = (Agenda) agendaList.getSelectionModel().getSelectedItem();
+                if(a instanceof Available || a instanceof Unavailable){
+                    model.getDbController().deleteUnavailability(model.getAccount().getId(), (Unavailable) a);
+                }
+                model.setState();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        });
     }
 
     //todo: all doctors display only displays one doctor
