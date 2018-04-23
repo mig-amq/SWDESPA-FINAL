@@ -11,7 +11,9 @@ import javafx.scene.layout.AnchorPane;
 import udc.Model;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
+import udc.objects.time.concrete.Unavailable;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -180,5 +182,39 @@ public class SecWalkInControl {
         }
 
         return walkIns;
+    }
+
+    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, int doctor_id){
+        ArrayList<Unavailable> availableSlots = new ArrayList<>();
+        ArrayList<Agenda> available = new ArrayList<>();
+        ArrayList<Agenda> appointments = new ArrayList<>();
+        try {
+            availableSlots = model.getDbController().getUnvailability(doctor_id); //returns availability of that doctor
+            appointments = model.getDbController().getAppointments(-1, "");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < availableSlots.size(); i++){
+            if (!availableSlots.get(i).getStartTime().toLocalDate().isEqual(selected))
+                availableSlots.remove(i);
+        }
+        availableSlots.trimToSize();
+
+        for (int i = 0; i < availableSlots.size(); i++){
+            for (int j = 0; j < appointments.size(); j++){
+                if (appointments.get(j).getStartTime().toLocalDate().isEqual(selected) && availableSlots.get(i).getStartTime().toLocalDate().isEqual(selected))
+                    if (availableSlots.get(i).getStartTime().toLocalTime().equals(appointments.get(j).getStartTime().toLocalTime()))
+                        availableSlots.remove(i);
+            }
+        }
+        availableSlots.trimToSize();
+
+        for (int i = 0; i < availableSlots.size(); i++)
+            available.add((Agenda) availableSlots.get(i));
+        available.trimToSize();
+
+
+        return available;
     }
 }

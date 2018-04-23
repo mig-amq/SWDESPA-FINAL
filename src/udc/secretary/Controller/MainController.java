@@ -175,7 +175,7 @@ public class MainController {
             secViewPane.getChildren().clear();
             if (rdbtnCalendarView.isSelected()){
                 //filter
-                secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()));
+                secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()), calendar.getSelected().getDayOfWeek().getValue() -1);
                 secViewPane.getChildren().setAll(secDayView);
             } else if (rdbtnAgendaView.isSelected()){
                 agendaViewCondition();
@@ -384,7 +384,7 @@ public class MainController {
 
     public void calendarViewCondition(){
         if (rdbtnDayView.isSelected()){
-            secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()));
+            secDayViewControl.insertFilteredData(findData(calendar.selectedProperty().get()), calendar.getSelected().getDayOfWeek().getValue() -1);
             setColumnName((String) cmbBoxDoctors.getSelectionModel().getSelectedItem());
             secViewPane.getChildren().setAll(secDayView);
         } else if (rdbtnWeekView.isSelected()){
