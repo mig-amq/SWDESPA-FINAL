@@ -40,24 +40,25 @@ public class ClientAgendaDayController extends ClientSuperController implements 
         String doctor;
 
         ArrayList<Agenda> temp = model.getDbController().getAppointments(model.getAccount().getId(), "normal");
-        dayList.getItems().clear();
 
-        if( calendar == null)
+         if( calendar == null)
             now = LocalDateTime.now();
         else
             now =  calendar.getSelected().atStartOfDay();
 
-            for (int i = 0; i < temp.size(); i++) {
+        dayList.getItems().clear();
+
+        for (int i = 0; i < temp.size(); i++) {
                 startTemp = temp.get(i).getStartTime();
                 endTemp = temp.get(i).getEndTime();
                 doctor = ((Appointment) temp.get(i)).getDoctorName();
 
-                if ((mDayCmbBox.getValue() == null || mDayCmbBox.getValue().equals(doctor) && (startTemp.getDayOfMonth() == now.getDayOfMonth()
+                if ((mDayCmbBox.getValue() == null || mDayCmbBox.getValue().equals(doctor)) && (startTemp.getDayOfMonth() == now.getDayOfMonth()
                      && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() &&
-                     startTemp.getYear() == now.getYear())))
+                     startTemp.getYear() == now.getYear()))
                 {
-                    String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                     endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                    String s = startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
+                     endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                     items.add(s);
                 }
             }
@@ -69,7 +70,6 @@ public class ClientAgendaDayController extends ClientSuperController implements 
     public void initialize(URL location, ResourceBundle resources)
     {
        items = dayList.getItems();
-       System.out.println("Hi: " + items);
        setCalendar(calendar);
     }
 

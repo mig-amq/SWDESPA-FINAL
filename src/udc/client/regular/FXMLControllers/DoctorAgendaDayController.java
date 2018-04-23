@@ -41,12 +41,13 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
         String doctor;
 
         ArrayList<Agenda> temp = model.getDbController().getAppointments(-1, "");
-        dayList.getItems().clear();
-
         if( calendar == null)
             now = LocalDateTime.now();
         else
             now =  calendar.getSelected().atStartOfDay();
+
+        dayList.getItems().clear();
+
 
         items.add("TAKEN SLOTS");
 
@@ -54,12 +55,12 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
                 startTemp = temp.get(i).getStartTime();
                 endTemp = temp.get(i).getEndTime();
                 doctor = ((Appointment) temp.get(i)).getDoctorName();
-                if ((bDayCmbBox.getValue() == null || bDayCmbBox.getValue().equals(doctor) && (startTemp.getDayOfMonth() == now.getDayOfMonth()
+                if ((bDayCmbBox.getValue() == null || bDayCmbBox.getValue().equals(doctor)) && (startTemp.getDayOfMonth() == now.getDayOfMonth()
                      && startTemp.getMonthValue() == now.getMonthValue() && startTemp.getDayOfYear() == now.getDayOfYear() &&
-                     startTemp.getYear() == now.getYear())))
+                     startTemp.getYear() == now.getYear()))
                 {
-                    String s = startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                            endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                    String s = startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
+                            endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                     items.add(s);
                 }
             }
@@ -70,7 +71,6 @@ public class DoctorAgendaDayController extends ClientSuperController implements 
     public void initialize(URL location, ResourceBundle resources)
     {
         items = dayList.getItems();
-        System.out.println("Hi: " + items);
         setCalendar(calendar);
     }
 

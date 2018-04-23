@@ -44,10 +44,12 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
         if(calendar == null)
             now = LocalDateTime.now();
         else
-            now =  calendar.getDate().atStartOfDay();
+            now =  calendar.getSelected().atStartOfDay();
 
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         weekNo = now.get(weekFields.weekOfWeekBasedYear());
+
+        weekList.getItems().clear();
 
         System.out.println(weekNo);
 
@@ -61,11 +63,11 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
             endTemp = temp.get(i).getEndTime();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             weekFTemp = WeekFields.of(Locale.getDefault());
-            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
+            weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
             if (weekNo == weekTemp &&temp.get(i).getStartTime().getDayOfWeek().getValue() == 1) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
             }
         }
@@ -76,11 +78,11 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
             endTemp = temp.get(i).getEndTime();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             weekFTemp = WeekFields.of(Locale.getDefault());
-            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
+            weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
             if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 2) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
             }
         }
@@ -91,11 +93,11 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
             endTemp = temp.get(i).getEndTime();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             weekFTemp = WeekFields.of(Locale.getDefault());
-            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
+            weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
             if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 3) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);;
             }
         }
@@ -106,11 +108,11 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
             endTemp = temp.get(i).getEndTime();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             weekFTemp = WeekFields.of(Locale.getDefault());
-            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
+            weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
             if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 4) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
             }
         }
@@ -121,11 +123,11 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
             endTemp = temp.get(i).getEndTime();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             weekFTemp = WeekFields.of(Locale.getDefault());
-            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
+            weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
             if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 5) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);;
             }
         }
@@ -136,11 +138,11 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
             endTemp = temp.get(i).getEndTime();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             weekFTemp = WeekFields.of(Locale.getDefault());
-            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
+            weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
             if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 6) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
             }
         }
@@ -151,11 +153,11 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
             endTemp = temp.get(i).getEndTime();
             doctor = ((Appointment) temp.get(i)).getDoctorName();
             weekFTemp = WeekFields.of(Locale.getDefault());
-            weekTemp = now.get(weekFTemp.weekOfWeekBasedYear());
+            weekTemp = startTemp.get(weekFTemp.weekOfWeekBasedYear());
 
             if (weekNo == weekTemp && temp.get(i).getStartTime().getDayOfWeek().getValue() == 7) {
-                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")) + " - " +
-                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr." +  doctor;
+                s = temp.get(i).getStartTime().getDayOfWeek().toString() + " " + startTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " - " +
+                        endTemp.format(DateTimeFormatter.ofPattern("hh:mm a")) + " Dr. " +  doctor;
                 items.add(s);
             }
         }
@@ -165,7 +167,6 @@ public class DoctorAgendaWeekController extends ClientSuperController implements
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         items = weekList.getItems();
-        System.out.println("Hi: " + items);
         setCalendar(calendar);
     }
 
