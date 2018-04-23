@@ -66,17 +66,18 @@ public class SecDayViewControl extends AbstractControl {
         }
     }
 
-    public void insertFilteredData(ArrayList<Agenda> data, int dayOfWeek){//ArrayList<Appointment> data, decremented dayofweek
+    public void insertFilteredData(ArrayList<Agenda> data){//ArrayList<Appointment> data
 //        data = sortTime(data);
         //TODO: ADD UNAVAILABILITY DISPLAY, PLACE IT INSIDE findData method()
         tbView.getItems().clear();
         int hr = 7;
         for (int i = 0; i < 30; i++) {
             int index;
+
             String time = getDispTime(hr, i);
             if(!isOdd(i))
                 hr++;
-             String index1 = getUnavailabilityFromList(data, time, dayOfWeek);
+             String index1 = getUnavailabilityFromList(data, time);
              if((index = getDataIndexfromList(data, time)) >= 0 ) {
                     Appointment agenda = (Appointment) data.get(index);
                     tbView.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName() + "\nClient: " + agenda.getClientName()));
