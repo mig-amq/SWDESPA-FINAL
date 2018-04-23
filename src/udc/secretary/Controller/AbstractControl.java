@@ -2,11 +2,15 @@ package udc.secretary.Controller;
 
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import udc.objects.enums.AgendaType;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Unavailable;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractControl {
     public boolean isOdd(int i){
@@ -74,7 +78,7 @@ public abstract class AbstractControl {
         return -1;
     }
 
-    public String getUnavailabilityFromList(ArrayList<Agenda> data, String time) {
+    public String getUnavailabilityFromList(ArrayList<Agenda> data, String time, int DayOfWeek) {
         String index = "";
         int counter = 2; //increase counter for additional doctors
         for (int i = 0; i < data.size() && counter != 0; i++) {
@@ -84,9 +88,19 @@ public abstract class AbstractControl {
                 String nTime = convertTimeFromTable(time); //converts time from table to military
                 if (nTime.equals(agendaTime) || (Integer.parseInt(endTime) > Integer.parseInt(nTime) && Integer.parseInt(agendaTime)
                         < Integer.parseInt(nTime))) {
-
-                    index += i + " ";
-                    counter--;
+                    if (data.get(i).getType().equals(AgendaType.SINGLE)) {
+                        index += i + " ";
+                        counter--;
+                    } else if (data.get(i).getType().equals(AgendaType.RECURRING)) {
+                        String[] days = ((Unavailable) data.get(i)).getRecurringDays().split(" | ");
+                        for (int j = 0; j < days.length; j++) {
+                            if (DayOfWeek == strToDayOfWeek(days[j])) {
+                                index += i + " ";
+                                counter--;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -159,5 +173,23 @@ public abstract class AbstractControl {
 
             };
         });
+    }
+
+    private int strToDayOfWeek(String day){
+        if (day.equalsIgnoreCase("m"))
+            return 0;
+        else if (day.equalsIgnoreCase("t"))
+            return 1;
+        else if(day.equalsIgnoreCase("w"))
+            return 2;
+        else if(day.equalsIgnoreCase("h"))
+            return 3;
+        else if(day.equalsIgnoreCase("f"))
+            return 4;
+        else if(day.equalsIgnoreCase("s"))
+            return 5;
+        else if(day.equalsIgnoreCase("su"))
+            return 6;
+        return  -1;
     }
 }

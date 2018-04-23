@@ -188,7 +188,7 @@ public class SecWeekControl extends AbstractControl {
         int DayofWeek = stDate.getDayOfWeek().getValue() - 1;
         int index;
         if(!data.get(DayofWeek).isEmpty()) {
-            String index1 = getUnavailabilityFromList(data.get(DayofWeek), time);
+            String index1 = getUnavailabilityFromList(data.get(DayofWeek), time, DayofWeek);
             if ((index = getDataIndexfromList(data.get(DayofWeek), time)) >= 0) {
                 Appointment agenda = (Appointment) data.get(DayofWeek).get(index);
                 return "Dr. " + agenda.getDoctorName() + "\nClient: " + agenda.getClientName();
@@ -204,5 +204,4 @@ public class SecWeekControl extends AbstractControl {
         }
         return "";
     }
-
 }
