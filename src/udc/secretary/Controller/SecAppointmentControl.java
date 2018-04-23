@@ -159,6 +159,7 @@ public class SecAppointmentControl {
 
                     model.getDbController().addAppointment(startTime, endTime, docComboBox.getSelectionModel().getSelectedItem().toString(),
                                                  name[0] + " " + name[1], false, true);
+                    model.setState();
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setContentText("Added successfully!");
                     alert.showAndWait();

@@ -647,14 +647,14 @@ public class DataBaseController {
                     tempList.get(tempList.size() - 1).setExceptions(temp0);
                 } else {
                     if (doctor_id < 0) {
-                        pStmt = connection.prepareStatement("SELECT * FROM doctor");
+                        pStmt = connection.prepareStatement("SELECT first_name, last_name FROM (SELECT * FROM doctor WHERE doctor_id < 3) AS A");
                     } else {
                         pStmt = connection.prepareStatement("SELECT * FROM doctor " +
                                 "WHERE doctor_id = '" + doctor_id + "'");
                     }
                     rSet1 = pStmt.executeQuery();
 
-                    if (rSet1.next()) {
+                    while (rSet1.next()) {
                         ArrayList<Unavailable> available = builder.buildMultiple(rSet.getInt("doctor_id"),
                                 strToTime(rSet.getString("time_start")),
                                 strToTime(rSet.getString("time_end")),

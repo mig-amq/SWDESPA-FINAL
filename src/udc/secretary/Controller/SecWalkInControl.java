@@ -120,18 +120,23 @@ public class SecWalkInControl {
         LocalDateTime appEDateTime = LocalDateTime.of(y, m, d, hrE, minE);
 
         //lacks checking if the time slot is available
+        ArrayList<Agenda> available = getAvailableSlots(appSDateTime.toLocalDate(), sub[5].substring(3));
         try {
-            ArrayList<Agenda> appointments = model.getDbController().getAppointments(-1, "");
+            for (int i = 0; i < available.size(); i++){
+                if (appSDateTime.equals(available.get(i).getStartTime()))
+                    return true;
+            }
+            /*ArrayList<Agenda> appointments = model.getDbController().getAppointments(-1, "");
             for (int i = 0; i < appointments.size(); i++){
                 if (appSDateTime.isEqual(appointments.get(i).getStartTime()) || appEDateTime.isEqual(appointments.get(i).getEndTime())
                     || (appSDateTime.isBefore(appointments.get(i).getEndTime()) && appSDateTime.isAfter(appointments.get(i).getStartTime()))
                     || (appEDateTime.isAfter(appointments.get(i).getStartTime()) && appEDateTime.isBefore(appointments.get(i).getEndTime())))
                     valid = false;
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return valid;
+        return false;
     }
 
     public void resetList(){
@@ -184,7 +189,7 @@ public class SecWalkInControl {
         return walkIns;
     }
 
-    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, int doctor_id){
+    private ArrayList<Agenda> getAvailableSlots(LocalDate selected, String doctor_id){
         ArrayList<Unavailable> availableSlots = new ArrayList<>();
         ArrayList<Agenda> available = new ArrayList<>();
         ArrayList<Agenda> appointments = new ArrayList<>();
