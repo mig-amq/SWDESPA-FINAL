@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
 
 public class DoctorCalWeekController extends ClientSuperController implements Initializable {
 
-
     @FXML private TableView<WeekSchedule> weekTable;
     private ObservableList<TableColumn<WeekSchedule, String>> DayListColumns;
     @FXML private TableColumn<WeekSchedule, String> time;
@@ -276,7 +275,7 @@ public class DoctorCalWeekController extends ClientSuperController implements In
             a.setStyle("-fx-background-color: #42f498");
 //                a.setStyle("-fx-border-color-color: #ffffff");
         }  else{
-            a.setStyle("-fx-background-color: #ff584c");
+            a.setStyle("-fx-background-color: #f4f4f4");
 //            a.setStyle("-fx-background-color: #c6c5ba");
             a.setText(null);
             a.setGraphic(null);

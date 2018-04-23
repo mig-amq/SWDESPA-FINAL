@@ -131,12 +131,13 @@ public class ClientCalDayController extends ClientSuperController implements Ini
 //        }else if(item.equalsIgnoreCase("(Unavailable)")){ //both
 //            a.setText("");
 //            a.setStyle("-fx-background-color: #87312b");
-//        }  else{
-//            a.setStyle("-fx-background-color: #e5e2cc");
-//            a.setStyle("-fx-border-color: #c6c5ba");
-//            a.setText(null);
-//            a.setGraphic(null);
 //        }
+         else{
+            a.setStyle("-fx-background-color: #f4f4f4");
+//            a.setStyle("-fx-border-color: #c6c5ba");
+            a.setText(null);
+            a.setGraphic(null);
+        }
     }
 
     @Override
@@ -266,39 +267,4 @@ public class ClientCalDayController extends ClientSuperController implements Ini
         }
         return -1;
     }
-
-//    public ArrayList<Agenda> findData(LocalDate selected) throws Exception {
-//        ArrayList<Agenda> agendas =  model.getDbController().getAppointments(-1, "");
-//        ArrayList<Agenda> arrayList = new ArrayList<>();
-//
-//        for (int i = 0; i < agendas.size(); i++) {
-//            Agenda agenda = agendas.get(i);
-//            if(isEqualDate(agenda, selected))
-//                arrayList.add(agenda);
-//        }
-//        return arrayList;
-//    }
-
-//    private boolean isEqualDate(Agenda agenda, LocalDate selected){
-//        String sDoctorName = (String) cmbBoxDoctors.getSelectionModel().getSelectedItem();
-//        if(sDoctorName != null && !sDoctorName.equals("All"))
-//            sDoctorName = sDoctorName.substring(4);
-//
-//        if(sDoctorName!= null && agenda instanceof Appointment) {
-//            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Appointment)agenda).getDoctorName())) //mq
-//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-//            else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Appointment) agenda).getDoctorName()))
-//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-//            else if(sDoctorName.equals("All"))
-//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-//        }else if(sDoctorName != null && agenda instanceof Unavailable){
-//            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable)agenda).getDoctorName())) //mq
-//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-//            else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
-//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-//            else if(sDoctorName.equals("All"))
-//                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-//        }
-//        return false;//
-//    }
 }

@@ -127,7 +127,7 @@ public class DoctorCalDayController extends ClientSuperController implements Ini
                 a.setStyle("-fx-background-color: #42f498");
 //                a.setStyle("-fx-border-color-color: #ffffff");
             }  else{
-                a.setStyle("-fx-background-color: #ff584c");
+                a.setStyle("-fx-background-color: #f4f4f4");
 //            a.setStyle("-fx-background-color: #c6c5ba");
                 a.setText(null);
                 a.setGraphic(null);
