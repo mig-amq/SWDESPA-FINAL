@@ -19,9 +19,6 @@ public abstract class ClientSuperController implements Initializable {
     public boolean isOdd(int i){
         return i % 2 != 0;
     }
-
-
-
     public String getDispTime(int hr, int i){
         String time;
         String end;

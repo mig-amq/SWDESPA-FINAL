@@ -11,10 +11,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import udc.Model;
 import udc.client.regular.Controller.ClientSuperController;
+import udc.client.regular.Controller.WeekSchedule;
+import udc.objects.enums.AgendaType;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Unavailable;
-import udc.secretary.Controller.WeekSchedule;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class DoctorCalWeekController extends ClientSuperController implements Initializable {
+
 
     @FXML private TableView<WeekSchedule> weekTable;
     private ObservableList<TableColumn<WeekSchedule, String>> DayListColumns;
@@ -55,32 +57,57 @@ public class DoctorCalWeekController extends ClientSuperController implements In
     }
 
     private void initPropertyValues(){
-        String[] cells = new String[]{"sTime", "sMon", "sTue", "sWed", "sThu", "sFri", "sSat", "sSun"};
+        String[] cells = new String[]{"time", "mon", "tue", "wed", "thu", "fri", "sat", "sun"};
         for (int i = 0; i < DayListColumns.size(); i++) {
             TableColumn col = DayListColumns.get(i);
             col.setCellValueFactory(new PropertyValueFactory<WeekSchedule, String>(cells[i]));
         }
     }
 
-        private void insertUnavailabilitytoAgendas(ArrayList<Unavailable> a, ArrayList<Agenda> b){
-            for (int i = 0; i <unavailables.size(); i++) {
-                Unavailable u = unavailables.get(i);
-                unavailables.get(i).setDoctorName(doctorList.get(u.getId()));
-            }
-            for (int i = 0; i < a.size() ; i++)
-                b.add(a.get(i));
+        private void insertUnavailabilitytoAgendas(){
+//            for (int i = 0; i <unavailables.size(); i++) {
+//                Unavailable u = unavailables.get(i);
+//                unavailables.get(i).setDoctorName(doctorList.get(u.getId()));
+//            }
+//            for (int i = 0; i < a.size() ; i++)
+//                b.add(a.get(i));
+            for (int i = 0; i < unavailables.size() ; i++)
+                agendas.add(unavailables.get(i));
         }
 
     @Override
     public void insertFilterData(LocalDate selected) {
-        try {
-            agendas = model.getDbController().getAppointments(-1, "");
-            unavailables = model.getDbController().getUnvailability(-1);
-            insertUnavailabilitytoAgendas(unavailables, agendas);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            agendas = model.getDbController().getAppointments(-1, "");
+//            unavailables = model.getDbController().getUnvailability(-1);
+//            for (int i = 0; i < unavailables.size(); i++) {
+//                Unavailable a = unavailables.get(i);
+//                unavailables.get(i).setDoctorName(doctorList.get(a.getId()).substring(4));
+//            }
+//            insertUnavailabilitytoAgendas();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         insertFilteredData(findWeekAgenda(), findStartingDay(selected));
+    }
+
+    public void insertFilteredData(ArrayList<ArrayList<Agenda>> dt, LocalDate stDte){
+        //TODO: add Unavailability to arrList when merged with new repo
+        //^^ Read comment from SecDayViewControl for instructions
+        weekTable.getItems().clear();
+        int hr = 7;
+        for (int i = 0; i < 30; i++) {
+            String tm = getDispTime(hr, i);
+            if(!isOdd(i))
+                hr++;
+            if(!dt.isEmpty()) {
+                insertDateToColumn(listWeekDates(stDte));
+                weekTable.getItems().add(createWeekSchedule(dt, stDte, tm));
+            }
+        }
+        for (int i = 1; i < DayListColumns.size(); i++) {
+            setColumnCellFactory(DayListColumns.get(i), i);
+        }
     }
 
     private ArrayList<ArrayList<Agenda>> findWeekAgenda(){
@@ -109,7 +136,9 @@ public class DoctorCalWeekController extends ClientSuperController implements In
     }
 
     private boolean isEqualDate(Agenda agenda, LocalDate selected){
-        String sDoctorName = (String) bDoctorCmbBox.getSelectionModel().getSelectedItem();
+        String sDoctorName = bDoctorCmbBox.getSelectionModel().getSelectedItem();
+//        if(sDoctorName != null && !sDoctorName.equals("All"))
+//            sDoctorName = sDoctorName.substring(4);
 
         if(sDoctorName!= null && agenda instanceof Appointment) {
             if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Appointment)agenda).getDoctorName())) //mq
@@ -119,14 +148,46 @@ public class DoctorCalWeekController extends ClientSuperController implements In
             else if(sDoctorName.equals("All"))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
         }else if(sDoctorName != null && agenda instanceof Unavailable){
-            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable)agenda).getDoctorName())) //mq
-                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-            else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
-                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-            else if(sDoctorName.equals("All"))
-                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+            if(agenda.getType().equals(AgendaType.SINGLE))
+                return nonRecurringAvailable(agenda, sDoctorName, selected);
+            else if(agenda.getType().equals(AgendaType.RECURRING))
+                return recurringAvailable(agenda, sDoctorName, selected);
         }
         return false;//
+    }
+
+    private boolean nonRecurringAvailable(Agenda agenda, String sDoctorName, LocalDate selected){
+        if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable) agenda).getDoctorName())) //mq
+            return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+        else if (sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
+            return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+        else if (sDoctorName.equals("All"))
+            return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+        return false;
+    }
+
+    private boolean recurringAvailable(Agenda agenda, String sDoctorName, LocalDate selected){
+        if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable) agenda).getDoctorName())) //mq
+            return isBtwStEndDate(agenda, selected);
+        else if (sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
+            return isBtwStEndDate(agenda, selected);
+        else if (sDoctorName.equals("All"))
+            return isBtwStEndDate(agenda, selected);
+        return false;
+    }
+
+    private boolean isBtwStEndDate(Agenda agenda, LocalDate Selected){
+        LocalDate endDate = agenda.getEndTime().toLocalDate();
+        if(!dateToString(agenda.getStartTime()).equals(dateToString(Selected))){
+            if (endDate.getYear() == Selected.getYear()) {
+                if (endDate.getMonthValue() > Selected.getMonthValue())
+                    return true;
+                else if (endDate.getMonthValue() == Selected.getMonthValue() && endDate.getDayOfMonth() >= Selected.getDayOfMonth())
+                    return true;
+            } else if (endDate.getYear() > Selected.getYear())
+                return true;
+        } else return true;
+        return false;
     }
 
     private String dateToString(LocalDateTime localDateTime) {
@@ -140,7 +201,6 @@ public class DoctorCalWeekController extends ClientSuperController implements In
     @Override
     public void setModel (Model model) {
         super.setModel(model);
-
 
         doctorList = FXCollections.observableArrayList();
         doctorList.add("All");
@@ -157,33 +217,23 @@ public class DoctorCalWeekController extends ClientSuperController implements In
                 e.printStackTrace();
             }
         });
+
     try {
         agendas = model.getDbController().getAppointments(-1, "");
         unavailables = model.getDbController().getUnvailability(-1);
-        insertUnavailabilitytoAgendas(unavailables, agendas);
+        for (int i = 0; i < unavailables.size(); i++) {
+            Unavailable a = unavailables.get(i);
+            unavailables.get(i).setDoctorName(doctorList.get(a.getId()));
+        }
+//        for (int i = 0; i < agendas.size(); i++) {
+//            Agenda agenda = agendas.get(i);
+//            System.out.println("Unavailable " + i + " (ID): " +agenda.getId() + " " + unavailables.get(i).getDoctorName()
+//                    + " start: " + agenda.getStartTime() + " end:" + agenda.getEndTime());
+//        }
+        insertUnavailabilitytoAgendas();
     } catch (Exception e) {}
 
     }
-
-    public void insertFilteredData(ArrayList<ArrayList<Agenda>> dt, LocalDate stDte){
-        //TODO: add Unavailability to arrList when merged with new repo
-        //^^ Read comment from SecDayViewControl for instructions
-        weekTable.getItems().clear();
-        int hr = 7;
-        for (int i = 0; i < 30; i++) {
-            String tm = getDispTime(hr, i);
-            if(!isOdd(i))
-                hr++;
-            if(!dt.isEmpty()) {
-                insertDateToColumn(listWeekDates(stDte));
-                weekTable.getItems().add(createWeekSchedule(dt, stDte, tm));
-            }
-        }
-        for (int i = 1; i < DayListColumns.size(); i++) {
-            setColumnCellFactory(DayListColumns.get(i), i);
-        }
-    }
-
 
     public void setColumnCellFactory(TableColumn<WeekSchedule, String> a, int b){
         a.setCellFactory(column -> {
@@ -204,31 +254,30 @@ public class DoctorCalWeekController extends ClientSuperController implements In
     }
 
     private void applyCellFactoryCondition(String item, TableCell a){
-        if (item.contains("Dr. Miguel Quiambao") && !item.contains("Unavailable")) {
+//        if (item.contains("Dr. Miguel Quiambao") && !item.contains("Available")) {
+//            a.setStyle("-fx-border-color: #42f498");
+//            a.setText(item);
+//            System.out.println("not avail si quiambs");
+//        }else if(item.contains("Dr. Mitchell Ong") && !item.contains("Available")){
+//            a.setStyle("-fx-border-color: #6aa2fc");
+//            a.setText(item);
+//            System.out.println("not avail si mitch");
+//        } else
+            if(item.equalsIgnoreCase("Dr. Mitchell Ong - Available")){
+            a.setText(item);
+//                a.setStyle("-fx-border-color: #72db91");
             a.setStyle("-fx-background-color: #42f498");
-//                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
-//                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
-//                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
+        } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Available")){
             a.setText(item);
-        }else if(item.contains("Dr. Mitchell Ong") && !item.contains("Unavailable")){
-            a.setStyle("-fx-background-color: #6aa2fc");
-//                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
-//                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
-//                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
-            //See SecWeekControl for Code Continuation
-            a.setText(item);
-        } else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
-            a.setText("");
-            a.setStyle("-fx-background-color: #e25d2d");
-        } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Unavailable")){
-            a.setText("");
-            a.setStyle("-fx-background-color: #3382bf");
-        }else if(item.equalsIgnoreCase("(Unavailable)")){ //both
-            a.setText("");
-            a.setStyle("-fx-background-color: #87312b");
+//                a.setStyle("-fx-border-color: #2dd8b9");
+            a.setStyle("-fx-background-color: #42f498");
+        }else if(item.equalsIgnoreCase("(Available)")){ //both
+            a.setText("ALL DOCTORS ARE AVAILABLE");
+            a.setStyle("-fx-background-color: #42f498");
+//                a.setStyle("-fx-border-color-color: #ffffff");
         }  else{
-            a.setStyle("-fx-background-color: #e5e2cc");
-            a.setStyle("-fx-border-color: #c6c5ba");
+            a.setStyle("-fx-background-color: #ff584c");
+//            a.setStyle("-fx-background-color: #c6c5ba");
             a.setText(null);
             a.setGraphic(null);
         }
@@ -249,10 +298,6 @@ public class DoctorCalWeekController extends ClientSuperController implements In
         }
     }
 
-    //Purposely set as public so other modules can use this to be placed
-    // in their respective constructor for weekly
-    // to extract agenda for each day
-    //Check AbstractController from this package to check how it works for same day
     public WeekSchedule createWeekSchedule(ArrayList<ArrayList<Agenda>> dt, LocalDate stDte, String tm){
         return new WeekSchedule(tm, gtDataForDay(dt, tm, stDte), gtDataForDay(dt, tm, stDte.minusDays(-1)), // -1 = +1 day
                 gtDataForDay(dt, tm, stDte.minusDays(-2)), gtDataForDay(dt, tm, stDte.minusDays(-3)),
@@ -260,22 +305,21 @@ public class DoctorCalWeekController extends ClientSuperController implements In
                 gtDataForDay(dt, tm, stDte.minusDays(-6)));
     }
 
-    //same comment as above
     public String gtDataForDay(ArrayList<ArrayList<Agenda>> data, String time, LocalDate stDate) {
         int DayofWeek = stDate.getDayOfWeek().getValue() - 1;
         int index;
         if(!data.get(DayofWeek).isEmpty()) {
-            String index1 = getUnavailabilityFromList(data.get(DayofWeek), time);
+            String index1 = getUnavailabilityFromList(data.get(DayofWeek), time, DayofWeek);
             if ((index = getDataIndexfromList(data.get(DayofWeek), time)) >= 0) {
                 Appointment agenda = (Appointment) data.get(DayofWeek).get(index);
-                return "Dr. " + agenda.getDoctorName();
+                return "Dr. " + agenda.getDoctorName() + "\nClient: " + agenda.getClientName();
             } else if (!index1.equals("")) {
                 String[] a = index1.split(" | ");
                 if (a.length == 2) {
-                    return "(Unavailable)";
+                    return "(Available)";
                 } else if (a.length == 1) {
                     Unavailable agenda = (Unavailable) data.get(DayofWeek).get(Integer.parseInt(a[a.length - 1]));
-                    return "Dr. " + agenda.getDoctorName() + " - " + "Unavailable";
+                    return "Dr. " + agenda.getDoctorName() + " - " + "Available";
                 }
             }
         }
@@ -297,7 +341,7 @@ public class DoctorCalWeekController extends ClientSuperController implements In
         return -1;
     }
 
-    public String getUnavailabilityFromList(ArrayList<Agenda> data, String time) {
+    public String getUnavailabilityFromList(ArrayList<Agenda> data, String time, int DayOfWeek) {
         String index = "";
         int counter = 2; //increase counter for additional doctors
         for (int i = 0; i < data.size() && counter != 0; i++) {
@@ -307,14 +351,41 @@ public class DoctorCalWeekController extends ClientSuperController implements In
                 String nTime = convertTimeFromTable(time); //converts time from table to military
                 if (nTime.equals(agendaTime) || (Integer.parseInt(endTime) > Integer.parseInt(nTime) && Integer.parseInt(agendaTime)
                         < Integer.parseInt(nTime))) {
-
-                    index += i + " ";
-                    counter--;
+                    if (data.get(i).getType().equals(AgendaType.SINGLE)) {
+                        index += i + " ";
+                        counter--;
+                    } else if (data.get(i).getType().equals(AgendaType.RECURRING)) {
+                        String[] days = ((Unavailable) data.get(i)).getRecurringDays().split(" | ");
+                        for (int j = 0; j < days.length; j++) {
+                            if (DayOfWeek == strToDayOfWeek(days[j])) {
+                                index += i + " ";
+                                counter--;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
-        System.out.println("Index1: " + index);
         return index;
+    }
+
+    private int strToDayOfWeek(String day){
+        if (day.equalsIgnoreCase("m"))
+            return 0;
+        else if (day.equalsIgnoreCase("t"))
+            return 1;
+        else if(day.equalsIgnoreCase("w"))
+            return 2;
+        else if(day.equalsIgnoreCase("h"))
+            return 3;
+        else if(day.equalsIgnoreCase("f"))
+            return 4;
+        else if(day.equalsIgnoreCase("s"))
+            return 5;
+        else if(day.equalsIgnoreCase("su"))
+            return 6;
+        return  -1;
     }
 
     public String convertIntHrorMintoString(int value) {
@@ -336,15 +407,31 @@ public class DoctorCalWeekController extends ClientSuperController implements In
         return arrTime[0] + arrTime[1];
     }
 
+    private void matchDoctorNametoID() {
+        for (int i = 0; i < unavailables.size(); i++) {
+            Unavailable a = unavailables.get(i);
+            unavailables.get(i).setDoctorName(doctorList.get(a.getId())); //SUBSTRING??
+        }
+    }
     @Override
     public void update() {
         try {
-            unavailables = model.getDbController().getUnvailability(-1);
+//            unavailables = model.getDbController().getUnvailability(-1);
+//            agendas = model.getDbController().getAppointments(-1, "");
+//            insertUnavailabilitytoAgendas();
+//            insertFilterData(calendar.getSelected());
             agendas = model.getDbController().getAppointments(-1, "");
-            insertUnavailabilitytoAgendas(unavailables, agendas);
-            insertFilterData(calendar.getSelected());
+            unavailables = model.getDbController().getUnvailability(-1);
+//            for (int i = 0; i < unavailables.size(); i++) {
+//                Unavailable a = unavailables.get(i);
+//                unavailables.get(i).setDoctorName(doctorList.get(a.getId()).substring(4));
+//            }
+            matchDoctorNametoID();
+            insertUnavailabilitytoAgendas();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        insertFilteredData(findWeekAgenda(), findStartingDay(calendar.getSelected()));
     }
 }

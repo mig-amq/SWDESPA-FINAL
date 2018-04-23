@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ClientCalDayController extends ClientSuperController implements Initializable {
-
     @FXML private TableView<DaySchedule> dayTable;
     @FXML private TableColumn<DaySchedule, String> time;
     @FXML private TableColumn<DaySchedule, String> doctor;
@@ -37,7 +36,7 @@ public class ClientCalDayController extends ClientSuperController implements Ini
     public void update() {
         try {
             agendas = model.getDbController().getAppointments(model.getAccount().getId(), "CLIENT");
-
+            insertFilterData(calendar.getSelected());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,9 +66,11 @@ public class ClientCalDayController extends ClientSuperController implements Ini
                 hr++;
             String index1 = getUnavailabilityFromList(data, time);
             if((index = getDataIndexfromList(data, time)) >= 0 ) {
+                System.out.println("appointment HEHHEH");
                 Appointment agenda = (Appointment) data.get(index);
                 dayTable.getItems().add(new DaySchedule(time, "Dr. " + agenda.getDoctorName()));
             }else if(!index1.equals("")){
+                System.out.println("ALIEN HEHHEH");
                 String[] a = index1.split(" | ");
                 if(a.length == 2) {
                     dayTable.getItems().add(new DaySchedule(time, "(Unavailable)"));
@@ -111,28 +112,31 @@ public class ClientCalDayController extends ClientSuperController implements Ini
             //                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
             //                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
             a.setText(item);
+            System.out.println("QUIAMBAO");
         }else if(item.contains("Dr. Mitchell Ong") && !item.contains("Unavailable")){
             a.setStyle("-fx-background-color: #6aa2fc");
             //                            System.out.println(tvWeekView.getItems().get(0).getTableRow().getIndex() + " " +getIndex() + " " + getCellData(tvWeekView.getItems().get(b), b));
             //                            String prev = getCellData(getTableView().getItems().get(getTableRow().getIndex() -1), b);
             //                            if(!(getTableRow().getIndex != 0 && item.equals(prev))) 2 appointment slots cell spanning
             //See SecWeekControl for Code Continuation
+            System.out.println("MITCHELL");
             a.setText(item);
-        } else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
-            a.setText("");
-            a.setStyle("-fx-background-color: #e25d2d");
-        } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Unavailable")){
-            a.setText("");
-            a.setStyle("-fx-background-color: #3382bf");
-        }else if(item.equalsIgnoreCase("(Unavailable)")){ //both
-            a.setText("");
-            a.setStyle("-fx-background-color: #87312b");
-        }  else{
-            a.setStyle("-fx-background-color: #e5e2cc");
-            a.setStyle("-fx-border-color: #c6c5ba");
-            a.setText(null);
-            a.setGraphic(null);
         }
+//        else if(item.equalsIgnoreCase("Dr. Mitchell Ong - Unavailable")){
+//            a.setText("");
+//            a.setStyle("-fx-background-color: #e25d2d");
+//        } else if(item.equalsIgnoreCase("Dr. Miguel Quiambao - Unavailable")){
+//            a.setText("");
+//            a.setStyle("-fx-background-color: #3382bf");
+//        }else if(item.equalsIgnoreCase("(Unavailable)")){ //both
+//            a.setText("");
+//            a.setStyle("-fx-background-color: #87312b");
+//        }  else{
+//            a.setStyle("-fx-background-color: #e5e2cc");
+//            a.setStyle("-fx-border-color: #c6c5ba");
+//            a.setText(null);
+//            a.setGraphic(null);
+//        }
     }
 
     @Override
@@ -169,20 +173,25 @@ public class ClientCalDayController extends ClientSuperController implements Ini
 
         for (int i = 0; i < agendas.size(); i++) {
             Agenda agenda = agendas.get(i);
-            if(isEqualDate(agenda, selected))
+            System.out.print("Agenda ID: " + agenda.getId() + " start: " + agenda.getStartTime() + " end: " + agenda.getEndTime());
+            if(agenda instanceof Appointment)
+                System.out.println(" " + ((Appointment) agenda).getDoctorName());
+            if(isEqualDate(agenda, selected)) {
+                System.out.print("SELECTED Agenda ID: " + agenda.getId() + " start: " + agenda.getStartTime() + " end: " + agenda.getEndTime());
+                System.out.println(" " + ((Appointment) agenda).getDoctorName());
                 arrayList.add(agenda);
+            }
         }
         return arrayList;
     }
 
     private boolean isEqualDate(Agenda agenda, LocalDate selected) {
-        String sDoctorName = (String) mDoctorCmbBox.getSelectionModel().getSelectedItem();
+        String sDoctorName = mDoctorCmbBox.getSelectionModel().getSelectedItem();
 
         if(sDoctorName!= null && agenda instanceof Appointment) {
             if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Appointment)agenda).getDoctorName())){
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
             }
-
             else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Appointment) agenda).getDoctorName()))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
             else if(sDoctorName.equals("All"))

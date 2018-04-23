@@ -3,53 +3,35 @@ package udc.client.regular.FXMLControllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXDrawer;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import udc.Model;
 import udc.objects.account.Account;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 
 public class RemoveController extends AnchorPane {
-    @FXML
-    private AnchorPane pnlTool;
-    @FXML
-    private AnchorPane close;
-    @FXML
-    private JFXDrawer drawer;
-    @FXML
-    private AnchorPane mainPanel;
-    @FXML
-    private JFXButton remove;
-    @FXML
-    private Label lblAlert;
-    @FXML
-    private JFXDatePicker datePicker;
-    @FXML
-    private JFXComboBox<String> doctorCmb;
-    @FXML
-    private JFXComboBox<String> startHour, startMin, endHour, endMin, startM, endM;
-    @FXML
-    private Model model;
+    @FXML private AnchorPane pnlTool;
+    @FXML private AnchorPane close;
+    @FXML private JFXButton remove, save;
+    @FXML private Label lblAlert;
+    @FXML private JFXDatePicker datePicker;
+    @FXML private JFXComboBox<String> doctorCmb;
+    @FXML private JFXComboBox<String> startHour, startMin, endHour, endMin, startM, endM;
+    @FXML private Model model;
 
     public RemoveController(Model model) {
         try {
@@ -152,6 +134,10 @@ public class RemoveController extends AnchorPane {
                     stage.close();
                 }
             }
+        });
+
+        save.setOnMouseClicked(event ->{
+            System.out.println("hi");
         });
     }
 }

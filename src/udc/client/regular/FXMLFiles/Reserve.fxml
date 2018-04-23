@@ -32,11 +32,11 @@
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
                         <Stop color="#d13a3a" />
-                        <Stop color="#d13a3a" offset="0.007662835249042145" />
-                        <Stop color="#ab3b3b" offset="0.31958762886597936" />
-                        <Stop color="#b23a3a" offset="0.5561875419678473" />
-                        <Stop color="#cf3a3a" offset="0.6563573883161511" />
-                        <Stop color="#d13a3a" offset="1.0" />
+                        <Stop color="#3acf4f" offset="0.007662835249042145" />
+                        <Stop color="#3cab61" offset="0.31958762886597936" />
+                        <Stop color="#3ab067" offset="0.5561875419678473" />
+                        <Stop color="#3ccf84" offset="0.6563573883161509" />
+                        <Stop color="#3acf96" offset="1.0" />
                      </stops>
                   </LinearGradient>
                </ripplerFill>
