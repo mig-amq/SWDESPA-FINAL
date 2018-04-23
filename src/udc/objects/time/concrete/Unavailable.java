@@ -8,6 +8,11 @@ public class Unavailable extends Agenda {
 
     private UnavailabilityType unavailabilityType;
     private String doctorName;
+    private String recurringDays;
+
+    public void setRecurringDays(String recurringDays){this.recurringDays = recurringDays;}
+
+    public String getRecurringDays(){return recurringDays;}
 
     public UnavailabilityType getUnavailabilityType() {
         return unavailabilityType;
