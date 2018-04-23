@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import udc.Model;
 import udc.customfx.calendar.Calendar;
+import udc.objects.enums.AgendaType;
 import udc.objects.time.concrete.Agenda;
 import udc.objects.time.concrete.Appointment;
 import udc.objects.time.concrete.Available;
@@ -308,12 +309,10 @@ public class MainController {
             else if(sDoctorName.equals("All"))
                 return dateToString(agenda.getStartTime()).equals(dateToString(selected));
         }else if(sDoctorName != null && agenda instanceof Unavailable){
-            if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable)agenda).getDoctorName())) //mq
-                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-            else if(sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
-                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
-            else if(sDoctorName.equals("All"))
-                return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+            if(agenda.getType().equals(AgendaType.SINGLE))
+                return nonRecurringAvailable(agenda, sDoctorName, selected);
+            else if(agenda.getType().equals(AgendaType.RECURRING))
+                return recurringAvailable(agenda, sDoctorName, selected);
         }
         return false;//
     }
@@ -321,6 +320,40 @@ public class MainController {
     private void setDisableButtons(boolean a){
         rdbtnTaken.setDisable(a);
         rdbtnAvailable.setDisable(a);
+    }
+
+    private boolean nonRecurringAvailable(Agenda agenda, String sDoctorName, LocalDate selected){
+        if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable) agenda).getDoctorName())) //mq
+            return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+        else if (sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
+            return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+        else if (sDoctorName.equals("All"))
+            return dateToString(agenda.getStartTime()).equals(dateToString(selected));
+        return false;
+    }
+
+    private boolean recurringAvailable(Agenda agenda, String sDoctorName, LocalDate selected){
+        if (sDoctorName.equals("Miguel Quiambao") && sDoctorName.equals(((Unavailable) agenda).getDoctorName())) //mq
+            return isBtwStEndDate(agenda, selected);
+        else if (sDoctorName.equals("Mitchell Ong") && sDoctorName.equals(((Unavailable) agenda).getDoctorName()))
+            return isBtwStEndDate(agenda, selected);
+        else if (sDoctorName.equals("All"))
+            return isBtwStEndDate(agenda, selected);
+        return false;
+    }
+
+    private boolean isBtwStEndDate(Agenda agenda, LocalDate Selected){
+        LocalDate endDate = agenda.getEndTime().toLocalDate();
+        if(!dateToString(agenda.getStartTime()).equals(dateToString(Selected))){
+            if (endDate.getYear() == Selected.getYear()) {
+                if (endDate.getMonthValue() > Selected.getMonthValue())
+                    return true;
+                else if (endDate.getMonthValue() == Selected.getMonthValue() && endDate.getDayOfMonth() >= Selected.getDayOfMonth())
+                    return true;
+            } else if (endDate.getYear() > Selected.getYear())
+                return true;
+        } else return true;
+        return false;
     }
 
     private LocalDate findStartingDay(LocalDate date){
