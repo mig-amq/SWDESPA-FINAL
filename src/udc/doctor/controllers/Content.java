@@ -33,6 +33,7 @@ public class Content implements Initializable {
     private Week weekView;
     private AgendaDay agendaDayView;
     private AgendaWeek agendaWeekView;
+    private RemoveView removeView;
 
     @FXML private JFXButton add, remove;
     @FXML private AnchorPane content;
@@ -72,6 +73,16 @@ public class Content implements Initializable {
                 e.printStackTrace();
             }
 
+        });
+
+        remove.setOnAction(event -> {
+            try {
+                removeView = new RemoveView(this.model);
+                this.content.getChildren().add(removeView.getNode());
+                removeView.insertFilteredData(this.model, this.getDate());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 

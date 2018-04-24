@@ -19,9 +19,11 @@
                 <AnchorPane fx:id="anchorAgenda" minHeight="0.0" minWidth="0.0" prefHeight="417.0" prefWidth="570.0">
                     <children>
                         <JFXListView fx:id="agendaList" layoutY="-52.0" prefHeight="396.0" prefWidth="597.0" />
+                        <JFXButton fx:id="btnRemove" layoutX="422.0" layoutY="355.0" prefHeight="34.0" prefWidth="134.0" style="-fx-background-color: #1c6c9e; -fx-border-color: #1c6c9e;" text="Cancel Appointment" textFill="WHITE" />
                     </children>
-            </AnchorPane>
+                </AnchorPane>
             </content>
         </ScrollPane>
     </children>
 </AnchorPane>
+

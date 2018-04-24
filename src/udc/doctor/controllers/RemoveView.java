@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import udc.Model;
@@ -21,10 +20,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class AgendaDay extends AnchorPane {
+public class RemoveView extends AnchorPane {
     private Model model;
     private ArrayList<Agenda> appointments;
-    private ArrayList<Unavailable> availabilities;
+    private ArrayList<Available> availabilities;
     private Stage stage;
     private Node node;
 
@@ -35,11 +34,11 @@ public class AgendaDay extends AnchorPane {
     @FXML
     private JFXButton btnRemove;
 
-    public AgendaDay(Model md)  throws IOException {
+    public RemoveView(Model md)  throws IOException {
         this.setModel(md);
         this.setAppointments(md.getAccount().getAppointments());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/AgendaDay.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/RemoveView.fxml"));
         loader.setController(this);
         loader.load();
 
@@ -51,17 +50,15 @@ public class AgendaDay extends AnchorPane {
         lblSlots.setText(lblSlots.getText() + date);
     }
 
+
     public void insertFilteredData(Model model, LocalDate selected) {
-        ArrayList<Agenda> data;
+        ArrayList<Unavailable> data;
         try {
-            data = model.getDbController().getAppointments(model.getAccount().getId(), "doctor");
-            availabilities = model.getDbController().getUnvailability(model.getAccount().getId());
+            data = model.getDbController().getUnvailability(model.getAccount().getId());
             agendaList.getItems().clear();
             ObservableList<String> string = FXCollections.observableArrayList();
             for (int i = 0; i < data.size(); i++)
                 addString(string, data.get(i), selected);
-            for(int j = 0; j < availabilities.size(); j++)
-                addString(string, availabilities.get(j), selected);
             agendaList.setItems(FXCollections.observableArrayList(string));
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +66,22 @@ public class AgendaDay extends AnchorPane {
 
     }
 
+    public void initialize() {
+        btnRemove.setOnAction(event -> {
+            System.out.println("henlo");
+            try {
+                Agenda a = (Agenda) agendaList.getSelectionModel().getSelectedItem();
+                if(a instanceof Available || a instanceof Unavailable){
+                    model.getDbController().deleteUnavailability(model.getAccount().getId(), (Unavailable) a);
+                }
+                model.setState();
 
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        });
+    }
 
     //todo: all doctors display only displays one doctor
     private void addString(ObservableList<String> string, Agenda data, LocalDate selected){
