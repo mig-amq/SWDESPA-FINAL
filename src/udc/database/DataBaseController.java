@@ -185,7 +185,7 @@ public class DataBaseController {
         SingleAppointmentBuilder sap;
         ArrayList<Agenda> appointments = new ArrayList<>();
         String sql = "SELECT A.appointment_id AS id, A.time_start AS time_start, A.time_end AS time_end, A.recurring AS recurring, CONCAT(C.first_name, \" \", C.last_name) AS client, CONCAT(D.first_name, \" \", D.last_name) AS doctor \n" +
-                "FROM appointment A INNER JOIN client C ON A.client_id = C.client_id INNER JOIN doctor D ON A.doctor_id = D.doctor_id WHERE C.type LIKE \"WALKIN\";";
+                "FROM appointment A INNER JOIN client C ON A.client_id = C.client_id INNER JOIN doctor D ON A.doctor_id = D.doctor_id WHERE C.type LIKE \"WALKIN\" AND approved = 0;";
 
         try {
             connection = ConnectionConfiguration.getConnection(model);
@@ -590,7 +590,6 @@ public class DataBaseController {
     }
 
     public ArrayList<Unavailable> getUnvailability(String doctorName) throws Exception {
-
         return getUnvailability(getDocID(doctorName));
     }
 
@@ -647,14 +646,14 @@ public class DataBaseController {
                     tempList.get(tempList.size() - 1).setExceptions(temp0);
                 } else {
                     if (doctor_id < 0) {
-                        pStmt = connection.prepareStatement("SELECT first_name, last_name FROM (SELECT * FROM doctor WHERE doctor_id < 3) AS A");
+                        pStmt = connection.prepareStatement("SELECT * FROM doctor");
                     } else {
                         pStmt = connection.prepareStatement("SELECT * FROM doctor " +
                                 "WHERE doctor_id = '" + doctor_id + "'");
                     }
                     rSet1 = pStmt.executeQuery();
 
-                    while (rSet1.next()) {
+                    if (rSet1.next()) {
                         ArrayList<Unavailable> available = builder.buildMultiple(rSet.getInt("doctor_id"),
                                 strToTime(rSet.getString("time_start")),
                                 strToTime(rSet.getString("time_end")),

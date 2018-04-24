@@ -120,7 +120,7 @@ public class SecWalkInControl {
         LocalDateTime appEDateTime = LocalDateTime.of(y, m, d, hrE, minE);
 
         //lacks checking if the time slot is available
-        ArrayList<Agenda> available = getAvailableSlots(appSDateTime.toLocalDate(), sub[5].substring(3));
+        ArrayList<Agenda> available = getAvailableSlots(appSDateTime.toLocalDate(), sub[5].substring(3) + " " + sub[6]);
         try {
             for (int i = 0; i < available.size(); i++){
                 if (appSDateTime.equals(available.get(i).getStartTime()))
@@ -182,8 +182,9 @@ public class SecWalkInControl {
             if (a.getEndTime().getMinute() < 10)
                 minE = "0" + minE;
 
-            walkIns.add(a.getId() + " " + a.getStartTime().getMonth() + "-" + a.getStartTime().getDayOfMonth() + "-" + a.getStartTime().getYear()
-                    + ": " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + minE + eTimeOfDay + ", Dr." + a.getDoctorName() + ", " + a.getClientName());
+
+            walkIns.add(a.getId() + " " + a.getStartTime().getMonthValue() + "-" + a.getStartTime().getDayOfMonth() + "-" + a.getStartTime().getYear()
+                    + ": " + hrS + ":" + minS + sTimeOfDay + " - " + hrE + ":" + minE + eTimeOfDay + ", Dr." + a.getDoctorName() + ", " + a.getClientName());
         }
 
         return walkIns;
