@@ -808,7 +808,7 @@ public class DataBaseController {
 
             pStmt.setInt(1, av.getId());
             pStmt.setString(2, av.getStartTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")));
-            pStmt.setString(3, av.getStartTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+            pStmt.setString(3, av.getEndTime().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm a")));
             pStmt.setString(4, av.getRecurringDays());
 
             if (pStmt.executeUpdate() == 1)

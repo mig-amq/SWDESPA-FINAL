@@ -133,7 +133,7 @@ public class Doctor extends PaneledView {
             this.drawerPane.add(userPane);
             this.drawerPane.add(buttonPanel);
 
-            this.drawerPane.add(drawerPane.SPACER(180));
+            this.drawerPane.add(drawerPane.SPACER(80));
             this.drawerPane.add(calPane);
             this.getTitle().setText("Doctor - " +
                     this.calendar.selectedProperty().getValue()

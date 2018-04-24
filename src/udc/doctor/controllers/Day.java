@@ -218,7 +218,7 @@ public class Day extends TableView {
         //TODO: ADD UNAVAILABILITY DISPLAY, PLACE IT INSIDE findData method()
         tbView.getItems().clear();
         int hr = 7;
-        for (int i = 0; i < 33; i++) {
+        for (int i = 0; i < 30; i++) {
             int index;
 
             String time = getDispTime(hr, i);
