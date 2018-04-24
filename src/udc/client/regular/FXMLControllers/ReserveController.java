@@ -194,6 +194,10 @@ public class ReserveController extends AnchorPane {
                         String client = account.getFirstName() + " " + account.getLastName();
 
                         model.getDbController().addAppointment(startTime, endTime, doctorCmb.getValue(), client);
+                        int docID = model.getDbController().getDocID(doctorCmb.getValue());
+                        Unavailable a = new Unavailable();
+                        a.setStartTime(startTime);
+                        model.getDbController().deleteUnavailability(docID, a);
                         model.setState();
 
                         Stage stage = (Stage) close.getScene().getWindow();
