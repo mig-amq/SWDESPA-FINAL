@@ -177,17 +177,12 @@ public class ReserveController extends AnchorPane {
                     alert.showAndWait();
                 }
                 else {
-                    boolean canAdd = true;
+                    boolean canAdd = false;
                     LocalDateTime tempTime = startTime;
 
                     while(tempTime.isBefore(endTime) || tempTime.equals(endTime)) {
                         if(isOverLap(startTime)) {
-                            Alert alert = new Alert (Alert.AlertType.ERROR);
-                            alert.setTitle("Invalid Input");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Dr. " + doctorCmb.getValue() + " is not available at this time.");
-                            alert.showAndWait();
-                            canAdd = false;
+                            canAdd = true;
                             break;
                         }
                         if(tempTime.equals(endTime)) break;
@@ -203,6 +198,13 @@ public class ReserveController extends AnchorPane {
 
                         Stage stage = (Stage) close.getScene().getWindow();
                         stage.close();
+                    }
+                    else {
+                        Alert alert = new Alert (Alert.AlertType.ERROR);
+                        alert.setTitle("Invalid Input");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Dr. " + doctorCmb.getValue() + " is not available at this time.");
+                        alert.showAndWait();
                     }
 
                 }
