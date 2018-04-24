@@ -627,7 +627,8 @@ public class DataBaseController {
                 if (!rSet.getString("recurring").equals("0")) {
                     tempList.add(rbuilder.build(rSet.getInt("doctor_id"),
                             strToTime(rSet.getString("time_start")),
-                            strToTime(rSet.getString("time_end"))));
+                            strToTime(rSet.getString("time_end")),
+                            rSet.getString("recurring")));
 
                     String[] temp2 = rSet.getString("except_dates").split(";");
                     for (int i = 0; i < temp2.length; i++) {

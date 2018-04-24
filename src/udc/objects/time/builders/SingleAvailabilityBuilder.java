@@ -25,6 +25,7 @@ public class SingleAvailabilityBuilder extends AvaibilityBuilder{
             av.setId(id);
             av.setStartTime(temp);
             av.setEndTime(temp.plusMinutes(30));
+            av.setRecurringDays("0");
             list.add(av);
             temp = temp.plusMinutes(30);
         }

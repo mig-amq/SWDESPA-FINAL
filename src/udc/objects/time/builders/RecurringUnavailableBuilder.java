@@ -19,10 +19,11 @@ public class RecurringUnavailableBuilder extends UnavailableBuilder {
         return this.getUnavailable();
     }
 
-    public Unavailable build (int id, LocalDateTime start, LocalDateTime end, String doctor, String client) {
+    public Unavailable build (int id, LocalDateTime start, LocalDateTime end, String recurring) {
         this.build(id, start, end);
 
         this.getUnavailable().setType(AgendaType.RECURRING);
+        this.getUnavailable().setRecurringDays(recurring);
 
         return this.getUnavailable();
     }
